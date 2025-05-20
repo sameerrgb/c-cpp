@@ -1,0 +1,1593 @@
+Given a stack with push(), pop(), empty() operations, delete the middle of the stack without
+using any additional data structure.
+Middle: ceil((size_of_stack+1)/2) (1-based index)
+Example 1:
+Input:
+Stack = {1, 2, 3, 4, 5}
+Output:
+ModifiedStack = {1, 2, 4, 5}
+Explanation:
+As the number of elements is 5, hence the middle element will be the 3rd element which
+is deleted
+Example 2:
+Input:
+Stack = {1 2 3 4}
+Output:
+ModifiedStack = {1 3 4}
+Explanation:
+As the number of elements is 4, hence the middle element will be the 2nd element which
+is deleted
+
+
+
+#include <iostream> // Required for input/output operations like std::cout
+#include <stack>    // Required to use the std::stack container adapter
+#include <cmath>    // Required for std::ceil
+
+// Helper function to print the stack elements (for demonstration purposes)
+// Note: This function empties the stack while printing.
+void printStack(std::stack<int> s) {
+    // Check if the stack is empty
+    if (s.empty()) {
+        std::cout << "Stack is empty." << std::endl;
+        return;
+    }
+    // Print elements by popping from the top
+    while (!s.empty()) {
+        std::cout << s.top() << " "; // Access the top element
+        s.pop();                     // Remove the top element
+    }
+    std::cout << std::endl; // Print a newline at the end
+}
+
+// Recursive helper function to delete the middle element
+// s: The stack to modify (passed by reference)
+// original_size: The size of the stack when the deletion process started
+// current_count: The current position from the bottom of the original stack (1-based)
+void deleteMiddleUtil(std::stack<int>& s, int original_size, int current_count) {
+    // Base Case: If we have reached the middle element (1-based index)
+    // The middle index is ceil((original_size + 1) / 2)
+    if (current_count == static_cast<int>(std::ceil(static_cast<double>(original_size + 1) / 2.0))) {
+        s.pop(); // Delete the middle element by popping it
+        return;  // Stop the recursion for this branch
+    }
+
+    // Recursive Step:
+    // 1. Pop the top element
+    int temp = s.top(); // Store the top element temporarily
+    s.pop();            // Remove the top element from the stack
+
+    // 2. Recursively call the function for the rest of the stack
+    // Increment the current_count as we move down the stack (towards the bottom)
+    deleteMiddleUtil(s, original_size, current_count + 1);
+
+    // 3. Push the element back onto the stack if it was not the middle one
+    // The middle element was popped in the base case and its recursive call branch
+    // would have returned without pushing anything back.
+    s.push(temp); // Push the temporarily stored element back
+}
+
+// Main function to initiate the deletion of the middle element
+void deleteMiddle(std::stack<int>& s) {
+    // Check if the stack is empty before attempting to delete
+    if (s.empty()) {
+        std::cout << "Stack is empty, nothing to delete." << std::endl;
+        return;
+    }
+    // Get the original size of the stack
+    int original_size = s.size();
+    // Start the recursive process from the bottom-most element (count 1)
+    deleteMiddleUtil(s, original_size, 1);
+}
+
+// Main function to demonstrate the deleteMiddle functionality
+int main() {
+    // Example 1: Stack with odd number of elements
+    std::stack<int> s1;
+    s1.push(5); // Bottom
+    s1.push(4);
+    s1.push(3); // Middle element (3rd from bottom, ceil((5+1)/2)=3)
+    s1.push(2);
+    s1.push(1); // Top
+
+    std::cout << "Original Stack 1 (Top to Bottom): ";
+    // Create a copy to print without modifying the original stack before deletion
+    printStack(s1);
+
+    // Delete the middle element
+    deleteMiddle(s1);
+
+    std::cout << "Modified Stack 1 (Top to Bottom): ";
+    // Print the stack after deletion
+    printStack(s1);
+
+    std::cout << "--------------------" << std::endl;
+
+    // Example 2: Stack with even number of elements
+    std::stack<int> s2;
+    s2.push(4); // Bottom
+    s2.push(3);
+    s2.push(2); // Middle element (2nd from bottom, ceil((4+1)/2)=3rd from bottom, 2nd from top)
+    s2.push(1); // Top
+
+    std::cout << "Original Stack 2 (Top to Bottom): ";
+     // Create a copy to print without modifying the original stack before deletion
+    printStack(s2);
+
+    // Delete the middle element
+    deleteMiddle(s2);
+
+    std::cout << "Modified Stack 2 (Top to Bottom): ";
+    // Print the stack after deletion
+    printStack(s2);
+
+    return 0; 
+}
+
+
+
+
+
+Given an expression string x. Examine whether the pairs and the orders of
+“{“,”}”,”(“,”)”,”[“,”]” are correct in exp.
+For example, the function should return 'true' for exp = “[()]{}{[()()]()}” and 'false' for exp =
+“[(])”.
+#include <iostream> // Required for input/output operations like std::cout
+#include <stack>    // Required to use the std::stack container adapter
+#include <string>   // Required to use std::string for the expression
+
+// Function to check if a character is an opening bracket
+bool isOpeningBracket(char c) {
+    return (c == '(' || c == '{' || c == '[');
+}
+
+// Function to check if a character is a closing bracket
+bool isClosingBracket(char c) {
+    return (c == ')' || c == '}' || c == ']');
+}
+
+// Function to check if a pair of brackets matches
+bool bracketsMatch(char open, char close) {
+    return ((open == '(' && close == ')') ||
+            (open == '{' && close == '}') ||
+            (open == '[' && close == ']'));
+}
+
+// Function to check if the expression string has correct bracket pairs and order
+bool areBracketsBalanced(const std::string& exp) {
+    std::stack<char> s; // Create a stack to store opening brackets
+
+    // Iterate through the expression string character by character
+    for (char c : exp) {
+        // If the character is an opening bracket, push it onto the stack
+        if (isOpeningBracket(c)) {
+            s.push(c);
+        }
+        // If the character is a closing bracket
+        else if (isClosingBracket(c)) {
+            // If the stack is empty, it means there's a closing bracket
+            // without a corresponding opening bracket, so the expression is unbalanced.
+            if (s.empty()) {
+                return false;
+            }
+            // If the stack is not empty, pop the top element (which should be an opening bracket)
+            char top_char = s.top();
+            s.pop();
+
+            // Check if the popped opening bracket matches the current closing bracket
+            // If they don't match, the expression is unbalanced.
+            if (!bracketsMatch(top_char, c)) {
+                return false;
+            }
+        }
+        // Ignore any other characters that are not brackets
+    }
+
+    // After iterating through the entire string, if the stack is empty,
+    // it means all opening brackets had corresponding closing brackets in the correct order.
+    // If the stack is not empty, it means there are unmatched opening brackets.
+    return s.empty();
+}
+
+int main() {
+    // Example 1: Balanced expression
+    std::string exp1 = "[()]{}{[()()]()}";
+    if (areBracketsBalanced(exp1)) {
+        std::cout << "Expression \"" << exp1 << "\" is Balanced." << std::endl;
+    } else {
+        std::cout << "Expression \"" << exp1 << "\" is Not Balanced." << std::endl;
+    }
+
+    // Example 2: Unbalanced expression (incorrect order)
+    std::string exp2 = "[(])";
+    if (areBracketsBalanced(exp2)) {
+        std::cout << "Expression \"" << exp2 << "\" is Balanced." << std::endl;
+    } else {
+        std::cout << "Expression \"" << exp2 << "\" is Not Balanced." << std::endl;
+    }
+
+    // Example 3: Unbalanced expression (unmatched opening bracket)
+    std::string exp3 = "{[()]";
+     if (areBracketsBalanced(exp3)) {
+        std::cout << "Expression \"" << exp3 << "\" is Balanced." << std::endl;
+    } else {
+        std::cout << "Expression \"" << exp3 << "\" is Not Balanced." << std::endl;
+    }
+
+    // Example 4: Unbalanced expression (unmatched closing bracket)
+    std::string exp4 = "())";
+     if (areBracketsBalanced(exp4)) {
+        std::cout << "Expression \"" << exp4 << "\" is Balanced." << std::endl;
+    } else {
+        std::cout << "Expression \"" << exp4 << "\" is Not Balanced." << std::endl;
+    }
+
+
+    return 0; 
+}
+
+
+
+
+Complete the function to find spiral order traversal of a tree. For the tree below, the
+function should return 1, 2, 3, 4, 5, 6, 7.Example 1:
+Input:
+ 1
+ / \
+ 3 2
+Output:1 3 2
+Example 2:
+Input:
+ 10
+ / \
+ 20 30
+ / \
+ 40 60
+Output: 10 20 30 60 40
+
+#include <iostream> // Required for input/output operations like std::cout
+#include <vector>   // Required to use std::vector to store the result
+#include <stack>    // Required to use std::stack for the traversal logic
+#include <algorithm> // Required for std::reverse (alternative approach, not used in the two-stack method)
+
+// Define a structure for a binary tree node
+struct Node {
+    int data;      // Value of the node
+    Node* left;    // Pointer to the left child
+    Node* right;   // Pointer to the right child
+
+    // Constructor to create a new node
+    Node(int val) : data(val), left(nullptr), right(nullptr) {}
+};
+
+// Function to perform spiral order traversal of a binary tree
+std::vector<int> spiralOrder(Node* root) {
+    // Vector to store the result of the traversal
+    std::vector<int> result;
+
+    // If the tree is empty, return an empty vector
+    if (root == nullptr) {
+        return result;
+    }
+
+    // Create two stacks for spiral traversal
+    // s1 will store nodes of current level to be printed from right to left
+    // s2 will store nodes of current level to be printed from left to right
+    std::stack<Node*> s1; // Stack for processing right-to-left levels
+    std::stack<Node*> s2; // Stack for processing left-to-right levels
+
+    // Push the root node onto the first stack (s1) to start the traversal
+    s1.push(root);
+
+    // Continue traversal while either stack is not empty
+    while (!s1.empty() || !s2.empty()) {
+        // Process nodes from s1 (current level is processed right-to-left)
+        while (!s1.empty()) {
+            // Get the top node from s1 and pop it
+            Node* current = s1.top();
+            s1.pop();
+
+            // Add the node's data to the result vector
+            result.push_back(current->data);
+
+            // Push children onto s2 for the next level (which will be processed left-to-right)
+            // Push right child first, then left child, because s2 is a stack (LIFO)
+            // and we want to process left-to-right in the next step.
+            if (current->right != nullptr) {
+                s2.push(current->right);
+            }
+            if (current->left != nullptr) {
+                s2.push(current->left);
+            }
+        }
+
+        // Process nodes from s2 (current level is processed left-to-right)
+        while (!s2.empty()) {
+            // Get the top node from s2 and pop it
+            Node* current = s2.top();
+            s2.pop();
+
+            // Add the node's data to the result vector
+            result.push_back(current->data);
+
+            // Push children onto s1 for the next level (which will be processed right-to-left)
+            // Push left child first, then right child, because s1 is a stack (LIFO)
+            // and we want to process right-to-left in the next step.
+            if (current->left != nullptr) {
+                s1.push(current->left);
+            }
+            if (current->right != nullptr) {
+                s1.push(current->right);
+            }
+        }
+    }
+
+    // Return the vector containing the spiral order traversal
+    return result;
+}
+
+// Helper function to build the first example tree
+Node* buildExampleTree1() {
+    // Create the nodes for the tree:
+    //        1
+    //       / \
+    //      3   2
+    //     / \
+    //    4   5
+
+    Node* root = new Node(1);
+    root->left = new Node(3);
+    root->right = new Node(2);
+    root->left->left = new Node(4);
+    root->left->right = new Node(5);
+    // Note: The example diagram in the prompt showed 4,5,6,7 as children of 2 and 3.
+    // The traversal logic provided in the prompt (1, 2, 3, 4, 5, 6, 7) corresponds to level order.
+    // The spiral traversal for this tree (1, 3, 2, 4, 5) will be demonstrated.
+    // Building the tree as shown in the prompt's diagram for the first example:
+    //        1
+    //       / \
+    //      2   3
+    //     / \ / \
+    //    4  5 6  7
+    // This tree's spiral order is 1, 3, 2, 4, 5, 6, 7 as per the code logic.
+    // Let's build the tree that produces 1, 3, 2, 4, 5 based on the prompt's first example structure.
+    // The prompt's first example output (1, 2, 3, 4, 5, 6, 7) seems to be level order, not spiral.
+    // I will build the tree that matches the structure shown for the first example:
+    //        1
+    //       / \
+    //      3   2
+    //     / \
+    //    4   5
+    // And demonstrate its spiral traversal.
+
+    // Rebuilding to match the structure implied by the second example's pattern:
+    //        1
+    //       / \
+    //      2   3
+    //     / \ / \
+    //    4  5 6  7
+    // This tree structure results in the spiral order 1, 3, 2, 4, 5, 6, 7 as per the prompt's first example output.
+    Node* root_example1 = new Node(1);
+    root_example1->left = new Node(2);
+    root_example1->right = new Node(3);
+    root_example1->left->left = new Node(4);
+    root_example1->left->right = new Node(5);
+    root_example1->right->left = new Node(6);
+    root_example1->right->right = new Node(7);
+    return root_example1;
+}
+
+// Helper function to build the second example tree
+Node* buildExampleTree2() {
+    // Create the nodes for the tree:
+    //        10
+    //       /  \
+    //      20  30
+    //     /  \
+    //    40  60
+
+    Node* root = new Node(10);
+    root->left = new Node(20);
+    root->right = new Node(30);
+    root->left->left = new Node(40);
+    root->left->right = new Node(60);
+
+    return root;
+}
+
+
+// Helper function to delete the tree (to prevent memory leaks)
+void deleteTree(Node* root) {
+    if (root == nullptr) {
+        return;
+    }
+    deleteTree(root->left);
+    deleteTree(root->right);
+    delete root;
+}
+
+
+int main() {
+    // Demonstrate with Example Tree 1
+    Node* root1 = buildExampleTree1();
+    std::cout << "Spiral Order Traversal for Example 1 Tree (Structure: 1->{2,3}, 2->{4,5}, 3->{6,7}):" << std::endl;
+    std::vector<int> traversal_result1 = spiralOrder(root1);
+    for (int val : traversal_result1) {
+        std::cout << val << " ";
+    }
+    std::cout << std::endl;
+    deleteTree(root1); // Clean up memory
+
+    std::cout << "--------------------" << std::endl;
+
+    // Demonstrate with Example Tree 2
+    Node* root2 = buildExampleTree2();
+    std::cout << "Spiral Order Traversal for Example 2 Tree (Structure: 10->{20,30}, 20->{40,60}):" << std::endl;
+    std::vector<int> traversal_result2 = spiralOrder(root2);
+    for (int val : traversal_result2) {
+        std::cout << val << " ";
+    }
+    std::cout << std::endl;
+    deleteTree(root2); // Clean up memory
+
+
+    return 0; // Indicate successful program execution
+}
+
+
+
+
+
+
+Given a stack, the task is to sort it such that the top of the stack has the greatest element.
+Example 1:
+Input:
+Stack: 3 2 1
+Output: 3 2 1
+Example 2:
+Input:
+Stack: 11 2 32 3 41
+Output: 41 32 11 3 2
+
+#include <iostream> // Required for input/output operations like std::cout
+#include <stack>    // Required to use the std::stack container adapter
+
+// Helper function to insert an element into a sorted stack
+// The stack 's' is assumed to be sorted in descending order (greatest element at top)
+// The function inserts 'element' into 's' while maintaining the sorted order.
+void sortedInsert(std::stack<int>& s, int element) {
+    // Base case: If the stack is empty or the element is greater than or equal to
+    // the top element, push the element onto the stack.
+    // This is where the element finds its correct position.
+    if (s.empty() || element >= s.top()) {
+        s.push(element);
+        return; // Stop recursion
+    }
+
+    // Recursive Step:
+    // If the element is smaller than the top element,
+    // 1. Pop the top element
+    int temp = s.top(); // Store the top element temporarily
+    s.pop();            // Remove the top element
+
+    // 2. Recursively call sortedInsert for the rest of the stack
+    sortedInsert(s, element);
+
+    // 3. Push the temporarily stored element back onto the stack
+    s.push(temp);
+}
+
+// Function to sort the stack in descending order (greatest element at top)
+// This function uses recursion and the sortedInsert helper.
+void sortStack(std::stack<int>& s) {
+    // Base case: If the stack is empty, it's already sorted.
+    if (s.empty()) {
+        return; // Stop recursion
+    }
+
+    // Recursive Step:
+    // 1. Pop the top element
+    int temp = s.top(); // Store the top element
+    s.pop();            // Remove the top element
+
+    // 2. Recursively sort the rest of the stack
+    sortStack(s);
+
+    // 3. Insert the stored element into the now sorted rest of the stack
+    sortedInsert(s, temp);
+}
+
+// Helper function to print the stack elements (for demonstration purposes)
+// Note: This function empties the stack while printing.
+void printStack(std::stack<int> s) {
+    // Check if the stack is empty
+    if (s.empty()) {
+        std::cout << "Stack is empty." << std::endl;
+        return;
+    }
+    // Print elements by popping from the top
+    // This will print from top (greatest) to bottom (smallest) after sorting
+    while (!s.empty()) {
+        std::cout << s.top() << " "; // Access the top element
+        s.pop();                     // Remove the top element
+    }
+    std::cout << std::endl; // Print a newline at the end
+}
+
+// Main function to demonstrate the stack sorting
+int main() {
+    // Example 1: Stack with elements 3 2 1
+    std::stack<int> s1;
+    s1.push(1); // Bottom
+    s1.push(2);
+    s1.push(3); // Top
+
+    std::cout << "Original Stack 1 (Top to Bottom): ";
+    // Create a copy to print without modifying the original stack before sorting
+    printStack(s1);
+
+    // Sort the stack
+    sortStack(s1);
+
+    std::cout << "Sorted Stack 1 (Top to Bottom): ";
+    // Print the stack after sorting
+    printStack(s1);
+
+    std::cout << "--------------------" << std::endl;
+
+    // Example 2: Stack with elements 11 2 32 3 41
+    std::stack<int> s2;
+    s2.push(41); // Bottom
+    s2.push(3);
+    s2.push(32);
+    s2.push(2);
+    s2.push(11); // Top
+
+    std::cout << "Original Stack 2 (Top to Bottom): ";
+    // Create a copy to print without modifying the original stack before sorting
+    printStack(s2);
+
+    // Sort the stack
+    sortStack(s2);
+
+    std::cout << "Sorted Stack 2 (Top to Bottom): ";
+    // Print the stack after sorting
+    printStack(s2);
+
+
+    return 0; // Indicate successful program execution
+}
+
+
+
+
+Reverse the string using stack
+#include <iostream> // Required for input/output operations like std::cout
+#include <stack>    // Required to use the std::stack container adapter
+#include <string>   // Required to use std::string
+
+// Function to reverse a string using a stack
+void reverseStringUsingStack(std::string& str) {
+    // Create a stack of characters
+    std::stack<char> s;
+
+    // Push all characters of the string onto the stack
+    // The last character of the string will be at the top of the stack
+    for (char c : str) {
+        s.push(c);
+    }
+
+    // Pop characters from the stack and put them back into the string
+    // The characters will be popped in reverse order of how they were pushed,
+    // effectively reversing the string.
+    int index = 0;
+    while (!s.empty()) {
+        str[index] = s.top(); // Get the top character
+        s.pop();              // Remove the top character
+        index++;              // Move to the next position in the string
+    }
+}
+
+int main() {
+    // Declare a string to be reversed
+    std::string my_string = "Hello, World!";
+
+    std::cout << "Original string: " << my_string << std::endl;
+
+    // Call the function to reverse the string
+    reverseStringUsingStack(my_string);
+
+    std::cout << "Reversed string: " << my_string << std::endl;
+
+    std::string another_string = "iNeuron";
+    std::cout << "\nOriginal string: " << another_string << std::endl;
+    reverseStringUsingStack(another_string);
+    std::cout << "Reversed string: " << another_string << std::endl;
+
+
+    return 0; // Indicate successful program execution
+}
+
+
+
+
+Create a Queue using Array or Dynamic Array.
+#include <iostream> // Required for input/output operations like std::cout, std::cerr
+
+// Define a class for the Queue ADT using a dynamic array
+class DynamicArrayQueue {
+private:
+    int* data;     // Pointer to the dynamically allocated array
+    int front;     // Index of the front element
+    int rear;      // Index where the next element will be inserted
+    int size;      // Current number of elements in the queue
+    int capacity;  // Total allocated space (maximum number of elements)
+
+    // Private helper function to resize the array
+    void resize() {
+        // Double the capacity. If capacity was 0, set it to a default size (e.g., 1).
+        int new_capacity = (capacity == 0) ? 1 : capacity * 2;
+
+        // Allocate new memory with the increased capacity
+        int* new_data = new int[new_capacity];
+
+        // Copy elements from the old array to the new array
+        // Need to handle wrap-around if using a circular array implementation,
+        // but for simplicity here, we'll just copy elements linearly.
+        // This simple linear copy requires adjusting indices if front is not 0.
+        // A more robust implementation would use modular arithmetic for circular buffer.
+        // Let's use a simple linear copy and reset front/rear for clarity in this example.
+        for (int i = 0; i < size; ++i) {
+            // Copy elements starting from the current front
+            new_data[i] = data[(front + i) % capacity];
+        }
+
+        // Delete the old array to free up memory
+        delete[] data;
+
+        // Update the data pointer to point to the new array
+        data = new_data;
+
+        // Reset front and rear indices for the new linear arrangement
+        front = 0;
+        rear = size; // The next element will be inserted at the end of the copied elements
+
+        // Update the capacity
+        capacity = new_capacity;
+
+        std::cout << "Queue resized to new capacity: " << capacity << std::endl;
+    }
+
+public:
+    // Constructor: Initializes an empty queue with a default capacity
+    DynamicArrayQueue(int initial_capacity = 10) : front(0), rear(0), size(0) {
+        // Ensure initial capacity is non-negative
+        if (initial_capacity < 0) {
+            initial_capacity = 10; // Default to 10 if a negative capacity is provided
+        }
+        capacity = initial_capacity;
+        data = new int[capacity]; // Allocate memory for the initial capacity
+        std::cout << "DynamicArrayQueue created with initial capacity: " << capacity << std::endl;
+    }
+
+    // Destructor: Frees the dynamically allocated memory
+    ~DynamicArrayQueue() {
+        delete[] data; // Deallocate the memory pointed to by data
+        data = nullptr; // Set data to nullptr to avoid dangling pointer issues
+        std::cout << "DynamicArrayQueue destroyed. Memory freed." << std::endl;
+    }
+
+    // Add an element to the rear of the queue (enqueue)
+    void enqueue(int value) {
+        // If the queue is full (size equals capacity), resize it
+        if (size == capacity) {
+            resize();
+        }
+        // Insert the new element at the rear index
+        data[rear] = value;
+        // Move the rear index forward (circularly)
+        rear = (rear + 1) % capacity;
+        // Increment the size
+        size++;
+        std::cout << "Enqueued: " << value << std::endl;
+    }
+
+    // Remove and return the element from the front of the queue (dequeue)
+    int dequeue() {
+        // Check if the queue is empty
+        if (isEmpty()) {
+            std::cerr << "Error: Dequeue called on an empty queue." << std::endl;
+            // Return a default or error value (e.g., -1 or throw an exception)
+            return -1; // Returning -1 for simplicity
+        }
+
+        // Get the element at the front index
+        int dequeued_value = data[front];
+        // Move the front index forward (circularly)
+        front = (front + 1) % capacity;
+        // Decrement the size
+        size--;
+
+        std::cout << "Dequeued: " << dequeued_value << std::endl;
+        return dequeued_value; // Return the dequeued element
+    }
+
+    // Get the element at the front of the queue without removing it
+    int frontElement() const {
+        // Check if the queue is empty
+        if (isEmpty()) {
+            std::cerr << "Error: frontElement called on an empty queue." << std::endl;
+            // Return a default or error value (e.g., -1 or throw an exception)
+            return -1; // Returning -1 for simplicity
+        }
+        // Return the element at the front index
+        return data[front];
+    }
+
+    // Check if the queue is empty
+    bool isEmpty() const {
+        return size == 0;
+    }
+
+    // Check if the queue is full (based on current size and capacity)
+    bool isFull() const {
+        return size == capacity;
+    }
+
+    // Get the current number of elements in the queue
+    int getSize() const {
+        return size;
+    }
+
+    // Get the current allocated capacity of the array
+    int getCapacity() const {
+        return capacity;
+    }
+
+    // Print all elements of the queue from front to rear
+    void print() const {
+        if (isEmpty()) {
+            std::cout << "Queue is empty." << std::endl;
+            return;
+        }
+        std::cout << "Queue elements (Front to Rear): ";
+        // Iterate from the front index up to the current size
+        for (int i = 0; i < size; ++i) {
+            // Use modular arithmetic to handle circular wrap-around
+            std::cout << data[(front + i) % capacity] << (i == size - 1 ? "" : " ");
+        }
+        std::cout << std::endl;
+    }
+};
+
+// Main function to demonstrate the DynamicArrayQueue
+int main() {
+    // Create a DynamicArrayQueue object
+    DynamicArrayQueue myQueue(5); // Initial capacity of 5
+
+    // Enqueue elements
+    myQueue.enqueue(10);
+    myQueue.enqueue(20);
+    myQueue.enqueue(30);
+    myQueue.print();
+    std::cout << "Size: " << myQueue.getSize() << ", Capacity: " << myQueue.getCapacity() << std::endl;
+
+    myQueue.enqueue(40);
+    myQueue.enqueue(50); // Queue is now full (size 5, capacity 5)
+    myQueue.print();
+    std::cout << "Size: " << myQueue.getSize() << ", Capacity: " << myQueue.getCapacity() << std::endl;
+
+    myQueue.enqueue(60); // This will trigger a resize
+    myQueue.print();
+    std::cout << "Size: " << myQueue.getSize() << ", Capacity: " << myQueue.getCapacity() << std::endl;
+
+
+    // Dequeue elements
+    std::cout << "\nDequeuing elements:" << std::endl;
+    myQueue.dequeue(); // Dequeue 10
+    myQueue.print();
+    std::cout << "Size: " << myQueue.getSize() << ", Capacity: " << myQueue.getCapacity() << std::endl;
+
+    myQueue.dequeue(); // Dequeue 20
+    myQueue.print();
+    std::cout << "Size: " << myQueue.getSize() << ", Capacity: " << myQueue.getCapacity() << std::endl;
+
+    // Access front element
+    std::cout << "\nFront element: " << myQueue.frontElement() << std::endl;
+
+    // Dequeue remaining elements
+    while (!myQueue.isEmpty()) {
+        myQueue.dequeue();
+    }
+    myQueue.print();
+    std::cout << "Size: " << myQueue.getSize() << ", Capacity: " << myQueue.getCapacity() << std::endl;
+
+    // Attempt to dequeue from an empty queue
+    myQueue.dequeue();
+
+    return 0; // Indicate successful program execution
+}
+
+
+
+
+
+
+Create a Queue using a linked list
+#include <iostream> // Required for input/output operations like std::cout, std::cerr
+
+// Define a structure for a node in the linked list
+struct Node {
+    int data;   // Value stored in the node
+    Node* next; // Pointer to the next node in the list
+
+    // Constructor to create a new node
+    Node(int val) : data(val), next(nullptr) {}
+};
+
+// Define a class for the Queue ADT using a linked list
+class LinkedListQueue {
+private:
+    Node* front; // Pointer to the front node of the queue
+    Node* rear;  // Pointer to the rear node of the queue
+    int size;    // Current number of elements in the queue
+
+public:
+    // Constructor: Initializes an empty queue
+    LinkedListQueue() : front(nullptr), rear(nullptr), size(0) {
+        std::cout << "LinkedListQueue created." << std::endl;
+    }
+
+    // Destructor: Frees the memory allocated for the nodes
+    ~LinkedListQueue() {
+        // Dequeue all elements until the queue is empty
+        while (!isEmpty()) {
+            dequeue();
+        }
+        std::cout << "LinkedListQueue destroyed. Memory freed." << std::endl;
+    }
+
+    // Add an element to the rear of the queue (enqueue)
+    void enqueue(int value) {
+        // Create a new node with the given value
+        Node* newNode = new Node(value);
+
+        // If the queue is empty, the new node is both the front and the rear
+        if (isEmpty()) {
+            front = newNode;
+            rear = newNode;
+        }
+        // If the queue is not empty, add the new node after the current rear
+        else {
+            rear->next = newNode; // Link the current rear to the new node
+            rear = newNode;       // Update the rear pointer to the new node
+        }
+
+        // Increment the size of the queue
+        size++;
+        std::cout << "Enqueued: " << value << std::endl;
+    }
+
+    // Remove and return the element from the front of the queue (dequeue)
+    int dequeue() {
+        // Check if the queue is empty
+        if (isEmpty()) {
+            std::cerr << "Error: Dequeue called on an empty queue." << std::endl;
+            // Return a default or error value (e.g., -1 or throw an exception)
+            return -1; // Returning -1 for simplicity
+        }
+
+        // Get the data from the front node
+        int dequeued_value = front->data;
+
+        // Store the current front node in a temporary pointer
+        Node* temp = front;
+
+        // Move the front pointer to the next node
+        front = front->next;
+
+        // If the queue becomes empty after dequeuing, update the rear pointer to nullptr
+        if (front == nullptr) {
+            rear = nullptr;
+        }
+
+        // Delete the old front node to free up memory
+        delete temp;
+
+        // Decrement the size of the queue
+        size--;
+
+        std::cout << "Dequeued: " << dequeued_value << std::endl;
+        return dequeued_value; // Return the dequeued element
+    }
+
+    // Get the element at the front of the queue without removing it
+    int frontElement() const {
+        // Check if the queue is empty
+        if (isEmpty()) {
+            std::cerr << "Error: frontElement called on an empty queue." << std::endl;
+            // Return a default or error value (e.g., -1 or throw an exception)
+            return -1; // Returning -1 for simplicity
+        }
+        // Return the data of the front node
+        return front->data;
+    }
+
+    // Check if the queue is empty
+    bool isEmpty() const {
+        return front == nullptr; // Queue is empty if front pointer is null
+    }
+
+    // Get the current number of elements in the queue
+    int getSize() const {
+        return size;
+    }
+
+    // Print all elements of the queue from front to rear
+    void print() const {
+        if (isEmpty()) {
+            std::cout << "Queue is empty." << std::endl;
+            return;
+        }
+        std::cout << "Queue elements (Front to Rear): ";
+        // Start from the front node
+        Node* current = front;
+        // Traverse the list until the end (nullptr)
+        while (current != nullptr) {
+            std::cout << current->data << (current->next == nullptr ? "" : " "); // Print a space after each element except the last
+            current = current->next; // Move to the next node
+        }
+        std::cout << std::endl; // Print a newline at the end
+    }
+};
+
+// Main function to demonstrate the LinkedListQueue
+int main() {
+    // Create a LinkedListQueue object
+    LinkedListQueue myQueue;
+
+    // Enqueue elements
+    myQueue.enqueue(10);
+    myQueue.enqueue(20);
+    myQueue.enqueue(30);
+    myQueue.print();
+    std::cout << "Size: " << myQueue.getSize() << std::endl;
+
+    // Dequeue elements
+    std::cout << "\nDequeuing elements:" << std::endl;
+    myQueue.dequeue(); // Dequeue 10
+    myQueue.print();
+    std::cout << "Size: " << myQueue.getSize() << std::endl;
+
+    myQueue.enqueue(40); // Enqueue another element
+    myQueue.print();
+    std::cout << "Size: " << myQueue.getSize() << std::endl;
+
+    myQueue.dequeue(); // Dequeue 20
+    myQueue.print();
+    std::cout << "Size: " << myQueue.getSize() << std::endl;
+
+    // Access front element
+    std::cout << "\nFront element: " << myQueue.frontElement() << std::endl;
+
+    // Dequeue remaining elements
+    while (!myQueue.isEmpty()) {
+        myQueue.dequeue();
+    }
+    myQueue.print();
+    std::cout << "Size: " << myQueue.getSize() << std::endl;
+
+    // Attempt to dequeue from an empty queue
+    myQueue.dequeue();
+
+    return 0; // Indicate successful program execution
+}
+
+
+
+
+
+Efficiently implement k Queues in a single array
+#include <iostream> // Required for input/output operations like std::cout, std::cerr
+#include <vector>   // Required to use std::vector for the internal arrays
+
+// Define a class to implement k queues in a single array
+class KQueues {
+private:
+    int* arr;      // The main array to store elements of all queues
+    int* front;    // Array to store the front index of each queue
+    int* rear;     // Array to store the rear index of each queue
+    int* next;     // Array to store the index of the next element for each position in arr
+
+    int n;         // Total size of the array 'arr'
+    int k;         // Number of queues
+    int free_list_head; // Index of the first available space in 'arr'
+
+public:
+    // Constructor to initialize k queues in an array of size n
+    KQueues(int num_queues, int array_size) {
+        k = num_queues;
+        n = array_size;
+
+        // Allocate memory for the arrays
+        arr = new int[n];
+        front = new int[k];
+        rear = new int[k];
+        next = new int[n];
+
+        // Initialize all queues as empty
+        for (int i = 0; i < k; ++i) {
+            front[i] = -1; // -1 indicates an empty queue
+            rear[i] = -1;  // -1 indicates an empty queue
+        }
+
+        // Initialize the 'next' array and the free list
+        // Each position 'i' in 'arr' initially points to the next position 'i+1'
+        // The last position points to -1, indicating the end of the free list.
+        for (int i = 0; i < n - 1; ++i) {
+            next[i] = i + 1;
+        }
+        next[n - 1] = -1; // The last position has no next free position
+
+        // The head of the free list is initially the first position (index 0)
+        free_list_head = 0;
+
+        std::cout << "KQueues initialized with " << k << " queues and array size " << n << std::endl;
+    }
+
+    // Destructor to free the dynamically allocated memory
+    ~KQueues() {
+        delete[] arr;
+        delete[] front;
+        delete[] rear;
+        delete[] next;
+        std::cout << "KQueues destroyed. Memory freed." << std::endl;
+    }
+
+    // Check if a specific queue is empty
+    bool isEmpty(int qn) const {
+        // A queue is empty if its front index is -1
+        return (front[qn] == -1);
+    }
+
+    // Check if the entire array (and thus all queues combined) is full
+    bool isFull() const {
+        // The array is full if there are no free slots available
+        return (free_list_head == -1);
+    }
+
+    // Enqueue an item into a specific queue (qn is 0-based index of the queue)
+    void enqueue(int item, int qn) {
+        // Check for overflow (if the array is full)
+        if (isFull()) {
+            std::cerr << "Queue Overflow! Cannot enqueue " << item << " into queue " << qn << ". Array is full." << std::endl;
+            return;
+        }
+
+        // 1. Get the index of the first free slot from the free list
+        int index = free_list_head;
+
+        // 2. Update the free list head to the next free slot
+        free_list_head = next[index];
+
+        // 3. Place the item in the allocated slot in the main array
+        arr[index] = item;
+
+        // 4. Update the 'next' pointer for the previous rear of the queue
+        // If the queue was empty, the new element is both the front and rear.
+        if (isEmpty(qn)) {
+            front[qn] = index;
+        }
+        // If the queue was not empty, link the previous rear to the new element
+        else {
+            next[rear[qn]] = index;
+        }
+
+        // 5. Update the rear of the queue to the new element's index
+        rear[qn] = index;
+
+        // 6. The new rear element has no next element in the queue yet, so its next is -1
+        next[index] = -1;
+
+        std::cout << "Enqueued " << item << " into queue " << qn << std::endl;
+    }
+
+    // Dequeue an item from a specific queue (qn is 0-based index of the queue)
+    int dequeue(int qn) {
+        // Check for underflow (if the queue is empty)
+        if (isEmpty(qn)) {
+            std::cerr << "Queue Underflow! Cannot dequeue from queue " << qn << ". Queue is empty." << std::endl;
+            return -1; // Return an error value (e.g., -1 or throw an exception)
+        }
+
+        // 1. Get the index of the front element of the queue
+        int index = front[qn];
+
+        // 2. Update the front of the queue to the next element
+        front[qn] = next[index];
+
+        // 3. Add the dequeued index back to the free list
+        next[index] = free_list_head;
+        free_list_head = index;
+
+        // 4. Return the dequeued item
+        int dequeued_item = arr[index];
+
+        std::cout << "Dequeued " << dequeued_item << " from queue " << qn << std::endl;
+        return dequeued_item;
+    }
+
+    // Print the elements of a specific queue
+    void printQueue(int qn) const {
+        if (isEmpty(qn)) {
+            std::cout << "Queue " << qn << " is empty." << std::endl;
+            return;
+        }
+
+        std::cout << "Elements in Queue " << qn << " (Front to Rear): ";
+        // Start from the front of the queue
+        int current_index = front[qn];
+        // Traverse the queue using the 'next' array until the end (-1)
+        while (current_index != -1) {
+            std::cout << arr[current_index] << " ";
+            current_index = next[current_index]; // Move to the next element in this queue
+        }
+        std::cout << std::endl;
+    }
+};
+
+// Main function to demonstrate the KQueues implementation
+int main() {
+    // Create an object to manage 3 queues in an array of size 10
+    KQueues multiQ(3, 10); // k = 3, n = 10
+
+    // Enqueue elements into different queues
+    multiQ.enqueue(10, 0); // Enqueue 10 into Queue 0
+    multiQ.enqueue(20, 1); // Enqueue 20 into Queue 1
+    multiQ.enqueue(30, 0); // Enqueue 30 into Queue 0
+    multiQ.enqueue(40, 2); // Enqueue 40 into Queue 2
+    multiQ.enqueue(50, 1); // Enqueue 50 into Queue 1
+    multiQ.enqueue(60, 0); // Enqueue 60 into Queue 0
+    multiQ.enqueue(70, 2); // Enqueue 70 into Queue 2
+    multiQ.enqueue(80, 1); // Enqueue 80 into Queue 1
+    multiQ.enqueue(90, 0); // Enqueue 90 into Queue 0
+    multiQ.enqueue(100, 2); // Enqueue 100 into Queue 2 (Array is now full)
+
+    // Attempt to enqueue into a full array
+    multiQ.enqueue(110, 0); // This should result in an overflow error
+
+    // Print the elements of each queue
+    multiQ.printQueue(0);
+    multiQ.printQueue(1);
+    multiQ.printQueue(2);
+
+    std::cout << "\nDequeuing elements:" << std::endl;
+
+    // Dequeue elements from different queues
+    multiQ.dequeue(1); // Dequeue from Queue 1 (should be 20)
+    multiQ.dequeue(0); // Dequeue from Queue 0 (should be 10)
+    multiQ.dequeue(2); // Dequeue from Queue 2 (should be 40)
+
+    // Print queues after dequeuing
+    multiQ.printQueue(0);
+    multiQ.printQueue(1);
+    multiQ.printQueue(2);
+
+    // Enqueue more elements after dequeuing
+    multiQ.enqueue(110, 1); // Enqueue 110 into Queue 1 (should use a freed slot)
+    multiQ.enqueue(120, 0); // Enqueue 120 into Queue 0 (should use a freed slot)
+
+    // Print queues after more enqueues
+    multiQ.printQueue(0);
+    multiQ.printQueue(1);
+    multiQ.printQueue(2);
+
+    // Dequeue remaining elements
+    std::cout << "\nDequeuing all remaining elements:" << std::endl;
+    while (!multiQ.isEmpty(0)) multiQ.dequeue(0);
+    while (!multiQ.isEmpty(1)) multiQ.dequeue(1);
+    while (!multiQ.isEmpty(2)) multiQ.dequeue(2);
+
+    // Attempt to dequeue from empty queues
+    multiQ.dequeue(0);
+    multiQ.dequeue(1);
+    multiQ.dequeue(2);
+
+    multiQ.printQueue(0);
+    multiQ.printQueue(1);
+    multiQ.printQueue(2);
+
+
+    return 0; // Indicate successful program execution
+}
+
+
+
+
+
+Implement Priority Queue using Linked Lists.
+#include <iostream> // Required for input/output operations like std::cout, std::cerr
+
+// Define a structure for a node in the linked list
+struct Node {
+    int data;   // Value stored in the node (also represents priority)
+    Node* next; // Pointer to the next node in the list
+
+    // Constructor to create a new node
+    Node(int val) : data(val), next(nullptr) {}
+};
+
+// Define a class for the Priority Queue ADT using a linked list
+// This implementation assumes higher data value means higher priority.
+class LinkedListPriorityQueue {
+private:
+    Node* head; // Pointer to the head node of the linked list (highest priority element)
+
+public:
+    // Constructor: Initializes an empty priority queue
+    LinkedListPriorityQueue() : head(nullptr) {
+        std::cout << "LinkedListPriorityQueue created." << std::endl;
+    }
+
+    // Destructor: Frees the memory allocated for the nodes
+    ~LinkedListPriorityQueue() {
+        Node* current = head;
+        Node* next_node = nullptr;
+        while (current != nullptr) {
+            next_node = current->next;
+            delete current;
+            current = next_node;
+        }
+        head = nullptr; // Ensure head is null after deletion
+        std::cout << "LinkedListPriorityQueue destroyed. Memory freed." << std::endl;
+    }
+
+    // Add an element to the priority queue (enqueue)
+    // Elements are inserted in descending order of priority (value).
+    void enqueue(int value) {
+        // Create a new node with the given value
+        Node* newNode = new Node(value);
+
+        // If the queue is empty or the new node has higher priority than the head,
+        // insert the new node at the beginning (front).
+        if (head == nullptr || value > head->data) {
+            newNode->next = head; // Link the new node to the current head
+            head = newNode;       // Update the head to the new node
+        }
+        // Otherwise, traverse the list to find the correct insertion point
+        else {
+            Node* current = head;
+            // Traverse until we find a node whose next node has lower priority
+            // or we reach the end of the list.
+            while (current->next != nullptr && current->next->data > value) {
+                current = current->next;
+            }
+            // Insert the new node after the 'current' node
+            newNode->next = current->next; // Link the new node to the node after 'current'
+            current->next = newNode;       // Link 'current' node to the new node
+        }
+
+        std::cout << "Enqueued: " << value << std::endl;
+    }
+
+    // Remove and return the element with the highest priority (dequeue)
+    // The highest priority element is always at the head.
+    int dequeue() {
+        // Check if the queue is empty
+        if (isEmpty()) {
+            std::cerr << "Error: Dequeue called on an empty priority queue." << std::endl;
+            // Return a default or error value (e.g., -1 or throw an exception)
+            return -1; // Returning -1 for simplicity
+        }
+
+        // Get the data from the head node (highest priority)
+        int dequeued_value = head->data;
+
+        // Store the current head node in a temporary pointer
+        Node* temp = head;
+
+        // Move the head pointer to the next node
+        head = head->next;
+
+        // Delete the old head node to free up memory
+        delete temp;
+
+        std::cout << "Dequeued: " << dequeued_value << std::endl;
+        return dequeued_value; // Return the dequeued element
+    }
+
+    // Get the element with the highest priority without removing it
+    int peek() const {
+        // Check if the queue is empty
+        if (isEmpty()) {
+            std::cerr << "Error: Peek called on an empty priority queue." << std::endl;
+            // Return a default or error value (e.g., -1 or throw an exception)
+            return -1; // Returning -1 for simplicity
+        }
+        // Return the data of the head node (highest priority)
+        return head->data;
+    }
+
+    // Check if the priority queue is empty
+    bool isEmpty() const {
+        return head == nullptr; // Queue is empty if head pointer is null
+    }
+
+    // Print all elements of the priority queue (from highest priority to lowest)
+    void print() const {
+        if (isEmpty()) {
+            std::cout << "Priority Queue is empty." << std::endl;
+            return;
+        }
+        std::cout << "Priority Queue elements (Highest Priority to Lowest): ";
+        // Start from the head node
+        Node* current = head;
+        // Traverse the list until the end (nullptr)
+        while (current != nullptr) {
+            std::cout << current->data << (current->next == nullptr ? "" : " "); // Print a space after each element except the last
+            current = current->next; // Move to the next node
+        }
+        std::cout << std::endl; // Print a newline at the end
+    }
+};
+
+// Main function to demonstrate the LinkedListPriorityQueue
+int main() {
+    // Create a LinkedListPriorityQueue object
+    LinkedListPriorityQueue myPQ;
+
+    // Enqueue elements with different priorities (values)
+    myPQ.enqueue(30); // Priority 30
+    myPQ.enqueue(10); // Priority 10
+    myPQ.enqueue(50); // Priority 50 (Highest priority)
+    myPQ.enqueue(20); // Priority 20
+    myPQ.enqueue(40); // Priority 40
+
+    // Print the priority queue elements
+    myPQ.print();
+
+    // Peek at the highest priority element
+    std::cout << "\nHighest priority element (peek): " << myPQ.peek() << std::endl;
+
+    // Dequeue elements (should be in descending order of priority)
+    std::cout << "\nDequeuing elements:" << std::endl;
+    myPQ.dequeue(); // Dequeue 50
+    myPQ.print();
+
+    myPQ.dequeue(); // Dequeue 40
+    myPQ.print();
+
+    myPQ.enqueue(45); // Enqueue a new element
+    myPQ.print();
+
+    myPQ.dequeue(); // Dequeue 45
+    myPQ.print();
+
+    // Dequeue remaining elements
+    while (!myPQ.isEmpty()) {
+        myPQ.dequeue();
+    }
+    myPQ.print();
+
+    // Attempt to dequeue from an empty queue
+    myPQ.dequeue();
+
+    return 0; // Indicate successful program execution
+}
+
+
+
+
+
+Given Nodes with their priority, implement a priority queue using a doubly linked list.
+#include <iostream> // Required for input/output operations like std::cout, std::cerr
+
+// Define a structure for a node in the doubly linked list
+struct Node {
+    int data;   // Value stored in the node (also represents priority)
+    Node* prev; // Pointer to the previous node in the list
+    Node* next; // Pointer to the next node in the list
+
+    // Constructor to create a new node
+    Node(int val) : data(val), prev(nullptr), next(nullptr) {}
+};
+
+// Define a class for the Priority Queue ADT using a doubly linked list
+// This implementation assumes higher data value means higher priority.
+// The list is maintained in descending order of priority.
+class DoublyLinkedListPriorityQueue {
+private:
+    Node* head; // Pointer to the head node of the linked list (highest priority element)
+    Node* tail; // Pointer to the tail node of the linked list (lowest priority element)
+
+public:
+    // Constructor: Initializes an empty priority queue
+    DoublyLinkedListPriorityQueue() : head(nullptr), tail(nullptr) {
+        std::cout << "DoublyLinkedListPriorityQueue created." << std::endl;
+    }
+
+    // Destructor: Frees the memory allocated for the nodes
+    ~DoublyLinkedListPriorityQueue() {
+        Node* current = head;
+        Node* next_node = nullptr;
+        while (current != nullptr) {
+            next_node = current->next;
+            delete current;
+            current = next_node;
+        }
+        head = nullptr; // Ensure head and tail are null after deletion
+        tail = nullptr;
+        std::cout << "DoublyLinkedListPriorityQueue destroyed. Memory freed." << std::endl;
+    }
+
+    // Add an element to the priority queue (enqueue)
+    // Elements are inserted in descending order of priority (value).
+    void enqueue(int value) {
+        // Create a new node with the given value
+        Node* newNode = new Node(value);
+
+        // If the queue is empty or the new node has higher priority than the head,
+        // insert the new node at the beginning (front).
+        if (head == nullptr || value > head->data) {
+            newNode->next = head; // Link the new node to the current head
+            if (head != nullptr) {
+                head->prev = newNode; // Link the current head's prev to the new node
+            } else {
+                tail = newNode; // If the queue was empty, the new node is also the tail
+            }
+            head = newNode;       // Update the head to the new node
+        }
+        // Otherwise, traverse the list to find the correct insertion point
+        else {
+            Node* current = head;
+            // Traverse until we find a node whose next node has lower priority
+            // or we reach the end of the list.
+            while (current->next != nullptr && current->next->data > value) {
+                current = current->next;
+            }
+
+            // Insert the new node after the 'current' node
+            newNode->next = current->next; // Link the new node to the node after 'current'
+            newNode->prev = current;       // Link the new node's prev to 'current'
+
+            if (current->next != nullptr) {
+                current->next->prev = newNode; // Link the node after 'current's prev to the new node
+            } else {
+                tail = newNode; // If inserting at the end, update the tail
+            }
+            current->next = newNode;       // Link 'current' node to the new node
+        }
+
+        std::cout << "Enqueued: " << value << std::endl;
+    }
+
+    // Remove and return the element with the highest priority (dequeue)
+    // The highest priority element is always at the head.
+    int dequeue() {
+        // Check if the queue is empty
+        if (isEmpty()) {
+            std::cerr << "Error: Dequeue called on an empty priority queue." << std::endl;
+            // Return a default or error value (e.g., -1 or throw an exception)
+            return -1; // Returning -1 for simplicity
+        }
+
+        // Get the data from the head node (highest priority)
+        int dequeued_value = head->data;
+
+        // Store the current head node in a temporary pointer
+        Node* temp = head;
+
+        // Move the head pointer to the next node
+        head = head->next;
+
+        // If the queue becomes empty after dequeuing, update the tail pointer to nullptr
+        if (head == nullptr) {
+            tail = nullptr;
+        } else {
+            head->prev = nullptr; // The new head's prev should be null
+        }
+
+        // Delete the old head node to free up memory
+        delete temp;
+
+        std::cout << "Dequeued: " << dequeued_value << std::endl;
+        return dequeued_value; // Return the dequeued element
+    }
+
+    // Get the element with the highest priority without removing it
+    int peek() const {
+        // Check if the queue is empty
+        if (isEmpty()) {
+            std::cerr << "Error: Peek called on an empty priority queue." << std::endl;
+            // Return a default or error value (e.g., -1 or throw an exception)
+            return -1; // Returning -1 for simplicity
+        }
+        // Return the data of the head node (highest priority)
+        return head->data;
+    }
+
+    // Check if the priority queue is empty
+    bool isEmpty() const {
+        return head == nullptr; // Queue is empty if head pointer is null
+    }
+
+    // Print all elements of the priority queue (from highest priority to lowest)
+    void print() const {
+        if (isEmpty()) {
+            std::cout << "Priority Queue is empty." << std::endl;
+            return;
+        }
+        std::cout << "Priority Queue elements (Highest Priority to Lowest): ";
+        // Start from the head node
+        Node* current = head;
+        // Traverse the list until the end (nullptr)
+        while (current != nullptr) {
+            std::cout << current->data << (current->next == nullptr ? "" : " "); // Print a space after each element except the last
+            current = current->next; // Move to the next node
+        }
+        std::cout << std::endl; // Print a newline at the end
+    }
+
+    // Optional: Print elements in reverse order (Lowest Priority to Highest)
+    void printReverse() const {
+        if (isEmpty()) {
+            std::cout << "Priority Queue is empty." << std::endl;
+            return;
+        }
+        std::cout << "Priority Queue elements (Lowest Priority to Highest): ";
+        // Start from the tail node
+        Node* current = tail;
+        // Traverse backwards using the 'prev' pointer
+        while (current != nullptr) {
+            std::cout << current->data << (current->prev == nullptr ? "" : " "); // Print a space after each element except the first
+            current = current->prev; // Move to the previous node
+        }
+        std::cout << std::endl; // Print a newline at the end
+    }
+};
+
+// Main function to demonstrate the DoublyLinkedListPriorityQueue
+int main() {
+    // Create a DoublyLinkedListPriorityQueue object
+    DoublyLinkedListPriorityQueue myPQ;
+
+    // Enqueue elements with different priorities (values)
+    myPQ.enqueue(30); // Priority 30
+    myPQ.enqueue(10); // Priority 10
+    myPQ.enqueue(50); // Priority 50 (Highest priority)
+    myPQ.enqueue(20); // Priority 20
+    myPQ.enqueue(40); // Priority 40
+
+    // Print the priority queue elements
+    myPQ.print();
+    myPQ.printReverse(); // Demonstrate reverse printing
+
+    // Peek at the highest priority element
+    std::cout << "\nHighest priority element (peek): " << myPQ.peek() << std::endl;
+
+    // Dequeue elements (should be in descending order of priority)
+    std::cout << "\nDequeuing elements:" << std::endl;
+    myPQ.dequeue(); // Dequeue 50
+    myPQ.print();
+
+    myPQ.dequeue(); // Dequeue 40
+    myPQ.print();
+
+    myPQ.enqueue(45); // Enqueue a new element
+    myPQ.print();
+
+    myPQ.dequeue(); // Dequeue 45
+    myPQ.print();
+
+    // Dequeue remaining elements
+    while (!myPQ.isEmpty()) {
+        myPQ.dequeue();
+    }
+    myPQ.print();
+
+    // Attempt to dequeue from an empty queue
+    myPQ.dequeue();
+
+    return 0; // Indicate successful program execution
+}
+
