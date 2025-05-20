@@ -1,0 +1,837 @@
+Define a function to input variable length string and store it in an array without
+memory wastage
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+// Function to input a variable-length string and store it in a dynamically allocated array
+char* inputVariableLengthString() {
+    char *str = NULL; // Pointer to the dynamically allocated string
+    int size = 0;     // Current allocated size
+    int length = 0;   // Current length of the string
+    int capacity_increment = 16; // How much to increase memory by each time
+
+    int c; // To store the character read from input
+
+    printf("Enter string (press Enter to finish): ");
+
+    while ((c = getchar()) != '\n' && c != EOF) {
+        // If current length equals or exceeds allocated size, reallocate
+        if (length >= size) {
+            size += capacity_increment; // Increase size
+            char *temp = realloc(str, size * sizeof(char));
+            if (temp == NULL) {
+                perror("Memory allocation failed");
+                free(str); // Free any previously allocated memory
+                return NULL;
+            }
+            str = temp;
+        }
+        str[length++] = (char)c;
+    }
+
+    // Null-terminate the string
+    // We need space for the null terminator, so reallocate if necessary
+    if (length >= size) {
+        size++; // Just enough for the null terminator
+        char *temp = realloc(str, size * sizeof(char));
+        if (temp == NULL) {
+            perror("Memory allocation failed");
+            free(str);
+            return NULL;
+        }
+        str = temp;
+    }
+    str[length] = '\0';
+
+    // Optional: Shrink to fit perfectly (minimal memory wastage)
+    // This reallocates to the exact size needed (length + 1 for null terminator)
+    if (str != NULL) {
+        char *temp = realloc(str, (length + 1) * sizeof(char));
+        if (temp == NULL) {
+            // If shrinking fails, it's not a critical error, just less optimal memory usage
+            // The original 'str' is still valid, but might have slightly more memory than needed.
+            // You might want to log this or handle it based on your application's requirements.
+            fprintf(stderr, "Warning: Failed to shrink string memory. Original allocated size retained.\n");
+        } else {
+            str = temp;
+        }
+    }
+
+    return str;
+}
+
+int main() {
+    char *myString = inputVariableLengthString();
+
+    if (myString != NULL) {
+        printf("You entered: \"%s\"\n", myString);
+        printf("Length: %zu\n", strlen(myString));
+        // Don't forget to free the dynamically allocated memory when you're done with it!
+        free(myString);
+        myString = NULL; // Good practice to set to NULL after freeing
+    } else {
+        printf("Failed to read string.\n");
+    }
+
+    // Example of storing multiple strings in an array of strings (pointers)
+    printf("\n--- Storing multiple strings ---\n");
+    char **stringArray = NULL; // Array of char pointers
+    int arrayCapacity = 2;     // Initial capacity for the array of strings
+    int numStrings = 0;        // Current number of strings in the array
+
+    stringArray = (char**)malloc(arrayCapacity * sizeof(char*));
+    if (stringArray == NULL) {
+        perror("Memory allocation for string array failed");
+        return 1;
+    }
+
+    char *tempString;
+    while (1) {
+        printf("Enter string %d (or type 'quit' to finish): ", numStrings + 1);
+        tempString = inputVariableLengthString();
+
+        if (tempString == NULL) {
+            printf("Error reading string. Exiting.\n");
+            break;
+        }
+
+        if (strcmp(tempString, "quit") == 0) {
+            free(tempString); // Free the "quit" string
+            break;
+        }
+
+        // If array capacity is full, reallocate
+        if (numStrings >= arrayCapacity) {
+            arrayCapacity *= 2;
+            char **tempArray = (char**)realloc(stringArray, arrayCapacity * sizeof(char*));
+            if (tempArray == NULL) {
+                perror("Memory reallocation for string array failed");
+                free(tempString); // Free the current string
+                // Free all previously stored strings before exiting
+                for (int i = 0; i < numStrings; i++) {
+                    free(stringArray[i]);
+                }
+                free(stringArray);
+                return 1;
+            }
+            stringArray = tempArray;
+        }
+        stringArray[numStrings++] = tempString;
+    }
+
+    printf("\n--- Stored Strings ---\n");
+    for (int i = 0; i < numStrings; i++) {
+        printf("%d: \"%s\"\n", i + 1, stringArray[i]);
+    }
+
+    // Free all dynamically allocated strings and the array of pointers
+    for (int i = 0; i < numStrings; i++) {
+        free(stringArray[i]);
+    }
+    free(stringArray);
+    stringArray = NULL;
+
+    return 0;
+}
+
+
+
+
+
+Write a program to ask the user to input a number of data values he would like to
+enter then create an array dynamically to accommodate the data values. Now take
+the input from the user and display the average of data values
+
+#include <stdio.h> // Include standard input/output library for printf and scanf
+#include <stdlib.h> // Include standard library for malloc and free
+
+int main() {
+    int num_values; // Variable to store the count of numbers the user wants to enter
+    float *data_values; // Pointer to hold the address of the dynamically allocated array of numbers
+    float sum = 0.0; // Variable to accumulate the sum of the numbers, initialized to 0.0
+    float average; // Variable to store the calculated average
+
+    // Prompt the user to enter the number of data values
+    printf("Enter the number of data values you would like to enter: ");
+    // Read the integer input from the user. Use scanf's return value for basic error checking.
+    if (scanf("%d", &num_values) != 1) {
+        printf("Invalid input. Please enter an integer for the number of values.\n");
+        return 1; // Return a non-zero value to indicate an error
+    }
+
+    // Validate if the entered number of values is positive.
+    // An average is typically calculated for one or more values.
+    if (num_values <= 0) {
+        printf("Please enter a positive number of data values.\n");
+        return 1; // Return a non-zero value to indicate an error
+    }
+
+    // Dynamically allocate memory for 'num_values' floating-point numbers.
+    // malloc returns a void pointer, which is cast to a float pointer.
+    // sizeof(float) gives the size in bytes required for one float.
+    data_values = (float *)malloc(num_values * sizeof(float));
+
+    // Check if the memory allocation was successful.
+    // malloc returns NULL if it fails to allocate the requested memory.
+    if (data_values == NULL) {
+        printf("Memory allocation failed! Unable to allocate memory for %d values.\n", num_values);
+        return 1; // Return a non-zero value to indicate an error
+    }
+
+    // Loop to get each data value from the user and store it in the allocated memory.
+    printf("Please enter %d data values:\n", num_values);
+    for (int i = 0; i < num_values; i++) {
+        printf("Enter value %d: ", i + 1);
+        // Read each float value into the i-th element of the dynamically allocated array.
+        // Use scanf's return value for basic error checking.
+        if (scanf("%f", &data_values[i]) != 1) {
+            printf("Invalid input. Please enter a valid number.\n");
+            // Free the allocated memory before exiting due to an error.
+            free(data_values);
+            data_values = NULL; // Set pointer to NULL after freeing
+            return 1; // Return a non-zero value to indicate an error
+        }
+        // Add the current value to the running sum.
+        sum += data_values[i];
+    }
+
+    // Calculate the average by dividing the total sum by the number of values.
+    // Ensure num_values is not zero, which is already handled by the validation above.
+    average = sum / num_values;
+
+    // Display the entered data values (optional, for verification)
+    printf("\nThe data values entered are: [");
+    for (int i = 0; i < num_values; i++) {
+        printf("%.2f%s", data_values[i], (i < num_values - 1) ? ", " : "");
+    }
+    printf("]\n");
+
+
+    // Display the calculated average.
+    printf("The average of the %d data values is: %.2f\n", num_values, average);
+
+    // Free the dynamically allocated memory.
+    // This releases the memory back to the system, preventing memory leaks.
+    free(data_values);
+    data_values = NULL; // It's good practice to set the pointer to NULL after freeing
+
+    return 0; // Return 0 to indicate successful execution
+}
+
+
+
+
+
+Write a program to calculate the sum of n numbers entered by the user using malloc
+and free
+
+#include <stdio.h> // Required for standard input/output functions like printf and scanf
+#include <stdlib.h> // Required for dynamic memory allocation functions like malloc and free
+
+int main() {
+    int num_values; // Variable to store the count of numbers the user wants to enter
+    float *data_values; // Pointer to hold the address of the dynamically allocated array of numbers
+    float sum = 0.0; // Variable to accumulate the sum of the numbers, initialized to 0.0
+
+    // Prompt the user to enter the number of data values they want to sum
+    printf("Enter the number of data values you would like to sum: ");
+    // Read the integer input from the user.
+    // Check the return value of scanf to ensure a valid integer was read.
+    if (scanf("%d", &num_values) != 1) {
+        printf("Invalid input. Please enter an integer for the number of values.\n");
+        return 1; // Exit with a non-zero status to indicate an error
+    }
+
+    // Validate if the entered number of values is positive.
+    // Summing zero or a negative number of values doesn't make sense in this context.
+    if (num_values <= 0) {
+        printf("Please enter a positive number of data values.\n");
+        return 1; // Exit with a non-zero status to indicate an error
+    }
+
+    // Dynamically allocate memory for 'num_values' floating-point numbers.
+    // malloc attempts to allocate the requested number of bytes.
+    // sizeof(float) determines the size of a single float in bytes.
+    // The result of malloc (a void pointer) is cast to a float pointer.
+    data_values = (float *)malloc(num_values * sizeof(float));
+
+    // Check if the memory allocation was successful.
+    // malloc returns NULL if it fails to allocate the requested memory (e.g., out of memory).
+    if (data_values == NULL) {
+        printf("Memory allocation failed! Unable to allocate memory for %d values.\n", num_values);
+        return 1; // Exit with a non-zero status to indicate an error
+    }
+
+    // Loop to get each data value from the user and store it in the allocated memory.
+    printf("Please enter %d data values:\n", num_values);
+    for (int i = 0; i < num_values; i++) {
+        printf("Enter value %d: ", i + 1);
+        // Read each float value into the i-th element of the dynamically allocated array.
+        // Check the return value of scanf to ensure a valid float was read.
+        if (scanf("%f", &data_values[i]) != 1) {
+            printf("Invalid input. Please enter a valid number.\n");
+            // Free the allocated memory before exiting due to an input error.
+            free(data_values);
+            data_values = NULL; // Set pointer to NULL after freeing
+            return 1; // Exit with a non-zero status to indicate an error
+        }
+        // Add the current value to the running sum.
+        sum += data_values[i];
+    }
+
+    // Display the calculated sum.
+    // %.2f formats the float to two decimal places.
+    printf("\nThe sum of the %d data values is: %.2f\n", num_values, sum);
+
+    // Free the dynamically allocated memory.
+    // This releases the memory block pointed to by data_values back to the system.
+    // It's crucial to free memory that is no longer needed to prevent memory leaks.
+    free(data_values);
+    data_values = NULL; // It's good practice to set the pointer to NULL after freeing to avoid dangling pointers
+
+    return 0; // Return 0 to indicate successful program execution
+}
+
+
+
+
+
+Write a program to input and print text using dynamic memory allocation
+
+#include <stdio.h>  // Required for standard input/output functions (printf, fgets)
+#include <stdlib.h> // Required for dynamic memory allocation (malloc, free)
+#include <string.h> // Required for string manipulation functions (strlen, strcpy, strcspn)
+
+int main() {
+    // Declare a temporary buffer to read the user's input safely.
+    // A fixed-size buffer helps prevent buffer overflows when reading input.
+    char input_buffer[256]; // Buffer size of 256 characters should be sufficient for a simple example
+
+    // Declare a character pointer that will point to the dynamically allocated memory
+    // where the input text will be stored.
+    char *dynamic_text = NULL;
+
+    // Variable to store the length of the input string.
+    int text_length;
+
+    // --- Input Phase ---
+
+    // Prompt the user to enter some text.
+    printf("Please enter some text: ");
+
+    // Read the input from the standard input (stdin) into the input_buffer.
+    // fgets reads up to sizeof(input_buffer) - 1 characters, or until a newline character is read,
+    // or until the end-of-file is reached. It includes the newline character in the buffer if read.
+    if (fgets(input_buffer, sizeof(input_buffer), stdin) == NULL) {
+        // Check if fgets failed to read input (e.g., due to an error or EOF immediately).
+        printf("Error reading input.\n");
+        return 1; // Exit the program with an error code
+    }
+
+    // --- Process Input and Allocate Memory ---
+
+    // Remove the trailing newline character that fgets might have included.
+    // strcspn finds the length of the initial segment of input_buffer that does NOT contain any characters from "\n".
+    // If a newline is found, input_buffer[strcspn(input_buffer, "\n")] gives the index of the newline.
+    // We replace the newline character at that index with the null terminator '\0'.
+    input_buffer[strcspn(input_buffer, "\n")] = '\0';
+
+    // Calculate the length of the actual text entered by the user (excluding the null terminator).
+    text_length = strlen(input_buffer);
+
+    // Dynamically allocate memory using malloc.
+    // We need space for 'text_length' characters plus one extra byte for the null terminator ('\0').
+    // sizeof(char) is typically 1 byte.
+    dynamic_text = (char *)malloc((text_length + 1) * sizeof(char));
+
+    // Check if malloc successfully allocated the memory.
+    // malloc returns NULL if it fails (e.g., insufficient memory).
+    if (dynamic_text == NULL) {
+        printf("Memory allocation failed!\n");
+        return 1; // Exit the program with an error code
+    }
+
+    // Copy the text from the temporary input_buffer into the dynamically allocated memory.
+    // strcpy copies the string from the source (input_buffer) to the destination (dynamic_text),
+    // including the null terminator.
+    strcpy(dynamic_text, input_buffer);
+
+    // --- Output Phase ---
+
+    // Print the text that is now stored in the dynamically allocated memory.
+    printf("You entered: %s\n", dynamic_text);
+
+    // --- Memory Deallocation Phase ---
+
+    // Free the dynamically allocated memory.
+    // This releases the memory block pointed to by dynamic_text back to the system.
+    // It is crucial to free memory that is no longer needed to prevent memory leaks.
+    free(dynamic_text);
+
+    // Set the pointer to NULL after freeing.
+    // This is a good practice to avoid dangling pointers, which are pointers that
+    // point to memory that has been freed.
+    dynamic_text = NULL;
+
+    // Return 0 to indicate successful program execution.
+    return 0;
+}
+
+
+
+
+
+Write a program to read a one dimensional array, print sum of all elements along with
+#include <stdio.h> // Include standard input/output library for printf and scanf
+
+int main() {
+    int size; // Variable to store the size of the array
+    int i;    // Loop counter
+    float sum = 0.0; // Variable to store the sum of array elements, initialized to 0.0
+
+    // Prompt the user to enter the size of the array
+    printf("Enter the size of the array: ");
+    // Read the integer input for the size
+    if (scanf("%d", &size) != 1) {
+        printf("Invalid input. Please enter an integer for the array size.\n");
+        return 1; // Exit with an error code
+    }
+
+    // Validate if the array size is positive
+    if (size <= 0) {
+        printf("Please enter a positive size for the array.\n");
+        return 1; // Exit with an error code
+    }
+
+    // Declare a one-dimensional array of the specified size
+    // Using a Variable Length Array (VLA), supported by C99 and later standards
+    float arr[size];
+
+    // Prompt the user to enter the elements of the array
+    printf("Enter %d elements for the array:\n", size);
+
+    // Loop to read each element from the user
+    for (i = 0; i < size; i++) {
+        printf("Enter element %d: ", i + 1);
+        // Read each float element into the array
+        if (scanf("%f", &arr[i]) != 1) {
+            printf("Invalid input. Please enter a valid number.\n");
+            return 1; // Exit with an error code
+        }
+        // Add the current element to the sum
+        sum += arr[i];
+    }
+
+    // Display the elements of the array (optional)
+    printf("\nArray elements entered: [");
+    for (i = 0; i < size; i++) {
+        printf("%.2f%s", arr[i], (i < size - 1) ? ", " : "");
+    }
+    printf("]\n");
+
+    // Display the calculated sum
+    printf("The sum of the elements is: %.2f\n", sum);
+
+    return 0; // Indicate successful execution
+}
+
+
+
+
+
+Write a program in C to find the largest element using Dynamic Memory Allocation.
+
+#include <stdio.h>  // Required for standard input/output functions (printf, scanf)
+#include <stdlib.h> // Required for dynamic memory allocation (malloc, free)
+
+int main() {
+    int num_elements; // Variable to store the number of elements the user wants to enter
+    float *data_array; // Pointer to hold the address of the dynamically allocated array of numbers
+    float largest_element; // Variable to store the largest element found
+
+    // Prompt the user to enter the number of elements
+    printf("Enter the number of elements you would like to enter: ");
+    // Read the integer input from the user.
+    // Check the return value of scanf to ensure a valid integer was read.
+    if (scanf("%d", &num_elements) != 1) {
+        printf("Invalid input. Please enter an integer for the number of elements.\n");
+        return 1; // Exit with a non-zero status to indicate an error
+    }
+
+    // Validate if the entered number of elements is positive.
+    if (num_elements <= 0) {
+        printf("Please enter a positive number of elements.\n");
+        return 1; // Exit with a non-zero status to indicate an error
+    }
+
+    // Dynamically allocate memory for 'num_elements' floating-point numbers.
+    // malloc attempts to allocate the requested number of bytes.
+    // sizeof(float) determines the size of a single float in bytes.
+    // The result of malloc (a void pointer) is cast to a float pointer.
+    data_array = (float *)malloc(num_elements * sizeof(float));
+
+    // Check if the memory allocation was successful.
+    // malloc returns NULL if it fails (e.g., insufficient memory).
+    if (data_array == NULL) {
+        printf("Memory allocation failed! Unable to allocate memory for %d elements.\n", num_elements);
+        return 1; // Exit with a non-zero status to indicate an error
+    }
+
+    // Loop to get each element from the user and store it in the allocated memory.
+    printf("Please enter %d elements:\n", num_elements);
+    for (int i = 0; i < num_elements; i++) {
+        printf("Enter element %d: ", i + 1);
+        // Read each float value into the i-th element of the dynamically allocated array.
+        // Check the return value of scanf to ensure a valid float was read.
+        if (scanf("%f", &data_array[i]) != 1) {
+            printf("Invalid input. Please enter a valid number.\n");
+            // Free the allocated memory before exiting due to an input error.
+            free(data_array);
+            data_array = NULL; // Set pointer to NULL after freeing
+            return 1; // Exit with a non-zero status to indicate an error
+        }
+    }
+
+    // --- Find the largest element ---
+
+    // Assume the first element is the largest initially
+    largest_element = data_array[0];
+
+    // Loop through the rest of the elements starting from the second element
+    for (int i = 1; i < num_elements; i++) {
+        // If the current element is greater than the current largest_element,
+        // update largest_element.
+        if (data_array[i] > largest_element) {
+            largest_element = data_array[i];
+        }
+    }
+
+    // --- Output Phase ---
+
+    // Display the elements of the array (optional)
+    printf("\nArray elements entered: [");
+    for (int i = 0; i < num_elements; i++) {
+        printf("%.2f%s", data_array[i], (i < num_elements - 1) ? ", " : "");
+    }
+    printf("]\n");
+
+    // Display the largest element found.
+    printf("The largest element in the array is: %.2f\n", largest_element);
+
+    // --- Memory Deallocation Phase ---
+
+    // Free the dynamically allocated memory.
+    // This releases the memory block pointed to by data_array back to the system.
+    // It's crucial to free memory that is no longer needed to prevent memory leaks.
+    free(data_array);
+
+    // Set the pointer to NULL after freeing.
+    // This is a good practice to avoid dangling pointers.
+    data_array = NULL;
+
+    // Return 0 to indicate successful program execution.
+    return 0;
+}
+
+
+
+
+
+ Write a program to demonstrate memory leak in C.
+
+#include <stdio.h>  // Required for standard input/output functions (printf)
+#include <stdlib.h> // Required for dynamic memory allocation (malloc)
+#include <unistd.h> // Required for sleep function (optional, for observation)
+
+int main() {
+    int i;
+    int size_to_allocate = 1024 * 1024; // Allocate 1 MB in each iteration
+    char *memory_block; // Pointer to hold the address of the allocated memory
+
+    printf("Demonstrating a memory leak...\n");
+    printf("This program will allocate memory repeatedly without freeing it.\n");
+
+    // Loop to repeatedly allocate memory
+    for (i = 0; i < 1000; i++) { // Loop 1000 times to allocate 1000 MB (approx 1 GB)
+        // Dynamically allocate a block of memory
+        memory_block = (char *)malloc(size_to_allocate);
+
+        // Check if memory allocation was successful
+        if (memory_block == NULL) {
+            printf("Memory allocation failed at iteration %d!\n", i);
+            // In a real program, you would handle this error appropriately.
+            // For this demonstration, we can break the loop.
+            break;
+        }
+
+        // In a real scenario, you would typically use this memory block here.
+        // For this demonstration, we are just allocating it.
+        // We are intentionally NOT calling free(memory_block);
+
+        printf("Allocated %d MB in iteration %d. Total allocated (approx): %d MB\n",
+               size_to_allocate / (1024 * 1024), i + 1, (i + 1) * (size_to_allocate / (1024 * 1024)));
+
+        // Optional: Add a small delay to observe memory usage over time
+        // sleep(1); // Uncomment this line to pause for 1 second per iteration
+    }
+
+    printf("\nFinished allocation loop.\n");
+    printf("The program is now exiting. The allocated memory was NOT freed,\n");
+    printf("causing a memory leak during its execution.\n");
+    printf("When the program exits, the operating system will reclaim the memory.\n");
+
+    // The memory allocated in the loop is not freed here.
+    // This is the core of the memory leak demonstration.
+
+    return 0; // Program exits, OS reclaims memory
+}
+
+
+
+
+Write a program to demonstrate dangling pointers in C.
+#include <stdio.h>  // Required for standard input/output functions (printf)
+#include <stdlib.h> // Required for dynamic memory allocation (malloc, free)
+
+int main() {
+    // Declare a pointer to an integer.
+    int *ptr = NULL;
+
+    // --- Step 1: Dynamically allocate memory ---
+    // Allocate memory for a single integer using malloc.
+    // sizeof(int) gives the size in bytes required for an integer.
+    ptr = (int *)malloc(sizeof(int));
+
+    // Check if memory allocation was successful.
+    if (ptr == NULL) {
+        printf("Memory allocation failed!\n");
+        return 1; // Exit with an error code
+    }
+
+    // --- Step 2: Use the allocated memory ---
+    // Assign a value to the allocated memory location using the pointer.
+    *ptr = 100;
+    printf("Value stored at allocated memory: %d\n", *ptr);
+    printf("Address pointed to by ptr after allocation: %p\n", (void *)ptr); // Print the memory address
+
+    // --- Step 3: Free the allocated memory ---
+    // Release the memory block pointed to by ptr back to the system.
+    free(ptr);
+    printf("\nMemory has been freed.\n");
+    // At this point, 'ptr' is a dangling pointer. It still holds the address
+    // of the memory block, but that memory is no longer guaranteed to be valid
+    // for use by this program.
+
+    // --- Step 4: Attempt to use the dangling pointer (leads to Undefined Behavior) ---
+    // Accessing the memory through 'ptr' after it has been freed is undefined behavior.
+    // The program might crash, print garbage values, or even seem to work
+    // depending on the system and compiler. DO NOT rely on any specific outcome.
+    printf("Attempting to access memory using the dangling pointer...\n");
+    // The following line demonstrates the attempt to access freed memory.
+    // The output here is unpredictable.
+    printf("Value accessed via dangling pointer (Undefined Behavior): %d\n", *ptr);
+    printf("Address pointed to by ptr after freeing: %p\n", (void *)ptr); // The address might still be the same
+
+    // --- Good Practice: Set the pointer to NULL after freeing ---
+    // To avoid accidentally using a dangling pointer, it's a good practice
+    // to set the pointer to NULL after freeing the memory it pointed to.
+    ptr = NULL;
+    printf("\nPointer has been set to NULL after freeing.\n");
+    printf("Address pointed to by ptr after setting to NULL: %p\n", (void *)ptr);
+
+    // Now, if you try to dereference ptr, the program will likely crash
+    // or be caught by memory error detection tools, which is safer than
+    // accessing invalid memory silently.
+    // Example (uncomment to see potential crash):
+    // printf("Attempting to access NULL pointer (will likely crash): %d\n", *ptr);
+
+
+    return 0; // Indicate successful program execution
+}
+
+
+
+
+Write a program to allocate memory dynamically of the size in bytes entered by the
+user. Also handle the case when memory allocation is failed
+
+
+#include <stdio.h>  // Required for standard input/output functions (printf, scanf)
+#include <stdlib.h> // Required for dynamic memory allocation (malloc, free)
+
+int main() {
+    size_t bytes_to_allocate; // Variable to store the number of bytes requested by the user
+    void *allocated_memory = NULL; // Pointer to hold the address of the dynamically allocated memory
+
+    // Prompt the user to enter the number of bytes to allocate
+    printf("Enter the number of bytes to allocate dynamically: ");
+
+    // Read the size_t input from the user. size_t is an unsigned type suitable for sizes.
+    // Use scanf's return value for basic error checking.
+    if (scanf("%zu", &bytes_to_allocate) != 1) {
+        printf("Invalid input. Please enter a positive integer for the number of bytes.\n");
+        return 1; // Exit with a non-zero status to indicate an error
+    }
+
+    // Validate if the entered number of bytes is positive.
+    if (bytes_to_allocate <= 0) {
+        printf("Please enter a positive number of bytes to allocate.\n");
+        return 1; // Exit with a non-zero status to indicate an error
+    }
+
+    // --- Dynamic Memory Allocation ---
+    // Use malloc to allocate the specified number of bytes.
+    // malloc returns a void pointer (void *) which can be cast to any data type pointer.
+    // It returns NULL if the allocation fails.
+    allocated_memory = malloc(bytes_to_allocate);
+
+    // --- Error Handling for Allocation Failure ---
+    // Check if the memory allocation was successful.
+    if (allocated_memory == NULL) {
+        // If malloc returned NULL, it means memory could not be allocated.
+        printf("Memory allocation failed! Could not allocate %zu bytes.\n", bytes_to_allocate);
+        // In a real application, you might try to recover or exit gracefully.
+        return 1; // Exit with a non-zero status to indicate an error
+    }
+
+    // --- Indicate Successful Allocation ---
+    // If we reach here, memory allocation was successful.
+    printf("Successfully allocated %zu bytes of memory.\n", bytes_to_allocate);
+    printf("Address of allocated memory: %p\n", allocated_memory);
+
+    // --- Demonstrate using the allocated memory (Optional) ---
+    // You can now use the 'allocated_memory' pointer to access the allocated block.
+    // Remember to cast it to the appropriate pointer type if you need to access
+    // specific data types within the block.
+    // Example: Writing a value to the first byte (casting to char *)
+    if (bytes_to_allocate > 0) {
+        char *char_ptr = (char *)allocated_memory;
+        *char_ptr = 'A'; // Write character 'A' to the first byte
+        printf("Wrote '%c' to the first byte of allocated memory.\n", *char_ptr);
+    }
+
+
+    // --- Memory Deallocation ---
+    // Free the dynamically allocated memory when it is no longer needed.
+    // This releases the memory block back to the system.
+    free(allocated_memory);
+    printf("\nMemory has been freed.\n");
+
+    // Set the pointer to NULL after freeing.
+    // This is a good practice to avoid dangling pointers.
+    allocated_memory = NULL;
+
+    // Return 0 to indicate successful program execution.
+    return 0;
+}
+
+
+
+
+
+. Find out the maximum and minimum from an array using dynamic memory allocation
+in C
+
+#include <stdio.h>  // Required for standard input/output functions (printf, scanf)
+#include <stdlib.h> // Required for dynamic memory allocation (malloc, free)
+#include <limits.h> // Required for INT_MAX and INT_MIN (optional, for robust initialization)
+
+int main() {
+    int num_elements;    // Variable to store the number of elements the user wants to enter
+    float *data_array;   // Pointer to hold the address of the dynamically allocated array of numbers
+    float max_element;   // Variable to store the largest element found
+    float min_element;   // Variable to store the smallest element found
+
+    // Prompt the user to enter the number of elements
+    printf("Enter the number of elements you would like to enter: ");
+    // Read the integer input from the user.
+    // Check the return value of scanf to ensure a valid integer was read.
+    if (scanf("%d", &num_elements) != 1) {
+        printf("Invalid input. Please enter a positive integer for the number of elements.\n");
+        return 1; // Exit with a non-zero status to indicate an error
+    }
+
+    // Validate if the entered number of elements is positive.
+    if (num_elements <= 0) {
+        printf("Please enter a positive number of elements.\n");
+        return 1; // Exit with a non-zero status to indicate an error
+    }
+
+    // Dynamically allocate memory for 'num_elements' floating-point numbers.
+    // malloc attempts to allocate the requested number of bytes.
+    // sizeof(float) determines the size of a single float in bytes.
+    // The result of malloc (a void pointer) is cast to a float pointer.
+    data_array = (float *)malloc(num_elements * sizeof(float));
+
+    // Check if the memory allocation was successful.
+    // malloc returns NULL if it fails (e.g., insufficient memory).
+    if (data_array == NULL) {
+        printf("Memory allocation failed! Unable to allocate memory for %d elements.\n", num_elements);
+        return 1; // Exit with a non-zero status to indicate an error
+    }
+
+    // Loop to get each element from the user and store it in the allocated memory.
+    printf("Please enter %d elements:\n", num_elements);
+    for (int i = 0; i < num_elements; i++) {
+        printf("Enter element %d: ", i + 1);
+        // Read each float value into the i-th element of the dynamically allocated array.
+        // Check the return value of scanf to ensure a valid float was read.
+        if (scanf("%f", &data_array[i]) != 1) {
+            printf("Invalid input. Please enter a valid number.\n");
+            // Free the allocated memory before exiting due to an input error.
+            free(data_array);
+            data_array = NULL; // Set pointer to NULL after freeing
+            return 1; // Exit with a non-zero status to indicate an error
+        }
+    }
+
+    // --- Find the largest and smallest elements ---
+
+    // Initialize max_element and min_element with the first element of the array.
+    // This is a safe way to initialize when you know the array has at least one element
+    // (which is guaranteed by the num_elements > 0 check).
+    max_element = data_array[0];
+    min_element = data_array[0];
+
+    // Loop through the rest of the elements starting from the second element (index 1).
+    for (int i = 1; i < num_elements; i++) {
+        // If the current element is greater than the current max_element, update max_element.
+        if (data_array[i] > max_element) {
+            max_element = data_array[i];
+        }
+
+        // If the current element is less than the current min_element, update min_element.
+        if (data_array[i] < min_element) {
+            min_element = data_array[i];
+        }
+    }
+
+    // --- Output Phase ---
+
+    // Display the elements of the array (optional)
+    printf("\nArray elements entered: [");
+    for (int i = 0; i < num_elements; i++) {
+        printf("%.2f%s", data_array[i], (i < num_elements - 1) ? ", " : "");
+    }
+    printf("]\n");
+
+    // Display the largest and smallest elements found.
+    printf("The largest element in the array is: %.2f\n", max_element);
+    printf("The smallest element in the array is: %.2f\n", min_element);
+
+    // --- Memory Deallocation Phase ---
+
+    // Free the dynamically allocated memory.
+    // This releases the memory block pointed to by data_array back to the system.
+    // It's crucial to free memory that is no longer needed to prevent memory leaks.
+    free(data_array);
+
+    // Set the pointer to NULL after freeing.
+    // This is a good practice to avoid dangling pointers.
+    data_array = NULL;
+
+    // Return 0 to indicate successful program execution.
+    return 0;
+}
