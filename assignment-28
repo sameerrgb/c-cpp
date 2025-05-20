@@ -1,0 +1,650 @@
+// Operator Overloading, friend operator and this pointers
+/*
+Define a class Complex with appropriate instance variables and member functions.
+Overload following operators
+a. >> insertion operator
+b. << extraction operator
+*/
+
+#include<iostream>
+using namespace std;
+
+class Complex
+{
+    private:
+       int a,b;
+    public:
+       Complex()
+       {
+
+       }
+       ~Complex()
+       {
+
+       }
+       friend istream& operator>>(istream &in,Complex &c);
+       friend ostream& operator<<(ostream &out,Complex &c);
+       friend Complex operator+(Complex c1, Complex c2);
+};
+
+    istream& operator>>(istream &in,Complex &c)
+    {
+        cout<<"\n\nEnter Two Complex Number: ";
+        in>>c.a>>c.b;
+
+        return in;
+    }
+
+    ostream&  operator<<(ostream &out, Complex &c)
+    {
+        out<<" ( "<<c.a<<" + "<<c.b<<"i )";
+
+        return out;
+    }
+
+    Complex operator+(Complex c1, Complex c2)
+    {
+        Complex temp;
+
+        temp.a = c1.a + c2.a;
+        temp.b = c1.b + c2.b;
+
+        return temp;
+    }
+
+int main()
+{
+    Complex c1,c2,c3;
+
+    cin>>c1;
+    cin>>c2;
+
+    c3 = c1 + c2;
+    cout<<c3;
+
+    return 0;
+}
+
+// Operator Overloading, friend operator and this pointers
+/*
+Define a class Complex with appropriate instance variables and member functions. One
+of the functions should be setData() to set the properties of the object. Make sure the
+names of formal arguments are the same as names of instance variables
+*/
+
+#include<iostream>
+using namespace std;
+
+class Complex
+{
+    private:
+       int a,b;
+    public:
+      Complex()
+      {
+
+      } 
+      ~Complex()
+      {
+
+      }
+      void setData(int a,int b)
+      {
+          this->a = a;
+          this->b = b;
+      } 
+      void dispalyData()
+      {
+           cout<<" ( "<<a<<" + "<<b<<"i )";
+      }
+      Complex operator+(Complex c2)
+      {
+        Complex temp;
+
+        temp.a = a + c2.a;
+        temp.b = b + c2.b;
+
+        return temp;
+      }
+        
+};
+
+int main()
+{
+    Complex c1,c2,c3;
+    int x,y;
+
+    cout<<"\n\nEnter Two Complex Numbers: ";
+    cin>>x>>y;
+    c1.setData(x,y);
+
+    cout<<"\n\nEnter Two Complex Numbers: ";
+    cin>>x>>y;
+    c2.setData(x,y);
+
+    c3 = c1 + c2;
+    c3.dispalyData();
+
+    return 0;
+}
+
+
+
+// Operator Overloading, friend operator and this pointers
+/*
+Define a class Complex with appropriate instance variables and member functions. One
+of the functions should be setData() to set the properties of the object. Make sure the
+names of formal arguments are the same as names of instance variables
+*/
+
+#include<iostream>
+using namespace std;
+
+class Complex
+{
+    private:
+       int a,b;
+    public:
+      Complex()
+      {
+
+      } 
+      ~Complex()
+      {
+
+      }
+      void setData(int a,int b)
+      {
+          this->a = a;
+          this->b = b;
+      } 
+      void dispalyData()
+      {
+           cout<<" ( "<<a<<" + "<<b<<"i )";
+      }
+      Complex operator+(Complex c2)
+      {
+        Complex temp;
+
+        temp.a = a + c2.a;
+        temp.b = b + c2.b;
+
+        return temp;
+      }
+        
+};
+
+int main()
+{
+    Complex c1,c2,c3;
+    int x,y;
+
+    cout<<"\n\nEnter Two Complex Numbers: ";
+    cin>>x>>y;
+    c1.setData(x,y);
+
+    cout<<"\n\nEnter Two Complex Numbers: ";
+    cin>>x>>y;
+    c2.setData(x,y);
+
+    c3 = c1 + c2;
+    c3.dispalyData();
+
+    return 0;
+}
+
+
+
+// Operator Overloading, friend operator and this pointers
+/*
+Create a student class and overload new and delete operators as a member function of
+the class
+*/
+
+#include<iostream>
+#include<cstring>
+using namespace std;
+
+class Student
+{
+    private:
+
+       string name;
+       int age;
+
+    public:
+  
+    Student(string n, int a)
+    {
+        name = n;
+        age = a;
+    }
+    ~Student()
+    {
+
+    }     
+
+    void * operator new(size_t size)
+    {
+        cout<<"\n\nNew operator overloading with size: "<<size;
+
+        void *p = malloc(size);
+
+        return p;
+    }
+
+    void operator delete(void *p)
+    {
+        cout<<"\n\nDelete operator overloading:\n\n";
+
+        free(p);
+    }
+
+    void dispaly()
+    {
+        cout<<"\n\nName: "<<name<<" , age = "<<age;
+    }
+    
+};
+
+int main()
+{
+    Student *p = new Student("Sameer",18);
+
+    p->dispaly();
+    delete p;
+
+    return 0;
+}
+
+
+// Operator Overloading, friend operator and this pointers
+/*
+Create a student class and overload new and delete operators outside the class
+*/
+
+#include<iostream>
+#include<cstring>
+using namespace std;
+
+class Student
+{
+     private:
+
+        string name;
+        int age;
+
+    public:
+
+        Student(string n,int a)
+        {
+            name = n;
+            age = a;
+        }    
+
+        ~Student()
+        {}
+
+       void display()
+      {
+        cout<<"\n\nName: "<<name<<" , Age: "<<age;
+      }
+        
+};
+
+void * operator new(size_t size)
+{
+    cout<<"\n\nsize: "<<size;
+
+    void *p = malloc(size);
+
+    return p;
+}
+
+void operator delete (void *p)
+{
+    cout<<"\n\nDelete:";
+
+    free(p);
+}
+
+int main()
+{
+    Student *p = new Student("Sameer",18);
+    int *q = new int[15]; //for outside class overload new and delete for global work all type of data
+
+    p->display();
+    delete p;
+
+    return 0;
+}
+
+// Operator Overloading, friend operator and this pointers
+/*
+Create a complex class and overload assignment operator for that class.
+*/
+
+#include<iostream>
+using namespace std;
+
+class Complex
+{
+    private:
+
+    int a,b;
+
+    public:
+
+    Complex(){}
+
+    void setData(int a,int b)
+    {
+        this -> a = a;
+        this -> b = b;
+    }       
+    ~Complex(){}
+
+    void display()
+    {
+        cout<<"\n\n\t( "<<a<<" + "<<b<<"i )";
+    }
+
+    Complex operator+(Complex c2)
+    {
+        Complex temp;
+
+        temp.a = a + c2.a;
+        temp.b = b + c2.b;
+
+        return temp;
+    }
+
+    Complex& operator=(const Complex &c)
+    {
+        cout<<"\nAssignment operator";
+        
+        a = c.a;
+        b = c.b;
+
+        return *this;
+    }
+
+};
+
+int main()
+{
+    Complex c1;
+    Complex c2;
+    Complex c3;
+    int a,b;
+
+    cout<<"\n\nEnter Two Complex Number: ";
+    cin>>a>>b;
+    c1.setData(a,b);
+
+    cout<<"\n\nEnter Two Complex Number: ";
+    cin>>a>>b;
+    c2.setData(a,b);
+
+    c1.display();
+    c2.display();
+
+    c3 = c1;
+    c1 = c1;
+    c3 = c2;
+    c2 = c2;
+
+    c3 = c1 + c3;
+    c3.display();
+
+    return 0;
+}
+
+
+// Operator Overloading, friend operator and this pointers
+/*
+Create an Integer class and overload not operator for that class.
+*/
+
+#include<iostream>
+using namespace std;
+
+class Integer
+{
+    private:
+      
+      int i;
+
+    public:
+    
+    Integer(){}
+    void setInteger(int i)
+    { 
+        this->i = i;
+    }
+    ~Integer(){}  
+
+    int operator!()
+    {
+        return -i;
+    }
+};
+
+int main()
+{
+    Integer i;
+    int x;
+
+    cout<<"\n\nEnter a Number: ";
+    cin>>x;
+    i.setInteger(x);
+
+    cout<<"\nInteger: "<<!i;
+    
+    return 0;
+}
+
+
+// Operator Overloading, friend operator and this pointers
+/*
+Create a Coordinate class for 3 variables x,y and z and overload comma operator such
+that when you write c3 = (c1 , c2 ) then c2 is assigned to c3. Where c1,c2,and c3 are
+objects of 3D coordinate class
+*/
+
+#include<iostream>
+using namespace std;
+
+class Coordinate_3D
+{
+    private:
+
+    int x,y,z;
+
+    public:
+
+    Coordinate_3D(){}
+    Coordinate_3D(int x,int y,int z)
+    {
+       this-> x = x;
+       this -> y = y;
+       this -> z = z;
+    }
+    ~Coordinate_3D(){}
+
+    void dispaly()
+    {
+        cout<<"\n( "<<x<<" , "<<y<<" , "<<z<<" )";
+    }
+
+    Coordinate_3D operator,(Coordinate_3D c)
+    {
+        Coordinate_3D temp;
+
+        temp.x =  c.x;
+        temp.y =  c.y;
+        temp.z =  c.z;
+
+        return temp;
+    }
+};
+
+int main()
+{
+    Coordinate_3D c1(2,3,5);
+    Coordinate_3D c2(4,6,1);
+    Coordinate_3D c3;
+
+    c3 = (c1 , c2);
+    c3.dispaly();
+
+
+   return 0;
+}
+
+
+// Operator Overloading, friend operator and this pointers
+/*
+Create an Integer class that contains int x as an instance variable and overload
+casting int() operator that will type cast your Integer class object to int data type
+*/
+#include<iostream>
+using namespace std;
+
+class Integer
+{
+   private:
+     
+    int x;
+
+   public:
+
+    Integer(int a) // int --> integer
+    {
+       x = a;
+    }   
+
+    operator int () // integer --> int
+    {
+        return x;
+    }
+};
+
+int main()
+{
+    Integer x=20;
+ 
+    int y = x;
+    cout<<endl<<y<<endl<<endl;
+
+    return 0;
+}
+
+
+// Operator Overloading, friend operator and this pointers
+/*
+Create a Distance class having 2 instance variable feet and inches. Also create default
+constructor and parameterized constructor takes 2 variables . Now overload () function call
+operator that takes 3 arguments a , b and c and set feet = a + c + 5 and inches = a+b + 15
+*/
+
+#include<iostream>
+using namespace std;
+
+class Distance
+{
+    private:
+
+    int feet, inches;
+
+    public:
+
+    Distance()
+    {
+
+    }
+
+    Distance(int f , int i)
+    {
+        feet = f;
+        inches = i;
+    }
+
+    void display()
+    {
+        cout<<"\n\nFeet: "<<feet<<endl<<"Inches: "<<inches;
+    }
+
+    Distance operator ()(int a, int b, int c)
+    {
+        Distance d;
+
+        d.feet = a + c + 5;
+        d.inches = a + b + 15;
+
+        return d;
+    }
+};
+
+int main()
+{
+    Distance d1(5,10);
+    Distance d2;
+
+    d1.display();
+    d2 = d1(10,20,30);
+
+    d1.display();
+    d2.display();
+    
+    cout<<endl<<endl;
+
+    return 0;
+}
+
+
+// Operator Overloading, friend operator and this pointers
+/*
+Create a class Marks that have one member variable marks and one member function
+that will print marks. We know that we can access member functions using (.) dot operator. Now
+you need to overload (->) arrow operator to access that function.
+*/
+
+#include<iostream>
+using namespace std;
+
+class Marks
+{
+    private:
+
+    int marks;
+
+    public:
+
+    Marks(int m)
+    {
+        marks = m;
+    }
+
+    void display()
+    {
+        cout<<"\n\nMarks: "<<marks;
+    }
+
+    Marks * operator->()
+    {
+        return this;
+    }
+};
+
+int main()
+{
+    Marks m(500);
+
+    m.display(); // print with dot operator
+    m->display(); // print with arrow operator
+
+    cout<<endl<<endl;
+
+    return 0;
+}
