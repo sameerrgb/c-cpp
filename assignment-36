@@ -1,0 +1,293 @@
+Using STL Array gets and sets a reference to an element based on a given index.
+#include <iostream>
+#include <array>
+
+int main() {
+  std::array<int, 5> my_array = {10, 20, 30, 40, 50};
+
+  std::cout << "Initial element at index 2: " << my_array.at(2) << std::endl;
+
+  my_array.at(2) = 100;
+
+  std::cout << "Modified element at index 2: " << my_array.at(2) << std::endl;
+
+  std::cout << "Initial element at index 4: " << my_array[4] << std::endl;
+
+  my_array[4] = 500;
+
+  std::cout << "Modified element at index 4: " << my_array[4] << std::endl;
+
+  return 0;
+}
+
+
+Using STL Array returns the total number of elements in the array.
+#include <iostream>
+#include <array>
+
+int main() {
+  std::array<int, 7> my_array = {1, 2, 3, 4, 5, 6, 7};
+
+  std::cout << "The total number of elements in the array is: " << my_array.size() << std::endl;
+
+  return 0;
+}
+
+
+Declare a vector with Initialization and print the elements.
+#include <iostream>
+#include <vector>
+
+int main() {
+  std::vector<int> my_vector = {10, 20, 30, 40, 50};
+
+  std::cout << "Elements of the vector:" << std::endl;
+
+  for (int element : my_vector) {
+    std::cout << element << " ";
+  }
+
+  std::cout << std::endl;
+
+  return 0;
+}
+
+
+Declare a vector without initialization, insert some elements and print
+#include <iostream>
+#include <vector>
+
+int main() {
+  std::vector<int> my_vector;
+
+  my_vector.push_back(10);
+  my_vector.push_back(20);
+  my_vector.push_back(30);
+  my_vector.push_back(40);
+  my_vector.push_back(50);
+
+  std::cout << "Elements of the vector:" << std::endl;
+
+  for (int element : my_vector) {
+    std::cout << element << " ";
+  }
+
+  std::cout << std::endl;
+
+  return 0;
+}
+
+
+Write a c++ code, to demonstrate the forward list.
+#include <iostream>
+#include <forward_list>
+#include <algorithm>
+
+int main() {
+  std::forward_list<int> my_list;
+
+  my_list.push_front(30);
+  my_list.push_front(20);
+  my_list.push_front(10);
+
+  std::cout << "Forward list after push_front:" << std::endl;
+  for (int& element : my_list) {
+    std::cout << element << " ";
+  }
+  std::cout << std::endl;
+
+  auto it = my_list.begin();
+  std::advance(it, 1);
+  my_list.insert_after(it, 25);
+
+  std::cout << "Forward list after inserting 25 after 20:" << std::endl;
+  for (int& element : my_list) {
+    std::cout << element << " ";
+  }
+  std::cout << std::endl;
+
+  auto it_remove = my_list.begin();
+  std::advance(it_remove, 1);
+  my_list.erase_after(it_remove);
+
+  std::cout << "Forward list after removing 25:" << std::endl;
+  for (int& element : my_list) {
+    std::cout << element << " ";
+  }
+  std::cout << std::endl;
+
+  my_list.pop_front();
+
+  std::cout << "Forward list after pop_front:" << std::endl;
+  for (int& element : my_list) {
+    std::cout << element << " ";
+  }
+  std::cout << std::endl;
+
+  if (my_list.empty()) {
+    std::cout << "The forward list is empty." << std::endl;
+  } else {
+    std::cout << "The forward list is not empty." << std::endl;
+  }
+
+  return 0;
+}
+
+
+Inserts an element. And returns an iterator that points to the first of the newly inserted
+elements
+#include <iostream>
+#include <vector>
+#include <iterator>
+
+int main() {
+  std::vector<int> my_vector = {10, 20, 40, 50};
+
+  std::cout << "Initial vector elements:" << std::endl;
+  for (int element : my_vector) {
+    std::cout << element << " ";
+  }
+  std::cout << std::endl;
+
+  auto it = my_vector.begin();
+  std::advance(it, 2);
+
+  auto insert_it = my_vector.insert(it, 30);
+
+  std::cout << "Vector elements after inserting 30:" << std::endl;
+  for (int element : my_vector) {
+    std::cout << element << " ";
+  }
+  std::cout << std::endl;
+
+  std::cout << "The element inserted is: " << *insert_it << std::endl;
+
+  std::cout << "The index of the inserted element is: " << std::distance(my_vector.begin(), insert_it) << std::endl;
+
+  return 0;
+}
+
+
+
+Returns a reverse iterator which points to the last element of the deque (i.e., its reverse
+beginning)
+#include <iostream>
+#include <deque>
+#include <iterator>
+
+int main() {
+  std::deque<int> my_deque = {10, 20, 30, 40, 50};
+
+  std::cout << "Deque elements:" << std::endl;
+  for (int element : my_deque) {
+    std::cout << element << " ";
+  }
+  std::cout << std::endl;
+
+  std::deque<int>::reverse_iterator r_it = my_deque.rbegin();
+
+  std::cout << "The last element (accessed by rbegin) is: " << *r_it << std::endl;
+
+  std::cout << "Deque elements in reverse order:" << std::endl;
+  for (auto rev_it = my_deque.rbegin(); rev_it != my_deque.rend(); ++rev_it) {
+      std::cout << *rev_it << " ";
+  }
+  std::cout << std::endl;
+
+
+  return 0;
+}
+
+
+Create a stack of int type, push 5 elements in it and print it on the console screen
+#include <iostream>
+#include <stack>
+
+int main() {
+  std::stack<int> my_stack;
+
+  my_stack.push(10);
+  my_stack.push(20);
+  my_stack.push(30);
+  my_stack.push(40);
+  my_stack.push(50);
+
+  std::cout << "Elements of the stack (popping from top):" << std::endl;
+
+  while (!my_stack.empty()) {
+    std::cout << my_stack.top() << " ";
+    my_stack.pop();
+  }
+
+  std::cout << std::endl;
+
+  return 0;
+}
+
+
+Create a stack of int type, and find the top most element in a stack
+#include <iostream>
+#include <deque>
+#include <iterator>
+
+int main() {
+  std::deque<int> my_deque = {10, 20, 30, 40, 50};
+
+  std::cout << "Deque elements:" << std::endl;
+  for (int element : my_deque) {
+    std::cout << element << " ";
+  }
+  std::cout << std::endl;
+
+  std::deque<int>::reverse_iterator r_it = my_deque.rbegin();
+
+  std::cout << "The last element (accessed by rbegin) is: " << *r_it << std::endl;
+
+  std::cout << "Deque elements in reverse order:" << std::endl;
+  for (auto rev_it = my_deque.rbegin(); rev_it != my_deque.rend(); ++rev_it) {
+      std::cout << *rev_it << " ";
+  }
+  std::cout << std::endl;
+
+
+  return 0;
+}
+
+
+Create a railways ticket counter and allot ticket to first come first take using c++ STL
+#include <iostream>
+#include <queue>
+#include <string>
+
+int main() {
+  std::queue<std::string> passenger_queue;
+
+  std::cout << "--- Railway Ticket Counter Simulation ---" << std::endl;
+
+  std::cout << "\nPassengers arriving and joining the queue:" << std::endl;
+  passenger_queue.push("Alice");
+  std::cout << "Alice joined the queue." << std::endl;
+  passenger_queue.push("Bob");
+  std::cout << "Bob joined the queue." << std::endl;
+  passenger_queue.push("Charlie");
+  std::cout << "Charlie joined the queue." << std::endl;
+  passenger_queue.push("David");
+  std::cout << "David joined the queue." << std::endl;
+
+  std::cout << "\nProcessing passengers and allotting tickets:" << std::endl;
+
+  while (!passenger_queue.empty()) {
+    std::string current_passenger = passenger_queue.front();
+    std::cout << "Allotting ticket to: " << current_passenger << std::endl;
+    passenger_queue.pop();
+  }
+
+  std::cout << "\nAll passengers have been processed." << std::endl;
+
+  if (passenger_queue.empty()) {
+    std::cout << "The queue is now empty." << std::endl;
+  }
+
+  return 0;
+}
+
