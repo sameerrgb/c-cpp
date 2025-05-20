@@ -1,0 +1,186 @@
+
+///              File Handling
+/*
+Q1.  Write a C++ program to create a file and print “File created successfully” and throw an
+    error if file is not created.
+
+Q3.  Write a C++ program to open an output file 'a.txt' and append data to it.
+
+*/
+
+#include<iostream>
+#include<fstream>
+#include<cstring>
+using namespace std;
+
+int main()
+{
+    ofstream fout;
+   // remove("c:/sameer/sam.txt");
+    fout.open("c:/sameer/sam.txt",ios_base::app);
+   // fout.open("c:/sameer/sam.txt");
+    if(!fout)
+        cout<<"\n    File Not Created"<<endl;
+    else
+    {
+        string line;
+        cout<<"\n    File Created Successfully"<<endl;
+        cout<<"\n    Press 'e' to Exit";
+        cout<<"\n    Enter String:  ";
+        while(!fout.eof())
+        {
+            getline(cin,line);
+            if(line == "e")
+                break;
+            fout<<line<<'\n';
+        }
+    } 
+    fout.close();       
+    
+    return 0;
+}
+
+
+
+
+
+///              File Handling
+/*
+Q2.  Write a C++ program to read a text file and count the number of characters in it.
+
+Q4.  Write a program to copy the contents of one text file to another while changing the case
+    of every alphabet.
+
+*/
+
+#include<iostream>
+#include<cstring>
+#include<fstream>
+using namespace std;
+
+int main()
+{
+    ifstream fin;
+    fin.open("c:/sameer/sam.txt");
+    if(!fin)
+        cout<<"\n    File Not Open"<<endl;
+    else
+    {
+        string line;
+        while(!fin.eof())
+        {
+            getline(fin,line);
+            cout<<line<<'\n';
+        }
+    } 
+    fin.close();
+
+
+/// Write a C++ program to read a text file and count the number of characters in it.
+    fin.open("c:/sameer/sam.txt");
+    if(!fin)
+        cout<<"\n    File Not Open"<<endl;
+     else
+    {
+        char ch;
+        int c=0,sp=0,wd=0;
+       // fin.seekg(0,ios_base::beg);
+        while(!fin.eof())
+        {
+            fin.get(ch);
+            if(ch >= 65 && ch <= 90 || ch >= 97 && ch <= 122)
+                c++;
+            else
+                if(ch == ' ')
+                {
+                    sp++;
+                    wd++;
+                }
+                else if(ch == '\n')
+                    wd++;
+        }
+        wd--;
+        cout<<"\nNo. of Characters in this File  :  "<<c; 
+        cout<<"\nSpaces    between    Words      :  "<<sp;
+        cout<<"\nNo. of Words in this File       :  "<<wd;    
+    } 
+    fin.close();
+
+
+/// Write a program to copy the contents of one text file to another while changing the case of every alphabet
+    ofstream fout;
+    fin.open("c:/sameer/sam.txt");
+    fout.open("c:/sameer/sta.txt");
+    if(!fin)
+        cout<<"\n    File Not Open"<<endl;
+    else
+    {
+        char ch;
+        while (!fin.eof())
+        {
+            fin.get(ch);
+            if(ch >= 97 && ch <= 122)
+                ch = toupper(ch);
+            else if(ch >= 65 && ch <= 90)
+                ch = tolower(ch);
+
+            fout<<ch;        
+        }
+        
+    }    
+    fout.close();
+    fin.close();
+
+    return 0;
+}
+
+
+
+
+
+
+
+///              File Handling
+///  Q5. Write a C++ program to merge the two files.
+#include<iostream>
+#include<cstring>
+#include<fstream>
+using namespace std;
+
+int main()
+{
+   
+    ifstream fin1,fin2;
+    ofstream fout;
+    fin1.open("c:/sameer/sam.txt");
+    fin2.open("c:/sameer/sta.txt");
+    fout.open("c:/sameer/ba.txt");
+    if(!fin1 || !fin2)
+    {
+        cout<<"\n    File Not Found!!!";
+        exit(0);
+    }
+    if(!fout)
+    {
+        cout<<"\n    File Not Found!!!";
+        exit(0);
+    }
+    char ch;
+    while(!fin1.eof())
+    {
+        fin1.get(ch);
+        fout<<ch;
+    }
+    while(!fin2.eof())
+    {
+        fin2.get(ch);
+        fout<<ch;
+    }
+    cout<<"\n    Merge Successfully"<<endl;
+
+    fin1.close();
+    fin2.close();
+    fout.close();    
+
+    return 0;
+}
