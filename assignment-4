@@ -1,0 +1,142 @@
+Write a program to print iNeuron 5 times on the screen
+#include <stdio.h>
+
+int main() {
+  for (int i = 0; i < 5; i++) {
+    printf("iNeuron\n");
+  }
+  return 0;
+}
+
+
+Write a program to print the first 10 natural numbers
+
+#include <stdio.h>
+
+int main() {
+  for (int i = 1; i <= 10; i++) {
+    printf("%d\n", i);
+  }
+  return 0;
+}
+
+
+Write a program to print the first 10 natural numbers in reverse order
+#include <stdio.h>
+
+int main() {
+  for (int i = 10; i >= 1; i--) {
+    printf("%d\n", i);
+  }
+  return 0;
+}
+
+
+ Write a program to print the first 10 odd natural numbers
+#include <stdio.h>
+
+int main() {
+  int count = 0;
+  int number = 1;
+
+  while (count < 10) {
+    printf("%d\n", number);
+    number += 2;
+    count++;
+  }
+
+  return 0;
+}
+
+
+ Write a program to print the first 10 odd natural numbers in reverse order
+#include <stdio.h>
+
+int main() {
+  int number = 19;
+  int count = 0;
+
+  while (count < 10) {
+    printf("%d\n", number);
+    number -= 2;
+    count++;
+  }
+
+  return 0;
+}
+
+Write a program to print the first 10 even natural numbers
+#include <stdio.h>
+
+int main() {
+  int count = 0;
+  int number = 2;
+
+  while (count < 10) {
+    printf("%d\n", number);
+    number += 2;
+    count++;
+  }
+
+  return 0;
+}
+
+
+Write a program to print the first 10 even natural numbers in reverse order
+#include <stdio.h>
+
+int main() {
+ 
+  for (int i = 20; i >= 2; i -= 2) {
+    printf("%d\n", i);
+  }
+
+  return 0;
+}
+
+
+Write a program to print squares of the first 10 natural numbers
+#include <stdio.h>
+
+int main() {
+  
+  for (int i = 1; i <= 10; i++) {
+
+    int square = i * i;
+    
+    printf("The square of %d is %d\n", i, square);
+  }
+
+  return 0;
+}
+
+
+Write a program to print cubes of the first 10 natural numbers
+#include <stdio.h>
+
+int main() {
+  for (int i = 1; i <= 10; i++) {
+    int cube = i * i * i;
+    printf("The cube of %d is %d\n", i, cube);
+  }
+
+  return 0;
+}
+
+
+Write a program to print a table of 5.
+#include <stdio.h>
+
+int main() {
+  int number = 5; // The number for which we want to print the table
+
+  // Loop from 1 to 10 to generate the multiples
+  for (int i = 1; i <= 10; i++) {
+    // Calculate the product
+    int product = number * i;
+    // Print the multiplication expression and the result
+    printf("%d * %d = %d\n", number, i, product);
+  }
+
+  return 0;
+}
