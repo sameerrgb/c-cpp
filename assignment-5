@@ -1,0 +1,221 @@
+Write a program to print iNeuron N times on the screen
+#include <stdio.h>
+
+int main() {
+  int n;
+
+  printf("Enter the number of times to print 'iNeuron': ");
+  scanf("%d", &n);
+
+  for (int i = 0; i < n; i++) {
+    printf("iNeuron\n");
+  }
+
+  return 0;
+}
+
+Write a program to print the first N natural numbers.
+#include <stdio.h>
+
+int main() {
+  int n;
+
+  printf("Enter the value of N: ");
+  scanf("%d", &n);
+
+  if (n > 0) {
+    printf("The first %d natural numbers are:\n", n);
+    for (int i = 1; i <= n; i++) {
+      printf("%d\n", i);
+    }
+  } else {
+    printf("Please enter a positive integer for N.\n");
+  }
+
+  return 0;
+}
+
+ Write a program to print the first N natural numbers in reverse order
+#include <stdio.h>
+
+int main() {
+  int n;
+
+  printf("Enter the value of N: ");
+  scanf("%d", &n);
+
+  if (n > 0) {
+    printf("The first %d natural numbers in reverse are:\n", n);
+    for (int i = n; i >= 1; i--) {
+      printf("%d\n", i);
+    }
+  } else {
+    printf("Please enter a positive integer for N.\n");
+  }
+
+  return 0;
+}
+
+
+Write a program to print the first N odd natural numbers
+#include <stdio.h>
+
+int main() {
+  int n;
+  int count = 0;
+  int number = 1;
+
+  printf("Enter the value of N: ");
+  scanf("%d", &n);
+
+  if (n > 0) {
+    printf("The first %d odd natural numbers are:\n", n);
+    while (count < n) {
+      printf("%d\n", number);
+      number += 2;
+      count++;
+    }
+  } else {
+    printf("Please enter a positive integer for N.\n");
+  }
+
+  return 0;
+}
+
+
+Write a program to print the first N odd natural numbers in reverse order
+#include <stdio.h>
+
+int main() {
+  int n;
+  int startNumber;
+
+  printf("Enter the value of N: ");
+  scanf("%d", &n);
+
+  if (n > 0) {
+    printf("The first %d odd natural numbers in reverse are:\n", n);
+    startNumber = 2 * n - 1;
+    for (int i = startNumber; i >= 1; i -= 2) {
+      printf("%d\n", i);
+    }
+  } else {
+    printf("Please enter a positive integer for N.\n");
+  }
+
+  return 0;
+}
+
+
+Write a program to print the first N even natural numbers
+#include <stdio.h>
+
+int main() {
+  int n;
+
+  printf("Enter the value of N: ");
+  scanf("%d", &n);
+
+  if (n > 0) {
+    printf("The first %d even natural numbers are:\n", n);
+    for (int i = 1; i <= n; i++) {
+      printf("%d\n", 2 * i);
+    }
+  } else {
+    printf("Please enter a positive integer for N.\n");
+  }
+
+  return 0;
+}
+
+
+Write a program to print the first N even natural numbers in reverse order
+#include <stdio.h>
+
+int main() {
+  int n;
+  int startNumber;
+
+  printf("Enter the value of N: ");
+  scanf("%d", &n);
+
+  if (n > 0) {
+    printf("The first %d even natural numbers in reverse are:\n", n);
+    startNumber = 2 * n;
+    for (int i = startNumber; i >= 2; i -= 2) {
+      printf("%d\n", i);
+    }
+  } else {
+    printf("Please enter a positive integer for N.\n");
+  }
+
+  return 0;
+}
+
+
+ Write a program to print squares of the first N natural numbers
+#include <stdio.h>
+
+int main() {
+  int n;
+
+  printf("Enter the value of N: ");
+  scanf("%d", &n);
+
+  if (n > 0) {
+    printf("Squares of the first %d natural numbers are:\n", n);
+    for (int i = 1; i <= n; i++) {
+      int square = i * i;
+      printf("The square of %d is %d\n", i, square);
+    }
+  } else {
+    printf("Please enter a positive integer for N.\n");
+  }
+
+  return 0;
+}
+
+
+Write a program to print cubes of the first N natural numbers
+#include <stdio.h>
+
+int main() {
+  int n;
+
+  printf("Enter the value of N: ");
+  scanf("%d", &n);
+
+  if (n > 0) {
+    printf("Cubes of the first %d natural numbers are:\n", n);
+    for (int i = 1; i <= n; i++) {
+      int cube = i * i * i;
+      printf("The cube of %d is %d\n", i, cube);
+    }
+  } else {
+    printf("Please enter a positive integer for N.\n");
+  }
+
+  return 0;
+}
+
+
+Write a program to print a table of N.
+
+#include <stdio.h>
+
+int main() {
+  int n;
+
+  printf("Enter the number for the multiplication table: ");
+  scanf("%d", &n);
+
+  printf("Multiplication table of %d:\n", n);
+
+  for (int i = 1; i <= 10; i++) {
+    int product = n * i;
+    printf("%d * %d = %d\n", n, i, product);
+  }
+
+  return 0;
+}
+
