@@ -1,0 +1,826 @@
+//Operator overloading and friend function
+/*
+1. Define a class Complex with appropriate instance variables and member functions.
+Define following operators in the class:
+a. +
+b. -
+c. *
+d. ==
+*/
+
+#include<iostream>
+
+using namespace std;
+
+class Complex
+{
+    private:
+
+        int a,b;
+
+    public:
+
+       Complex()
+       {
+
+       }
+       ~Complex()
+       {
+
+       }
+       Complex(int x,int y)
+       {
+           a = x;
+           b = y;
+       }
+
+       Complex operator+(Complex c2)
+       {
+            Complex temp;
+
+            temp.a = a + c2.a;
+            temp.b = b + c2.b;
+             
+            return temp;  
+       }  
+
+       bool operator==(Complex c2)
+       {
+           if( a == c2.a && b == c2.b )
+               return true;
+           else
+               return false; 
+       }      
+
+       void showComplex()
+       {
+          cout<<"( "<<a<<" + "<<b<<"i"<<" )";
+       }
+};
+
+int main()
+{
+    int x,y; 
+    cout<<"\n\nEnter two number: ";
+    cin>>x>>y;
+
+    Complex c1(x,y),c2(3,6),c3;
+    
+    c3 = c1.operator+(c2); // c3 = c1 + c2;
+    c3.showComplex();
+
+    if(c1 == c2)
+       cout<<"\nBoth are same:";
+    else
+       cout<<"\nBoth are not same:";
+    cout<<endl;
+
+   return 0; 
+}
+
+// Operator overloading and friend function
+/*
+Write a C++ program to overload unary operators that is increment and decrement
+*/
+
+#include<iostream>
+
+using namespace std;
+
+class Num
+{
+    private:
+     int n;
+    public:
+    
+    ~Num()
+    {
+       
+    }
+    Num()
+    {
+       
+    }
+    void setNum(int x)
+    {
+        n = x;
+    }
+    void operator++(void)
+    {
+        ++n;
+    }
+    void operator--(void)
+    {
+        --n;
+    }
+    void showNum()
+    {
+        cout<<"\nNumber is: "<<n;
+    }
+};
+
+int main()
+{
+    Num num;
+    int x;
+    
+    cout<<"\nEnter a Number: ";
+    cin>>x;
+
+    num.setNum(x);
+    
+    num.operator++();
+    cout<<"\nAfter Increment:-";
+    num.showNum();
+    num.operator--();
+    cout<<"\nAfter Decrement:-";
+    num.showNum();
+    cout<<endl<<endl;
+
+  return 0;
+}
+
+// Operator overloading and friend function
+/*
+Write a C++ program to add two complex numbers using operator overloaded by a friend
+function.
+*/
+
+#include<iostream>
+
+using namespace std;
+
+class Complex
+{
+    private:
+
+      int num1,num2;
+
+      public:
+        
+        void accept()
+        {
+            cout<<"\n\nEnter Two Complex Number: ";
+            cin>>num1>>num2;
+        }
+
+        void display()
+        {
+            cout<<"( "<<num1<<" + "<<num2<<"i )";
+        }
+
+        // overloading '+' operator by using friend function
+        friend Complex operator+(Complex c1,Complex c2);
+};
+
+    Complex operator+(Complex c1,Complex c2)
+    {
+        Complex temp;
+
+        temp.num1 = c1.num1 + c2.num1;
+        temp.num2 = c1.num2 + c2.num2;
+        
+        return temp;
+    }
+
+    int main()
+    {
+        Complex c1,c2,sum;
+
+        c1.accept();
+        c2.accept();
+
+        sum = c1 + c2; //operator+(c1,c2);   
+        cout<<"\nEntered Value: \n";
+        cout<<"\t";
+        c1.display();
+        cout<<"\t";
+        c2.display();
+
+        cout<<"\nAddition of Real and Imaginary Number is: \n";
+        cout<<"\t";
+        sum.display();
+
+      return 0;  
+    }
+
+
+// Operator overloading and friend function
+/*
+Create a class Time which contains:
+- Hours
+- Minutes
+- Seconds
+Write a C++ program using operator overloading for the following:
+1. == : To check whether two Times are the same or not.
+2. >> : To accept the time.
+3. << : To display the time.
+*/
+
+#include<iostream>
+
+using namespace std;
+
+class Time
+{
+    private:
+      int HR,MIN,SEC;
+    public:
+    Time()
+    {
+
+    }
+    ~Time()
+    {
+
+    }
+  
+    friend istream& operator>>(istream &in,Time &t);
+    friend ostream& operator<<(ostream &out,Time &t);
+
+    void normalize();
+    Time operator+(Time t2);
+    bool operator==(Time t2);
+    
+};
+
+istream& operator>>(istream &in,Time &t)
+{
+    cout<<"Input Hour: ";
+    cin>>t.HR;
+    cout<<"Input Minutes: ";
+    cin>>t.MIN;
+    cout<<"Input Second: ";
+    cin>>t.SEC;
+
+   return in; 
+}
+
+ostream& operator<<(ostream &out,Time &t)
+{
+    out<<t.HR<<" : "<<t.MIN<<" : "<<t.SEC;
+
+   return out; 
+}
+
+void Time :: normalize()
+{
+    MIN = MIN + SEC / 60;
+    SEC = SEC % 60;
+    HR = HR + MIN / 60;
+    MIN = MIN % 60;
+}
+
+Time Time :: operator+(Time t2)
+{
+    Time temp;
+
+    temp.HR = HR + t2.HR;
+    temp.MIN = MIN + t2.MIN;
+    temp.SEC = SEC + t2.SEC;
+    temp.normalize();
+
+  return temp;  
+}
+
+bool Time :: operator==(Time t2)
+{
+    if(HR == t2.HR && MIN == t2.MIN && SEC == t2.SEC)
+        return (true);
+    else
+        return (false);  
+}
+
+int main()
+{
+    Time t1,t2,t3;
+
+    cout<<"\n\nEnter First Time: \n\n";
+    cin>>t1;
+    cout<<"\n\nEnter Second Time: \n\n";
+    cin>>t2;
+
+    system("cls");
+    cout<<"\n\nFirst Time:-   "<<t1;
+    cout<<"\n\nSecond Time:-   "<<t2;
+    int same = (t1==t2); // additional
+    if(same == 1) // (t1 == t2)
+       cout<<"\n\nBoth Time Are Same: ";
+    else
+       cout<<"\n\nBoth Time Are Different:";  
+
+    t3 = t1 + t2;
+    cout<<"\n\nFinal Time:-   "<<t3<<endl<<endl;
+
+  return 0;
+}
+
+// Operator overloading and friend function
+/*
+Consider following class Numbers
+class Numbers
+{
+ int x,y,z;
+ public:
+ // methods
+};
+Overload the operator unary minus (-) to negate the numbers
+*/
+
+#include<iostream>
+using namespace std;
+
+class Number
+{
+    private:
+      int x,y,z;
+    public:
+      Number(int a=0,int b=0,int c=0)
+      {
+          x = a;
+          y = b;
+          z = c;
+      }
+      ~Number()
+      {
+
+      }
+      void displayNumber()
+      {
+         cout<<"\n"<<x<<"\n"<<y<<"\n"<<z;
+      }
+      void operator-()
+      {
+         x = -x;
+         y = -y;
+         z = -z;
+
+          /*if(x>0)  // negetive to positive
+        {
+           x = x; 
+        }
+        else
+        {
+            x = -x;
+        }
+        if(y>0)
+        {
+           y = y; 
+        }
+        else
+        {
+            y = -y;
+        }
+        if(z>0)
+        {
+           z = z; 
+        }
+        else
+        {
+            z = -z;
+        }*/
+      }
+};
+
+int main()
+{
+    int a,b,c;
+
+    cout<<"\n\nEnter Three Number: ";
+    cin>>a>>b>>c;
+
+    Number num(a,b,c);
+    -num;
+    num.displayNumber();
+
+    return 0;
+}
+
+// Operator overloading and friend function
+/*
+Create a class CString to represent a string.
+ a) Overload the + operator to concatenate two strings.
+ b) == to compare 2 strings.
+*/
+
+#include<iostream>
+#include<cstring>
+using namespace std;
+
+class Cstring
+{
+    private:
+      char str[20];
+    public:
+    Cstring()
+    {
+
+    }  
+    ~Cstring()
+    {
+
+    }
+
+    void input()
+    {
+        cout<<"\nEnter a string: ";
+        cin>>str;
+    }
+
+    void show()
+    {
+        cout<<str;
+    }
+
+    Cstring operator+(Cstring s2)
+    {
+       Cstring temp;
+
+       strcpy(temp.str,str);
+       strcat(temp.str,s2.str);  // concatenate two strings
+
+       return temp;
+    } 
+
+    bool operator==(Cstring s2)
+    {
+        for(int i=0; str[i] != '\0' ; i++)
+        {
+            if(str[i] != s2.str[i])
+            {
+                return (false);
+            }   
+        }
+        return (true);
+    }
+};
+
+int main()
+{
+    Cstring str1,str2,str3;
+
+    str1.input();
+    str2.input();
+    system("cls");
+
+    cout<<"\n\nFirst string: ";
+    str1.show();
+    cout<<"\n\nSecond string: ";
+    str2.show();
+
+    str3 = str1 + str2; //str1.operator+(str2); 
+    cout<<endl<<endl;
+    str3.show();
+    if(str1==str2)
+        cout<<"\n\nBoth string are same:\n\n";
+    else  
+        cout<<"\n\nBoth string are not same:\n\n";
+   return 0; 
+}
+
+
+// Operator overloading and friend function
+/*
+Define a C++ class fraction
+class fraction
+{
+ long numerator;
+ long denominator;
+ Public:
+ fraction (long n=0, long d=0);
+}
+Overload the following operators as member or friend:
+a) Unary ++ (pre and post both)
+b) Overload as friend functions: operators << and >>.
+*/
+
+#include<iostream>
+using namespace std;
+
+class Fraction
+{
+    private:
+      long num;
+      long deno;
+    public:
+       Fraction(long n=0,long d=0)
+       {
+            num = n;
+            deno = d;
+       }
+       ~Fraction()
+       {
+
+       }
+       friend istream& operator>>(istream &in,Fraction &f)
+       {
+            cout<<"\nNumerator: ";
+            in>>f.num;
+            cout<<"Denominator: ";
+            in>>f.deno;
+            return in;
+       }
+       friend ostream& operator<<(ostream &out,Fraction &f)
+       {
+            out<<f.num<<"/"<<f.deno;
+            return out;
+       }
+       Fraction operator++()  // pre-increment
+       {
+           ++num;
+           ++deno; 
+           return *this;
+       }
+       Fraction operator++(int s)  // post-increment
+       {
+           Fraction temp = *this;
+           num++;
+           deno++;
+           return temp;
+       }
+};
+
+int main()
+{
+    Fraction f1,f2;
+
+    cout<<"\n\nEnter First Fraction Value: \n";
+    cin>>f1;
+
+    cout<<"\nf++  :  ";
+    f1++;
+    cout<<f1;
+    
+    cout<<"\n++f  :  ";
+    ++f1;
+    cout<<f1;
+
+    cout<<"\n\nEnter Second Fraction Value: \n";
+    cin>>f2;
+
+    f2 = ++f1;
+
+    cout<<"\nf2 = ++f1";
+    cout<<"\nf1  :  ";
+    cout<<f1;
+    cout<<"\nf2  :  ";
+    cout<<f2;
+
+    f2 = f1++;
+
+    cout<<"\nf2 = f1++";
+    cout<<"\nf1  :  ";
+    cout<<f1;
+    cout<<"\nf2  :  ";
+    cout<<f2;
+
+   return 0;
+}
+
+
+// Operator overloading and friend function
+/*
+Consider a class Matrix
+Class Matrix
+{
+ int a[3][3];
+ Public:
+ //methods;
+};
+Overload the - (Unary) should negate the numbers stored in the object.
+*/
+
+#include<iostream>
+using namespace std;
+
+class Matrix
+{
+    private:
+       int a[3][3];
+    public:
+       Matrix()
+       {
+
+       }
+       ~Matrix()
+       {
+
+       }
+
+       void input()
+       {
+           cout<<"\n\nEnter (3x3) Matrix: \n\n";
+
+           for(int i=0; i<3; i++)
+           {
+               for(int j=0; j<3; j++)
+               {
+                    cout<<"Input element ["<<i<<"]"<<" ["<<j<<"] : ";
+                    cin>>a[i][j];
+               }
+           }
+       }
+
+       void show()
+       {
+           for(int i=0; i<3; i++)
+           {
+               for(int j=0; j<3; j++)
+               {
+                    cout<<a[i][j]<<"    ";
+               }
+               cout<<endl<<endl;
+           }
+       }
+
+       void operator-()
+       {
+            for(int i=0; i<3; i++)
+           {
+               for(int j=0; j<3; j++)
+               {
+                    a[i][j] = -a[i][j];
+               }
+               cout<<endl;
+           }
+       }
+};
+
+int main()
+{
+    Matrix matrix;
+
+    matrix.input();
+    system("cls");
+    matrix.show();
+    
+    -matrix; //matrix.operator-();
+    matrix.show();
+
+   return 0; 
+}
+
+// Operator overloading and friend function
+/*
+Consider the following class mystring
+
+Class mystring
+{
+ char str [100];
+ Public:
+ // methods
+};
+Overload operator “!” to reverse the case of each alphabet in the string (Uppercase to
+Lowercase and vice versa).
+
+*/
+
+#include<iostream>
+using namespace std;
+
+class mystring
+{
+    private:
+       char str[100];
+    public:
+       mystring()
+       {
+
+       }
+       ~mystring()
+       {
+
+       }
+       void input()
+       {
+            cout<<"\nEnter a String: ";
+            cin>>str;
+       }   
+       void show()
+       {
+            cout<<str;
+       }
+       mystring operator!()
+       {
+           mystring temp;
+
+           for(int i=0; str[i] != '\0'; i++)
+           {
+                if(str[i] >= 65 && str[i] <= 90)
+                {
+                    temp.str[i] = str[i] + 32;
+                }
+                else if(str[i] >= 97 && str[i] <= 122)
+                {
+                    temp.str[i] = str[i] - 32;
+                }
+           }
+           return temp;
+       }
+};
+
+int main()
+{
+    mystring ms1,ms2;
+
+    ms1.input();
+    system("cls");
+    cout<<"\n\nYour input string is: ";
+    ms1.show();
+    ms2=!ms1;
+    cout<<"\n\nVice Versa String is: ";
+    ms2.show();
+    cout<<endl<<endl;
+
+   return 0; 
+}
+
+// Operator overloading and friend function
+/*
+Class Matrix
+{
+ int a[3][3];
+ Public:
+ //methods;
+};
+Let m1 and m2 are two matrices. Find out m3=m1+m2 (use operator overloading).
+*/
+
+#include<iostream>
+using namespace std;
+
+class Matrix
+{
+    private:
+       int a[3][3];
+    public:
+       Matrix()
+       {
+
+       }
+       ~Matrix()
+       {
+
+       }
+
+       void input()
+       {
+           cout<<"\n\nEnter (3x3) Matrix: \n\n";
+
+           for(int i=0; i<3; i++)
+           {
+               for(int j=0; j<3; j++)
+               {
+                    cout<<"Input element ["<<i<<"]"<<" ["<<j<<"] : ";
+                    cin>>a[i][j];
+               }
+           }
+       }
+
+       void show()
+       {
+           for(int i=0; i<3; i++)
+           {
+               for(int j=0; j<3; j++)
+               {
+                    cout<<a[i][j]<<"    ";
+               }
+               cout<<endl<<endl;
+           }
+       }
+
+       Matrix operator+(Matrix m2)
+       {
+            Matrix temp;
+
+            for(int i=0; i<3; i++)
+           {
+               for(int j=0; j<3; j++)
+               {
+                    temp.a[i][j] = a[i][j] + m2.a[i][j];
+               }
+               cout<<endl;
+           }
+           return temp;
+       }
+};
+
+int main()
+{
+    Matrix m1,m2,m3;
+
+    m1.input();
+    m2.input();
+
+    system("cls");
+    cout<<"\nFirst Matrix is: \n\n";
+    m1.show();
+    cout<<"Second Matrix is: \n\n";
+    m2.show();
+    m3 = m1 + m2; //m1.operator+(m2);
+    cout<<"Addition of First and Second Matrix is: \n\n";
+    m3.show();
+
+   return 0; 
+}
+
