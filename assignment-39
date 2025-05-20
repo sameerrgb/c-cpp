@@ -1,0 +1,1583 @@
+Create an ADT array without using STL
+#include <iostream>
+
+class ADTArray {
+private:
+    int* data;
+    int size;
+
+public:
+    ADTArray(int s) : size(s) {
+        if (s <= 0) {
+            data = nullptr;
+            size = 0;
+            std::cerr << "Error: Array size must be positive." << std::endl;
+        } else {
+            data = new int[size];
+            for (int i = 0; i < size; ++i) {
+                data[i] = 0;
+            }
+        }
+    }
+
+    ~ADTArray() {
+        delete[] data;
+        data = nullptr;
+    }
+
+    void set(int index, int value) {
+        if (index >= 0 && index < size) {
+            data[index] = value;
+        } else {
+            std::cerr << "Error: Index out of bounds for set operation." << std::endl;
+        }
+    }
+
+    int get(int index) const {
+        if (index >= 0 && index < size) {
+            return data[index];
+        } else {
+            std::cerr << "Error: Index out of bounds for get operation." << std::endl;
+            return -1;
+        }
+    }
+
+    int getSize() const {
+        return size;
+    }
+
+    void print() const {
+        if (size == 0) {
+            std::cout << "Array is empty." << std::endl;
+            return;
+        }
+        std::cout << "Array elements: ";
+        for (int i = 0; i < size; ++i) {
+            std::cout << data[i] << (i == size - 1 ? "" : " ");
+        }
+        std::cout << std::endl;
+    }
+};
+
+int main() {
+    ADTArray myArray(5);
+
+    myArray.print();
+
+    myArray.set(0, 10);
+    myArray.set(1, 20);
+    myArray.set(2, 30);
+    myArray.set(3, 40);
+    myArray.set(4, 50);
+
+    myArray.print();
+
+    std::cout << "Element at index 2: " << myArray.get(2) << std::endl;
+    std::cout << "Array size: " << myArray.getSize() << std::endl;
+
+    myArray.set(5, 60);
+    std::cout << "Attempting to get element at index 5: " << myArray.get(5) << std::endl;
+
+
+    ADTArray emptyArray(0);
+    emptyArray.print();
+
+    return 0;
+}
+
+
+
+
+Create an array and implement a search function in the array
+#include <iostream>
+
+class ADTArray {
+private:
+    int* data;
+    int size;
+
+public:
+    ADTArray(int s) : size(s) {
+        if (s <= 0) {
+            data = nullptr;
+            size = 0;
+            std::cerr << "Error: Array size must be positive." << std::endl;
+        } else {
+            data = new int[size];
+            for (int i = 0; i < size; ++i) {
+                data[i] = 0;
+            }
+        }
+    }
+
+    ~ADTArray() {
+        delete[] data;
+        data = nullptr;
+    }
+
+    void set(int index, int value) {
+        if (index >= 0 && index < size) {
+            data[index] = value;
+        } else {
+            std::cerr << "Error: Index out of bounds for set operation." << std::endl;
+        }
+    }
+
+    int get(int index) const {
+        if (index >= 0 && index < size) {
+            return data[index];
+        } else {
+            std::cerr << "Error: Index out of bounds for get operation." << std::endl;
+            return -1;
+        }
+    }
+
+    int getSize() const {
+        return size;
+    }
+
+    void print() const {
+        if (size == 0) {
+            std::cout << "Array is empty." << std::endl;
+            return;
+        }
+        std::cout << "Array elements: ";
+        for (int i = 0; i < size; ++i) {
+            std::cout << data[i] << (i == size - 1 ? "" : " ");
+        }
+        std::cout << std::endl;
+    }
+
+    int search(int value) const {
+        for (int i = 0; i < size; ++i) {
+            if (data[i] == value) {
+                return i;
+            }
+        }
+        return -1;
+    }
+};
+
+int main() {
+    ADTArray myArray(5);
+
+    myArray.set(0, 10);
+    myArray.set(1, 20);
+    myArray.set(2, 30);
+    myArray.set(3, 40);
+    myArray.set(4, 50);
+
+    myArray.print();
+
+    int valueToFind1 = 30;
+    int index1 = myArray.search(valueToFind1);
+    if (index1 != -1) {
+        std::cout << "Value " << valueToFind1 << " found at index: " << index1 << std::endl;
+    } else {
+        std::cout << "Value " << valueToFind1 << " not found in the array." << std::endl;
+    }
+
+    int valueToFind2 = 99;
+    int index2 = myArray.search(valueToFind2);
+    if (index2 != -1) {
+        std::cout << "Value " << valueToFind2 << " found at index: " << index2 << std::endl;
+    } else {
+        std::cout << "Value " << valueToFind2 << " not found in the array." << std::endl;
+    }
+
+    return 0;
+}
+
+
+
+Create a function in Array to reverse an array.
+#include <iostream>
+
+class ADTArray {
+private:
+    int* data;
+    int size;
+
+public:
+    ADTArray(int s) : size(s) {
+        if (s <= 0) {
+            data = nullptr;
+            size = 0;
+            std::cerr << "Error: Array size must be positive." << std::endl;
+        } else {
+            data = new int[size];
+            for (int i = 0; i < size; ++i) {
+                data[i] = 0;
+            }
+        }
+    }
+
+    ~ADTArray() {
+        delete[] data;
+        data = nullptr;
+    }
+
+    void set(int index, int value) {
+        if (index >= 0 && index < size) {
+            data[index] = value;
+        } else {
+            std::cerr << "Error: Index out of bounds for set operation." << std::endl;
+        }
+    }
+
+    int get(int index) const {
+        if (index >= 0 && index < size) {
+            return data[index];
+        } else {
+            std::cerr << "Error: Index out of bounds for get operation." << std::endl;
+            return -1;
+        }
+    }
+
+    int getSize() const {
+        return size;
+    }
+
+    void print() const {
+        if (size == 0) {
+            std::cout << "Array is empty." << std::endl;
+            return;
+        }
+        std::cout << "Array elements: ";
+        for (int i = 0; i < size; ++i) {
+            std::cout << data[i] << (i == size - 1 ? "" : " ");
+        }
+        std::cout << std::endl;
+    }
+
+    int search(int value) const {
+        for (int i = 0; i < size; ++i) {
+            if (data[i] == value) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    void reverse() {
+        int start = 0;
+        int end = size - 1;
+        while (start < end) {
+            int temp = data[start];
+            data[start] = data[end];
+            data[end] = temp;
+            start++;
+            end--;
+        }
+    }
+};
+
+int main() {
+    ADTArray myArray(5);
+
+    myArray.set(0, 10);
+    myArray.set(1, 20);
+    myArray.set(2, 30);
+    myArray.set(3, 40);
+    myArray.set(4, 50);
+
+    std::cout << "Array before reversing:" << std::endl;
+    myArray.print();
+
+    myArray.reverse();
+
+    std::cout << "\nArray after reversing:" << std::endl;
+    myArray.print();
+
+    int valueToFind1 = 30;
+    int index1 = myArray.search(valueToFind1);
+    if (index1 != -1) {
+        std::cout << "\nValue " << valueToFind1 << " found at index: " << index1 << std::endl;
+    } else {
+        std::cout << "\nValue " << valueToFind1 << " not found in the array." << std::endl;
+    }
+
+    int valueToFind2 = 99;
+    int index2 = myArray.search(valueToFind2);
+    if (index2 != -1) {
+        std::cout << "Value " << valueToFind2 << " found at index: " << index2 << std::endl;
+    } else {
+        std::cout << "Value " << valueToFind2 << " not found in the array." << std::endl;
+    }
+
+    return 0;
+}
+
+
+
+
+Create a function in Array to sort the given array
+#include <iostream>
+
+class ADTArray {
+private:
+    int* data;
+    int size;
+
+public:
+    ADTArray(int s) : size(s) {
+        if (s <= 0) {
+            data = nullptr;
+            size = 0;
+            std::cerr << "Error: Array size must be positive." << std::endl;
+        } else {
+            data = new int[size];
+            for (int i = 0; i < size; ++i) {
+                data[i] = 0;
+            }
+        }
+    }
+
+    ~ADTArray() {
+        delete[] data;
+        data = nullptr;
+    }
+
+    void set(int index, int value) {
+        if (index >= 0 && index < size) {
+            data[index] = value;
+        } else {
+            std::cerr << "Error: Index out of bounds for set operation." << std::endl;
+        }
+    }
+
+    int get(int index) const {
+        if (index >= 0 && index < size) {
+            return data[index];
+        } else {
+            std::cerr << "Error: Index out of bounds for get operation." << std::endl;
+            return -1;
+        }
+    }
+
+    int getSize() const {
+        return size;
+    }
+
+    void print() const {
+        if (size == 0) {
+            std::cout << "Array is empty." << std::endl;
+            return;
+        }
+        std::cout << "Array elements: ";
+        for (int i = 0; i < size; ++i) {
+            std::cout << data[i] << (i == size - 1 ? "" : " ");
+        }
+        std::cout << std::endl;
+    }
+
+    int search(int value) const {
+        for (int i = 0; i < size; ++i) {
+            if (data[i] == value) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    void reverse() {
+        int start = 0;
+        int end = size - 1;
+        while (start < end) {
+            int temp = data[start];
+            data[start] = data[end];
+            data[end] = temp;
+            start++;
+            end--;
+        }
+    }
+
+    void sort() {
+        // Implement a simple Bubble Sort algorithm
+        for (int i = 0; i < size - 1; ++i) {
+            for (int j = 0; j < size - 1 - i; ++j) {
+                if (data[j] > data[j + 1]) {
+                    // Swap elements
+                    int temp = data[j];
+                    data[j] = data[j + 1];
+                    data[j + 1] = temp;
+                }
+            }
+        }
+    }
+};
+
+int main() {
+    ADTArray myArray(5);
+
+    myArray.set(0, 30);
+    myArray.set(1, 10);
+    myArray.set(2, 50);
+    myArray.set(3, 20);
+    myArray.set(4, 40);
+
+    std::cout << "Array before sorting:" << std::endl;
+    myArray.print();
+
+    myArray.sort();
+
+    std::cout << "\nArray after sorting:" << std::endl;
+    myArray.print();
+
+    std::cout << "\nArray after reversing:" << std::endl;
+    myArray.reverse(); // Demonstrate reverse after sorting
+    myArray.print();
+
+
+    int valueToFind1 = 30;
+    int index1 = myArray.search(valueToFind1);
+    if (index1 != -1) {
+        std::cout << "\nValue " << valueToFind1 << " found at index: " << index1 << std::endl;
+    } else {
+        std::cout << "\nValue " << valueToFind1 << " not found in the array." << std::endl;
+    }
+
+    int valueToFind2 = 99;
+    int index2 = myArray.search(valueToFind2);
+    if (index2 != -1) {
+        std::cout << "Value " << valueToFind2 << " found at index: " << index2 << std::endl;
+    } else {
+        std::cout << "Value " << valueToFind2 << " not found in the array." << std::endl;
+    }
+
+    return 0;
+}
+
+
+
+
+Create a function in Array to check the size of an array
+#include <iostream>
+
+class ADTArray {
+private:
+    int* data;
+    int size;
+
+public:
+    ADTArray(int s) : size(s) {
+        if (s <= 0) {
+            data = nullptr;
+            size = 0;
+            std::cerr << "Error: Array size must be positive." << std::endl;
+        } else {
+            data = new int[size];
+            for (int i = 0; i < size; ++i) {
+                data[i] = 0;
+            }
+        }
+    }
+
+    ~ADTArray() {
+        delete[] data;
+        data = nullptr;
+    }
+
+    void set(int index, int value) {
+        if (index >= 0 && index < size) {
+            data[index] = value;
+        } else {
+            std::cerr << "Error: Index out of bounds for set operation." << std::endl;
+        }
+    }
+
+    int get(int index) const {
+        if (index >= 0 && index < size) {
+            return data[index];
+        } else {
+            std::cerr << "Error: Index out of bounds for get operation." << std::endl;
+            return -1;
+        }
+    }
+
+    int getSize() const {
+        return size;
+    }
+
+    void print() const {
+        if (size == 0) {
+            std::cout << "Array is empty." << std::endl;
+            return;
+        }
+        std::cout << "Array elements: ";
+        for (int i = 0; i < size; ++i) {
+            std::cout << data[i] << (i == size - 1 ? "" : " ");
+        }
+        std::cout << std::endl;
+    }
+
+    int search(int value) const {
+        for (int i = 0; i < size; ++i) {
+            if (data[i] == value) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    void reverse() {
+        int start = 0;
+        int end = size - 1;
+        while (start < end) {
+            int temp = data[start];
+            data[start] = data[end];
+            data[end] = temp;
+            start++;
+            end--;
+        }
+    }
+
+    void sort() {
+        // Implement a simple Bubble Sort algorithm
+        for (int i = 0; i < size - 1; ++i) {
+            for (int j = 0; j < size - 1 - i; ++j) {
+                if (data[j] > data[j + 1]) {
+                    // Swap elements
+                    int temp = data[j];
+                    data[j] = data[j + 1];
+                    data[j + 1] = temp;
+                }
+            }
+        }
+    }
+};
+
+int main() {
+    ADTArray myArray(5);
+
+    myArray.set(0, 30);
+    myArray.set(1, 10);
+    myArray.set(2, 50);
+    myArray.set(3, 20);
+    myArray.set(4, 40);
+
+    std::cout << "Array before sorting:" << std::endl;
+    myArray.print();
+
+    myArray.sort();
+
+    std::cout << "\nArray after sorting:" << std::endl;
+    myArray.print();
+
+    std::cout << "\nArray after reversing:" << std::endl;
+    myArray.reverse(); // Demonstrate reverse after sorting
+    myArray.print();
+
+
+    int valueToFind1 = 30;
+    int index1 = myArray.search(valueToFind1);
+    if (index1 != -1) {
+        std::cout << "\nValue " << valueToFind1 << " found at index: " << index1 << std::endl;
+    } else {
+        std::cout << "\nValue " << valueToFind1 << " not found in the array." << std::endl;
+    }
+
+    int valueToFind2 = 99;
+    int index2 = myArray.search(valueToFind2);
+    if (index2 != -1) {
+        std::cout << "Value " << valueToFind2 << " found at index: " << index2 << std::endl;
+    } else {
+        std::cout << "Value " << valueToFind2 << " not found in the array." << std::endl;
+    }
+
+    return 0;
+}
+
+
+
+
+
+
+Create a Dynamic array without using STL.
+#include <iostream> // Include the iostream library for input/output operations
+
+// Define a class for the Dynamic Array ADT
+class DynamicArray {
+private:
+    int* data;     // Pointer to the dynamically allocated array
+    int size;      // Current number of elements in the array
+    int capacity;  // Total allocated space (maximum number of elements before resizing)
+
+    // Private helper function to resize the array
+    void resize() {
+        // Double the capacity. If capacity was 0, set it to a default size (e.g., 1).
+        int new_capacity = (capacity == 0) ? 1 : capacity * 2;
+
+        // Allocate new memory with the increased capacity
+        int* new_data = new int[new_capacity];
+
+        // Copy existing elements from the old array to the new array
+        for (int i = 0; i < size; ++i) {
+            new_data[i] = data[i];
+        }
+
+        // Delete the old array to free up memory
+        delete[] data;
+
+        // Update the data pointer to point to the new array
+        data = new_data;
+
+        // Update the capacity
+        capacity = new_capacity;
+
+        std::cout << "Resized array to new capacity: " << capacity << std::endl;
+    }
+
+public:
+    // Constructor: Initializes an empty dynamic array with a default capacity
+    DynamicArray(int initial_capacity = 10) : size(0) {
+        // Ensure initial capacity is non-negative
+        if (initial_capacity < 0) {
+            initial_capacity = 10; // Default to 10 if a negative capacity is provided
+        }
+        capacity = initial_capacity;
+        data = new int[capacity]; // Allocate memory for the initial capacity
+        std::cout << "DynamicArray created with initial capacity: " << capacity << std::endl;
+    }
+
+    // Destructor: Frees the dynamically allocated memory
+    ~DynamicArray() {
+        delete[] data; // Deallocate the memory pointed to by data
+        data = nullptr; // Set data to nullptr to avoid dangling pointer issues
+        std::cout << "DynamicArray destroyed. Memory freed." << std::endl;
+    }
+
+    // Add an element to the end of the array
+    void push_back(int value) {
+        // If the array is full, resize it
+        if (size == capacity) {
+            resize();
+        }
+        // Add the new element at the end
+        data[size] = value;
+        // Increment the size
+        size++;
+    }
+
+    // Get the element at a specific index
+    int get(int index) const {
+        // Check if the index is within the valid range
+        if (index >= 0 && index < size) {
+            return data[index]; // Return the element at the given index
+        } else {
+            // Print an error message for out-of-bounds access
+            std::cerr << "Error: Index " << index << " out of bounds." << std::endl;
+            // Return a default or error value (e.g., -1 or throw an exception)
+            // Returning -1 here for simplicity, but throwing an exception is often better practice
+            return -1;
+        }
+    }
+
+    // Get the current number of elements in the array
+    int getSize() const {
+        return size;
+    }
+
+    // Get the current allocated capacity of the array
+    int getCapacity() const {
+        return capacity;
+    }
+
+    // Print all elements of the array
+    void print() const {
+        if (size == 0) {
+            std::cout << "Array is empty." << std::endl;
+            return;
+        }
+        std::cout << "Array elements: ";
+        for (int i = 0; i < size; ++i) {
+            std::cout << data[i] << (i == size - 1 ? "" : " ");
+        }
+        std::cout << std::endl;
+    }
+};
+
+// Main function to demonstrate the DynamicArray
+int main() {
+    // Create a DynamicArray object
+    DynamicArray myDynamicArray; // Uses default initial capacity (10)
+
+    // Add elements to the dynamic array
+    std::cout << "\nAdding elements:" << std::endl;
+    myDynamicArray.push_back(10);
+    myDynamicArray.push_back(20);
+    myDynamicArray.push_back(30);
+    myDynamicArray.push_back(40);
+    myDynamicArray.push_back(50);
+    myDynamicArray.push_back(60);
+    myDynamicArray.push_back(70);
+    myDynamicArray.push_back(80);
+    myDynamicArray.push_back(90);
+    myDynamicArray.push_back(100); // This push_back fills the initial capacity
+    myDynamicArray.push_back(110); // This push_back will trigger a resize
+
+    // Print the array, size, and capacity
+    std::cout << "\nAfter adding elements:" << std::endl;
+    myDynamicArray.print();
+    std::cout << "Current size: " << myDynamicArray.getSize() << std::endl;
+    std::cout << "Current capacity: " << myDynamicArray.getCapacity() << std::endl;
+
+    // Access elements
+    std::cout << "\nAccessing elements:" << std::endl;
+    std::cout << "Element at index 0: " << myDynamicArray.get(0) << std::endl;
+    std::cout << "Element at index 5: " << myDynamicArray.get(5) << std::endl;
+    std::cout << "Element at index 10: " << myDynamicArray.get(10) << std::endl; // Accessing the last element
+    std::cout << "Attempting to access element at index 15:" << std::endl;
+    myDynamicArray.get(15); // This will print an error message
+
+    // Create another dynamic array with a smaller initial capacity
+    DynamicArray smallArray(3);
+    std::cout << "\nAdding elements to a smaller array:" << std::endl;
+    smallArray.push_back(1);
+    smallArray.push_back(2);
+    smallArray.push_back(3); // Fills initial capacity
+    smallArray.push_back(4); // Triggers resize
+    smallArray.push_back(5); // Triggers another resize
+
+    std::cout << "\nAfter adding elements to smaller array:" << std::endl;
+    smallArray.print();
+    std::cout << "Current size: " << smallArray.getSize() << std::endl;
+    std::cout << "Current capacity: " << smallArray.getCapacity() << std::endl;
+
+
+    return 0; // Indicate successful program execution
+}
+
+
+
+
+Create a function in a dynamic array to return the size of the array
+#include <iostream> // Include the iostream library for input/output operations
+
+// Define a class for the Dynamic Array ADT
+class DynamicArray {
+private:
+    int* data;     // Pointer to the dynamically allocated array
+    int size;      // Current number of elements in the array
+    int capacity;  // Total allocated space (maximum number of elements before resizing)
+
+    // Private helper function to resize the array
+    void resize() {
+        // Double the capacity. If capacity was 0, set it to a default size (e.g., 1).
+        int new_capacity = (capacity == 0) ? 1 : capacity * 2;
+
+        // Allocate new memory with the increased capacity
+        int* new_data = new int[new_capacity];
+
+        // Copy existing elements from the old array to the new array
+        for (int i = 0; i < size; ++i) {
+            new_data[i] = data[i];
+        }
+
+        // Delete the old array to free up memory
+        delete[] data;
+
+        // Update the data pointer to point to the new array
+        data = new_data;
+
+        // Update the capacity
+        capacity = new_capacity;
+
+        std::cout << "Resized array to new capacity: " << capacity << std::endl;
+    }
+
+public:
+    // Constructor: Initializes an empty dynamic array with a default capacity
+    DynamicArray(int initial_capacity = 10) : size(0) {
+        // Ensure initial capacity is non-negative
+        if (initial_capacity < 0) {
+            initial_capacity = 10; // Default to 10 if a negative capacity is provided
+        }
+        capacity = initial_capacity;
+        data = new int[capacity]; // Allocate memory for the initial capacity
+        std::cout << "DynamicArray created with initial capacity: " << capacity << std::endl;
+    }
+
+    // Destructor: Frees the dynamically allocated memory
+    ~DynamicArray() {
+        delete[] data; // Deallocate the memory pointed to by data
+        data = nullptr; // Set data to nullptr to avoid dangling pointer issues
+        std::cout << "DynamicArray destroyed. Memory freed." << std::endl;
+    }
+
+    // Add an element to the end of the array
+    void push_back(int value) {
+        // If the array is full, resize it
+        if (size == capacity) {
+            resize();
+        }
+        // Add the new element at the end
+        data[size] = value;
+        // Increment the size
+        size++;
+    }
+
+    // Get the element at a specific index
+    int get(int index) const {
+        // Check if the index is within the valid range
+        if (index >= 0 && index < size) {
+            return data[index]; // Return the element at the given index
+        } else {
+            // Print an error message for out-of-bounds access
+            std::cerr << "Error: Index " << index << " out of bounds." << std::endl;
+            // Return a default or error value (e.g., -1 or throw an exception)
+            // Returning -1 here for simplicity, but throwing an exception is often better practice
+            return -1;
+        }
+    }
+
+    // Get the current number of elements in the array
+    int getSize() const {
+        return size;
+    }
+
+    // Get the current allocated capacity of the array
+    int getCapacity() const {
+        return capacity;
+    }
+
+    // Print all elements of the array
+    void print() const {
+        if (size == 0) {
+            std::cout << "Array is empty." << std::endl;
+            return;
+        }
+        std::cout << "Array elements: ";
+        for (int i = 0; i < size; ++i) {
+            std::cout << data[i] << (i == size - 1 ? "" : " ");
+        }
+        std::cout << std::endl;
+    }
+};
+
+// Main function to demonstrate the DynamicArray
+int main() {
+    // Create a DynamicArray object
+    DynamicArray myDynamicArray; // Uses default initial capacity (10)
+
+    // Add elements to the dynamic array
+    std::cout << "\nAdding elements:" << std::endl;
+    myDynamicArray.push_back(10);
+    myDynamicArray.push_back(20);
+    myDynamicArray.push_back(30);
+    myDynamicArray.push_back(40);
+    myDynamicArray.push_back(50);
+    myDynamicArray.push_back(60);
+    myDynamicArray.push_back(70);
+    myDynamicArray.push_back(80);
+    myDynamicArray.push_back(90);
+    myDynamicArray.push_back(100); // This push_back fills the initial capacity
+    myDynamicArray.push_back(110); // This push_back will trigger a resize
+
+    // Print the array, size, and capacity
+    std::cout << "\nAfter adding elements:" << std::endl;
+    myDynamicArray.print();
+    std::cout << "Current size: " << myDynamicArray.getSize() << std::endl;
+    std::cout << "Current capacity: " << myDynamicArray.getCapacity() << std::endl;
+
+    // Access elements
+    std::cout << "\nAccessing elements:" << std::endl;
+    std::cout << "Element at index 0: " << myDynamicArray.get(0) << std::endl;
+    std::cout << "Element at index 5: " << myDynamicArray.get(5) << std::endl;
+    std::cout << "Element at index 10: " << myDynamicArray.get(10) << std::endl; // Accessing the last element
+    std::cout << "Attempting to access element at index 15:" << std::endl;
+    myDynamicArray.get(15); // This will print an error message
+
+    // Create another dynamic array with a smaller initial capacity
+    DynamicArray smallArray(3);
+    std::cout << "\nAdding elements to a smaller array:" << std::endl;
+    smallArray.push_back(1);
+    smallArray.push_back(2);
+    smallArray.push_back(3); // Fills initial capacity
+    smallArray.push_back(4); // Triggers resize
+    smallArray.push_back(5); // Triggers another resize
+
+    std::cout << "\nAfter adding elements to smaller array:" << std::endl;
+    smallArray.print();
+    std::cout << "Current size: " << smallArray.getSize() << std::endl;
+    std::cout << "Current capacity: " << smallArray.getCapacity() << std::endl;
+
+
+    return 0; // Indicate successful program execution
+}
+
+
+
+
+
+Create a function in a dynamic array to return the capacity of the array
+#include <iostream> // Include the iostream library for input/output operations
+
+// Define a class for the Dynamic Array ADT
+class DynamicArray {
+private:
+    int* data;     // Pointer to the dynamically allocated array
+    int size;      // Current number of elements in the array
+    int capacity;  // Total allocated space (maximum number of elements before resizing)
+
+    // Private helper function to resize the array
+    void resize() {
+        // Double the capacity. If capacity was 0, set it to a default size (e.g., 1).
+        int new_capacity = (capacity == 0) ? 1 : capacity * 2;
+
+        // Allocate new memory with the increased capacity
+        int* new_data = new int[new_capacity];
+
+        // Copy existing elements from the old array to the new array
+        for (int i = 0; i < size; ++i) {
+            new_data[i] = data[i];
+        }
+
+        // Delete the old array to free up memory
+        delete[] data;
+
+        // Update the data pointer to point to the new array
+        data = new_data;
+
+        // Update the capacity
+        capacity = new_capacity;
+
+        std::cout << "Resized array to new capacity: " << capacity << std::endl;
+    }
+
+public:
+    // Constructor: Initializes an empty dynamic array with a default capacity
+    DynamicArray(int initial_capacity = 10) : size(0) {
+        // Ensure initial capacity is non-negative
+        if (initial_capacity < 0) {
+            initial_capacity = 10; // Default to 10 if a negative capacity is provided
+        }
+        capacity = initial_capacity;
+        data = new int[capacity]; // Allocate memory for the initial capacity
+        std::cout << "DynamicArray created with initial capacity: " << capacity << std::endl;
+    }
+
+    // Destructor: Frees the dynamically allocated memory
+    ~DynamicArray() {
+        delete[] data; // Deallocate the memory pointed to by data
+        data = nullptr; // Set data to nullptr to avoid dangling pointer issues
+        std::cout << "DynamicArray destroyed. Memory freed." << std::endl;
+    }
+
+    // Add an element to the end of the array
+    void push_back(int value) {
+        // If the array is full, resize it
+        if (size == capacity) {
+            resize();
+        }
+        // Add the new element at the end
+        data[size] = value;
+        // Increment the size
+        size++;
+    }
+
+    // Get the element at a specific index
+    int get(int index) const {
+        // Check if the index is within the valid range
+        if (index >= 0 && index < size) {
+            return data[index]; // Return the element at the given index
+        } else {
+            // Print an error message for out-of-bounds access
+            std::cerr << "Error: Index " << index << " out of bounds." << std::endl;
+            // Return a default or error value (e.g., -1 or throw an exception)
+            // Returning -1 here for simplicity, but throwing an exception is often better practice
+            return -1;
+        }
+    }
+
+    // Get the current number of elements in the array
+    int getSize() const {
+        return size;
+    }
+
+    // Get the current allocated capacity of the array
+    int getCapacity() const {
+        return capacity;
+    }
+
+    // Print all elements of the array
+    void print() const {
+        if (size == 0) {
+            std::cout << "Array is empty." << std::endl;
+            return;
+        }
+        std::cout << "Array elements: ";
+        for (int i = 0; i < size; ++i) {
+            std::cout << data[i] << (i == size - 1 ? "" : " ");
+        }
+        std::cout << std::endl;
+    }
+};
+
+// Main function to demonstrate the DynamicArray
+int main() {
+    // Create a DynamicArray object
+    DynamicArray myDynamicArray; // Uses default initial capacity (10)
+
+    // Add elements to the dynamic array
+    std::cout << "\nAdding elements:" << std::endl;
+    myDynamicArray.push_back(10);
+    myDynamicArray.push_back(20);
+    myDynamicArray.push_back(30);
+    myDynamicArray.push_back(40);
+    myDynamicArray.push_back(50);
+    myDynamicArray.push_back(60);
+    myDynamicArray.push_back(70);
+    myDynamicArray.push_back(80);
+    myDynamicArray.push_back(90);
+    myDynamicArray.push_back(100); // This push_back fills the initial capacity
+    myDynamicArray.push_back(110); // This push_back will trigger a resize
+
+    // Print the array, size, and capacity
+    std::cout << "\nAfter adding elements:" << std::endl;
+    myDynamicArray.print();
+    std::cout << "Current size: " << myDynamicArray.getSize() << std::endl;
+    std::cout << "Current capacity: " << myDynamicArray.getCapacity() << std::endl;
+
+    // Access elements
+    std::cout << "\nAccessing elements:" << std::endl;
+    std::cout << "Element at index 0: " << myDynamicArray.get(0) << std::endl;
+    std::cout << "Element at index 5: " << myDynamicArray.get(5) << std::endl;
+    std::cout << "Element at index 10: " << myDynamicArray.get(10) << std::endl; // Accessing the last element
+    std::cout << "Attempting to access element at index 15:" << std::endl;
+    myDynamicArray.get(15); // This will print an error message
+
+    // Create another dynamic array with a smaller initial capacity
+    DynamicArray smallArray(3);
+    std::cout << "\nAdding elements to a smaller array:" << std::endl;
+    smallArray.push_back(1);
+    smallArray.push_back(2);
+    smallArray.push_back(3); // Fills initial capacity
+    smallArray.push_back(4); // Triggers resize
+    smallArray.push_back(5); // Triggers another resize
+
+    std::cout << "\nAfter adding elements to smaller array:" << std::endl;
+    smallArray.print();
+    std::cout << "Current size: " << smallArray.getSize() << std::endl;
+    std::cout << "Current capacity: " << smallArray.getCapacity() << std::endl;
+
+
+    return 0; // Indicate successful program execution
+}
+
+
+
+
+Create an array and implement a search function in the array
+#include <iostream> // Include the iostream library for input/output operations
+
+// Define a class for the Simple Array ADT
+class SimpleArray {
+private:
+    int* data; // Pointer to the dynamically allocated array
+    int size;  // Size of the array
+
+public:
+    // Constructor: Initializes the array with a given size
+    SimpleArray(int s) : size(s) {
+        // Check if the requested size is positive
+        if (s <= 0) {
+            data = nullptr; // Set data pointer to null for invalid size
+            size = 0;       // Set size to 0
+            std::cerr << "Error: Array size must be positive. Created an empty array." << std::endl;
+        } else {
+            // Allocate memory for the array on the heap
+            data = new int[size];
+            // Initialize array elements to 0
+            for (int i = 0; i < size; ++i) {
+                data[i] = 0;
+            }
+            std::cout << "SimpleArray created with size: " << size << std::endl;
+        }
+    }
+
+    // Destructor: Frees the dynamically allocated memory
+    ~SimpleArray() {
+        delete[] data; // Deallocate the memory pointed to by data
+        data = nullptr; // Set data to nullptr to prevent dangling pointers
+        std::cout << "SimpleArray destroyed. Memory freed." << std::endl;
+    }
+
+    // Function to set an element at a specific index
+    void set(int index, int value) {
+        // Check if the index is within valid bounds
+        if (index >= 0 && index < size) {
+            data[index] = value; // Set the element at the given index
+        } else {
+            // Print an error message for out-of-bounds access
+            std::cerr << "Error: Index " << index << " out of bounds for set operation." << std::endl;
+        }
+    }
+
+    // Function to get the element at a specific index
+    int get(int index) const {
+        // Check if the index is within valid bounds
+        if (index >= 0 && index < size) {
+            return data[index]; // Return the element at the given index
+        } else {
+            // Print an error message for out-of-bounds access
+            std::cerr << "Error: Index " << index << " out of bounds for get operation." << std::endl;
+            // Return a default or error value (e.g., -1)
+            return -1;
+        }
+    }
+
+    // Function to get the size of the array
+    int getSize() const {
+        return size;
+    }
+
+    // Function to search for a value in the array
+    // Returns the index of the first occurrence of the value, or -1 if not found
+    int search(int value) const {
+        // Iterate through the array elements
+        for (int i = 0; i < size; ++i) {
+            // If the current element matches the value to search for
+            if (data[i] == value) {
+                return i; // Return the index where the value was found
+            }
+        }
+        // If the loop finishes without finding the value, return -1
+        return -1;
+    }
+
+    // Function to print all elements of the array
+    void print() const {
+        // Check if the array is empty
+        if (size == 0) {
+            std::cout << "Array is empty." << std::endl;
+            return;
+        }
+        std::cout << "Array elements: ";
+        // Iterate through the array and print each element
+        for (int i = 0; i < size; ++i) {
+            std::cout << data[i] << (i == size - 1 ? "" : " "); // Print a space after each element except the last
+        }
+        std::cout << std::endl; // Print a newline at the end
+    }
+};
+
+// Main function to demonstrate the SimpleArray
+int main() {
+    // Create a SimpleArray object with size 5
+    SimpleArray myArray(5);
+
+    // Print the initial array (should be all zeros)
+    myArray.print();
+
+    // Set elements at specific indices
+    myArray.set(0, 10);
+    myArray.set(1, 20);
+    myArray.set(2, 30);
+    myArray.set(3, 40);
+    myArray.set(4, 50);
+
+    // Print the array after setting elements
+    std::cout << "\nArray after setting elements:" << std::endl;
+    myArray.print();
+
+    // Demonstrate the search function
+    int valueToFind1 = 30;
+    int index1 = myArray.search(valueToFind1);
+    if (index1 != -1) {
+        std::cout << "\nValue " << valueToFind1 << " found at index: " << index1 << std::endl;
+    } else {
+        std::cout << "\nValue " << valueToFind1 << " not found in the array." << std::endl;
+    }
+
+    int valueToFind2 = 99;
+    int index2 = myArray.search(valueToFind2);
+    if (index2 != -1) {
+        std::cout << "Value " << valueToFind2 << " found at index: " << index2 << std::endl;
+    } else {
+        std::cout << "Value " << valueToFind2 << " not found in the array." << std::endl;
+    }
+
+    // Demonstrate searching in an empty array (optional)
+    // SimpleArray emptyArray(0);
+    // int valueToFind3 = 5;
+    // int index3 = emptyArray.search(valueToFind3);
+    // if (index3 != -1) {
+    //     std::cout << "Value " << valueToFind3 << " found at index: " << index3 << std::endl;
+    // } else {
+    //     std::cout << "Value " << valueToFind3 << " not found in the empty array." << std::endl;
+    // }
+
+
+    return 0; // Indicate successful program execution
+}
+
+
+
+
+
+Create a function in Array to reverse an array.
+#include <iostream> // Include the iostream library for input/output operations
+
+// Define a class for the Simple Array ADT
+class SimpleArray {
+private:
+    int* data; // Pointer to the dynamically allocated array
+    int size;  // Size of the array
+
+public:
+    // Constructor: Initializes the array with a given size
+    SimpleArray(int s) : size(s) {
+        // Check if the requested size is positive
+        if (s <= 0) {
+            data = nullptr; // Set data pointer to null for invalid size
+            size = 0;       // Set size to 0
+            std::cerr << "Error: Array size must be positive. Created an empty array." << std::endl;
+        } else {
+            // Allocate memory for the array on the heap
+            data = new int[size];
+            // Initialize array elements to 0
+            for (int i = 0; i < size; ++i) {
+                data[i] = 0;
+            }
+            std::cout << "SimpleArray created with size: " << size << std::endl;
+        }
+    }
+
+    // Destructor: Frees the dynamically allocated memory
+    ~SimpleArray() {
+        delete[] data; // Deallocate the memory pointed to by data
+        data = nullptr; // Set data to nullptr to prevent dangling pointers
+        std::cout << "SimpleArray destroyed. Memory freed." << std::endl;
+    }
+
+    // Function to set an element at a specific index
+    void set(int index, int value) {
+        // Check if the index is within valid bounds
+        if (index >= 0 && index < size) {
+            data[index] = value; // Set the element at the given index
+        } else {
+            // Print an error message for out-of-bounds access
+            std::cerr << "Error: Index " << index << " out of bounds for set operation." << std::endl;
+        }
+    }
+
+    // Function to get the element at a specific index
+    int get(int index) const {
+        // Check if the index is within valid bounds
+        if (index >= 0 && index < size) {
+            return data[index]; // Return the element at the given index
+        } else {
+            // Print an error message for out-of-bounds access
+            std::cerr << "Error: Index " << index << " out of bounds for get operation." << std::endl;
+            // Return a default or error value (e.g., -1)
+            return -1;
+        }
+    }
+
+    // Function to get the size of the array
+    int getSize() const {
+        return size;
+    }
+
+    // Function to search for a value in the array
+    // Returns the index of the first occurrence of the value, or -1 if not found
+    int search(int value) const {
+        // Iterate through the array elements
+        for (int i = 0; i < size; ++i) {
+            // If the current element matches the value to search for
+            if (data[i] == value) {
+                return i; // Return the index where the value was found
+            }
+        }
+        // If the loop finishes without finding the value, return -1
+        return -1;
+    }
+
+    // Function to print all elements of the array
+    void print() const {
+        // Check if the array is empty
+        if (size == 0) {
+            std::cout << "Array is empty." << std::endl;
+            return;
+        }
+        std::cout << "Array elements: ";
+        // Iterate through the array and print each element
+        for (int i = 0; i < size; ++i) {
+            std::cout << data[i] << (i == size - 1 ? "" : " "); // Print a space after each element except the last
+        }
+        std::cout << std::endl; // Print a newline at the end
+    }
+
+    // Function to reverse the elements of the array
+    void reverse() {
+        int start = 0;       // Index of the first element
+        int end = size - 1;  // Index of the last element
+
+        // Loop while the start index is less than the end index
+        while (start < end) {
+            // Swap the elements at the start and end indices
+            int temp = data[start]; // Store the element at the start index
+            data[start] = data[end]; // Assign the element at the end index to the start index
+            data[end] = temp;        // Assign the stored element (original start element) to the end index
+
+            // Move the start index forward and the end index backward
+            start++;
+            end--;
+        }
+        std::cout << "Array has been reversed." << std::endl;
+    }
+};
+
+// Main function to demonstrate the SimpleArray
+int main() {
+    // Create a SimpleArray object with size 5
+    SimpleArray myArray(5);
+
+    // Print the initial array (should be all zeros)
+    myArray.print();
+
+    // Set elements at specific indices
+    myArray.set(0, 10);
+    myArray.set(1, 20);
+    myArray.set(2, 30);
+    myArray.set(3, 40);
+    myArray.set(4, 50);
+
+    // Print the array after setting elements
+    std::cout << "\nArray after setting elements:" << std::endl;
+    myArray.print();
+
+    // Demonstrate the reverse function
+    std::cout << "\nReversing the array:" << std::endl;
+    myArray.reverse();
+
+    // Print the array after reversing
+    std::cout << "Array after reversing:" << std::endl;
+    myArray.print();
+
+    // Demonstrate the search function after reversing
+    int valueToFind1 = 30;
+    int index1 = myArray.search(valueToFind1);
+    if (index1 != -1) {
+        std::cout << "\nValue " << valueToFind1 << " found at index: " << index1 << std::endl;
+    } else {
+        std::cout << "\nValue " << valueToFind1 << " not found in the array." << std::endl;
+    }
+
+    int valueToFind2 = 10;
+    int index2 = myArray.search(valueToFind2);
+    if (index2 != -1) {
+        std::cout << "Value " << valueToFind2 << " found at index: " << index2 << std::endl;
+    } else {
+        std::cout << "Value " << valueToFind2 << " not found in the array." << std::endl;
+    }
+
+    // Demonstrate searching for a non-existent value
+    int valueToFind3 = 99;
+    int index3 = myArray.search(valueToFind3);
+    if (index3 != -1) {
+        std::cout << "Value " << valueToFind3 << " found at index: " << index3 << std::endl;
+    } else {
+        std::cout << "Value " << valueToFind3 << " not found in the array." << std::endl;
+    }
+
+
+    return 0; // Indicate successful program execution
+}
+
+
+
+
+Create a function in Array to sort the given array
+#include <iostream> // Include the iostream library for input/output operations
+
+// Define a class for the Simple Array ADT
+class SimpleArray {
+private:
+    int* data; // Pointer to the dynamically allocated array
+    int size;  // Size of the array
+
+public:
+    // Constructor: Initializes the array with a given size
+    SimpleArray(int s) : size(s) {
+        // Check if the requested size is positive
+        if (s <= 0) {
+            data = nullptr; // Set data pointer to null for invalid size
+            size = 0;       // Set size to 0
+            std::cerr << "Error: Array size must be positive. Created an empty array." << std::endl;
+        } else {
+            // Allocate memory for the array on the heap
+            data = new int[size];
+            // Initialize array elements to 0
+            for (int i = 0; i < size; ++i) {
+                data[i] = 0;
+            }
+            std::cout << "SimpleArray created with size: " << size << std::endl;
+        }
+    }
+
+    // Destructor: Frees the dynamically allocated memory
+    ~SimpleArray() {
+        delete[] data; // Deallocate the memory pointed to by data
+        data = nullptr; // Set data to nullptr to prevent dangling pointers
+        std::cout << "SimpleArray destroyed. Memory freed." << std::endl;
+    }
+
+    // Function to set an element at a specific index
+    void set(int index, int value) {
+        // Check if the index is within valid bounds
+        if (index >= 0 && index < size) {
+            data[index] = value; // Set the element at the given index
+        } else {
+            // Print an error message for out-of-bounds access
+            std::cerr << "Error: Index " << index << " out of bounds for set operation." << std::endl;
+        }
+    }
+
+    // Function to get the element at a specific index
+    int get(int index) const {
+        // Check if the index is within valid bounds
+        if (index >= 0 && index < size) {
+            return data[index]; // Return the element at the given index
+        } else {
+            // Print an error message for out-of-bounds access
+            std::cerr << "Error: Index " << index << " out of bounds for get operation." << std::endl;
+            // Return a default or error value (e.g., -1)
+            return -1;
+        }
+    }
+
+    // Function to get the size of the array
+    int getSize() const {
+        return size;
+    }
+
+    // Function to search for a value in the array
+    // Returns the index of the first occurrence of the value, or -1 if not found
+    int search(int value) const {
+        // Iterate through the array elements
+        for (int i = 0; i < size; ++i) {
+            // If the current element matches the value to search for
+            if (data[i] == value) {
+                return i; // Return the index where the value was found
+            }
+        }
+        // If the loop finishes without finding the value, return -1
+        return -1;
+    }
+
+    // Function to print all elements of the array
+    void print() const {
+        // Check if the array is empty
+        if (size == 0) {
+            std::cout << "Array is empty." << std::endl;
+            return;
+        }
+        std::cout << "Array elements: ";
+        // Iterate through the array and print each element
+        for (int i = 0; i < size; ++i) {
+            std::cout << data[i] << (i == size - 1 ? "" : " "); // Print a space after each element except the last
+        }
+        std::cout << std::endl; // Print a newline at the end
+    }
+
+    // Function to reverse the elements of the array
+    void reverse() {
+        int start = 0;       // Index of the first element
+        int end = size - 1;  // Index of the last element
+
+        // Loop while the start index is less than the end index
+        while (start < end) {
+            // Swap the elements at the start and end indices
+            int temp = data[start]; // Store the element at the start index
+            data[start] = data[end]; // Assign the element at the end index to the start index
+            data[end] = temp;        // Assign the stored element (original start element) to the end index
+
+            // Move the start index forward and the end index backward
+            start++;
+            end--;
+        }
+        std::cout << "Array has been reversed." << std::endl;
+    }
+
+    // Function to sort the elements of the array in ascending order
+    void sort() {
+        // Implement a simple Bubble Sort algorithm
+        // Outer loop for passes
+        for (int i = 0; i < size - 1; ++i) {
+            // Inner loop for comparisons and swaps
+            // The last i elements are already in place after i passes
+            for (int j = 0; j < size - 1 - i; ++j) {
+                // Compare adjacent elements
+                if (data[j] > data[j + 1]) {
+                    // Swap elements if they are in the wrong order
+                    int temp = data[j];
+                    data[j] = data[j + 1];
+                    data[j + 1] = temp;
+                }
+            }
+        }
+        std::cout << "Array has been sorted." << std::endl;
+    }
+};
+
+// Main function to demonstrate the SimpleArray
+int main() {
+    // Create a SimpleArray object with size 5
+    SimpleArray myArray(5);
+
+    // Set elements at specific indices with unsorted values
+    myArray.set(0, 30);
+    myArray.set(1, 10);
+    myArray.set(2, 50);
+    myArray.set(3, 20);
+    myArray.set(4, 40);
+
+    // Print the array before sorting
+    std::cout << "Array before sorting:" << std::endl;
+    myArray.print();
+
+    // Demonstrate the sort function
+    std::cout << "\nSorting the array:" << std::endl;
+    myArray.sort();
+
+    // Print the array after sorting
+    std::cout << "Array after sorting:" << std::endl;
+    myArray.print();
+
+    // Demonstrate the reverse function after sorting
+    std::cout << "\nReversing the array after sorting:" << std::endl;
+    myArray.reverse();
+    myArray.print();
+
+    // Demonstrate the search function after reversing (original values are now in reverse order)
+    int valueToFind1 = 30; // Was at index 0, now at index 4 after sort, then index 0 after reverse
+    int index1 = myArray.search(valueToFind1);
+    if (index1 != -1) {
+        std::cout << "\nValue " << valueToFind1 << " found at index: " << index1 << std::endl;
+    } else {
+        std::cout << "\nValue " << valueToFind1 << " not found in the array." << std::endl;
+    }
+
+    int valueToFind2 = 10; // Was at index 1, now at index 0 after sort, then index 4 after reverse
+    int index2 = myArray.search(valueToFind2);
+    if (index2 != -1) {
+        std::cout << "Value " << valueToFind2 << " found at index: " << index2 << std::endl;
+    } else {
+        std::cout << "Value " << valueToFind2 << " not found in the array." << std::endl;
+    }
+
+    // Demonstrate searching for a non-existent value
+    int valueToFind3 = 99;
+    int index3 = myArray.search(valueToFind3);
+    if (index3 != -1) {
+        std::cout << "Value " << valueToFind3 << " found at index: " << index3 << std::endl;
+    } else {
+        std::cout << "Value " << valueToFind3 << " not found in the array." << std::endl;
+    }
+
+
+    return 0; // Indicate successful program execution
+}
+
