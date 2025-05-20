@@ -1,0 +1,416 @@
+Write a c++ program, to demonstrate priority queue
+
+#include <iostream>
+#include <queue>
+#include <vector>
+#include <functional>
+
+int main() {
+  std::priority_queue<int> max_pq;
+
+  std::cout << "--- Max Priority Queue Demonstration ---" << std::endl;
+
+  max_pq.push(10);
+  max_pq.push(30);
+  max_pq.push(20);
+  max_pq.push(5);
+  max_pq.push(25);
+
+  std::cout << "Top element (largest): " << max_pq.top() << std::endl;
+
+  std::cout << "Elements in the max priority queue (popping from top):" << std::endl;
+  while (!max_pq.empty()) {
+    std::cout << max_pq.top() << " ";
+    max_pq.pop();
+  }
+  std::cout << std::endl;
+
+  std::cout << "\n--- Min Priority Queue Demonstration ---" << std::endl;
+
+  std::priority_queue<int, std::vector<int>, std::greater<int>> min_pq;
+
+  min_pq.push(10);
+  min_pq.push(30);
+  min_pq.push(20);
+  min_pq.push(5);
+  min_pq.push(25);
+
+  std::cout << "Top element (smallest): " << min_pq.top() << std::endl;
+
+  std::cout << "Elements in the min priority queue (popping from top):" << std::endl;
+  while (!min_pq.empty()) {
+    std::cout << min_pq.top() << " ";
+    min_pq.pop();
+  }
+  std::cout << std::endl;
+
+  return 0;
+}
+
+
+
+
+Implement different operations on priority queue .i.e. adding element, removing element,
+size of priority queue, and print it
+#include <iostream>
+#include <queue>
+#include <vector>
+#include <functional>
+
+int main() {
+  std::priority_queue<int> my_pq;
+
+  std::cout << "--- Priority Queue Operations ---" << std::endl;
+
+  std::cout << "\nAdding elements to the priority queue:" << std::endl;
+  my_pq.push(10);
+  std::cout << "Pushed: 10" << std::endl;
+  my_pq.push(30);
+  std::cout << "Pushed: 30" << std::endl;
+  my_pq.push(20);
+  std::cout << "Pushed: 20" << std::endl;
+  my_pq.push(5);
+  std::cout << "Pushed: 5" << std::endl;
+  my_pq.push(25);
+  std::cout << "Pushed: 25" << std::endl;
+
+  std::cout << "\nCurrent size of the priority queue: " << my_pq.size() << std::endl;
+
+  if (!my_pq.empty()) {
+      std::cout << "Top element (highest priority): " << my_pq.top() << std::endl;
+  }
+
+  std::cout << "\nElements in the priority queue (popping from top):" << std::endl;
+  while (!my_pq.empty()) {
+    std::cout << my_pq.top() << " ";
+    my_pq.pop();
+  }
+  std::cout << std::endl;
+
+  std::cout << "Size of priority queue after popping all elements: " << my_pq.size() << std::endl;
+
+  return 0;
+}
+
+
+Find the total number of elements of the set container
+#include <iostream>
+#include <set>
+
+int main() {
+  std::set<int> my_set;
+
+  my_set.insert(10);
+  my_set.insert(20);
+  my_set.insert(30);
+  my_set.insert(20);
+  my_set.insert(40);
+
+  std::cout << "Elements in the set: ";
+  for (int element : my_set) {
+    std::cout << element << " ";
+  }
+  std::cout << std::endl;
+
+  size_t set_size = my_set.size();
+
+  std::cout << "The total number of elements in the set is: " << set_size << std::endl;
+
+  return 0;
+}
+
+
+Using inbuilt function and insert an element to the set container
+#include <iostream>
+#include <set>
+
+int main() {
+  std::set<int> my_set = {10, 20, 30, 40, 50};
+
+  std::cout << "Initial set elements: ";
+  for (int element : my_set) {
+    std::cout << element << " ";
+  }
+  std::cout << std::endl;
+
+  int element_to_insert = 35;
+  auto result = my_set.insert(element_to_insert);
+
+  if (result.second) {
+    std::cout << "Successfully inserted element: " << element_to_insert << std::endl;
+  } else {
+    std::cout << "Element " << element_to_insert << " already exists in the set." << std::endl;
+  }
+
+  int duplicate_element = 30;
+  auto duplicate_result = my_set.insert(duplicate_element);
+
+  if (duplicate_result.second) {
+     std::cout << "Successfully inserted element: " << duplicate_element << std::endl;
+  } else {
+     std::cout << "Element " << duplicate_element << " already exists in the set." << std::endl;
+  }
+
+
+  std::cout << "Set elements after insertion: ";
+  for (int element : my_set) {
+    std::cout << element << " ";
+  }
+  std::cout << std::endl;
+
+  return 0;
+}
+
+
+Create a c++ program using multiset and returns an iterator to the theoretical element
+that follows the last element in the multiset –> O(1)
+#include <iostream>
+#include <set>
+
+int main() {
+  std::multiset<int> my_multiset;
+
+  my_multiset.insert(10);
+  my_multiset.insert(30);
+  my_multiset.insert(20);
+  my_multiset.insert(10);
+  my_multiset.insert(25);
+  my_multiset.insert(30);
+
+  std::cout << "Elements in the multiset: ";
+  for (int element : my_multiset) {
+    std::cout << element << " ";
+  }
+  std::cout << std::endl;
+
+  std::multiset<int>::iterator end_it = my_multiset.end();
+
+  std::cout << "\nDemonstrating the end() iterator:" << std::endl;
+  std::cout << "The iterator returned by end() points to the position AFTER the last element." << std::endl;
+  std::cout << "It is used as a sentinel to know when an iteration has finished." << std::endl;
+
+  std::cout << "\nIterating through the multiset using begin() and end():" << std::endl;
+  for (std::multiset<int>::iterator it = my_multiset.begin(); it != my_multiset.end(); ++it) {
+    std::cout << *it << " ";
+  }
+  std::cout << std::endl;
+
+  return 0;
+}
+
+
+Create a c++ program using multiset and returns an iterator to the first element in the
+multiset –> O(1)
+
+#include <iostream>
+#include <set>
+
+int main() {
+  std::multiset<int> my_multiset;
+
+  my_multiset.insert(30);
+  my_multiset.insert(10);
+  my_multiset.insert(20);
+  my_multiset.insert(10);
+  my_multiset.insert(25);
+  my_multiset.insert(30);
+
+  std::cout << "Elements in the multiset: ";
+  for (int element : my_multiset) {
+    std::cout << element << " ";
+  }
+  std::cout << std::endl;
+
+  std::multiset<int>::iterator begin_it = my_multiset.begin();
+
+  std::cout << "\nDemonstrating the begin() iterator:" << std::endl;
+  if (!my_multiset.empty()) {
+      std::cout << "The first element (accessed by begin()) is: " << *begin_it << std::endl;
+  } else {
+      std::cout << "The multiset is empty, begin() does not point to a valid element." << std::endl;
+  }
+
+  return 0;
+}
+
+
+Create a map, insert at least 5 pairs of keys and values and print it
+#include <iostream>
+#include <queue>
+#include <vector>
+#include <functional>
+
+int main() {
+  std::priority_queue<int> my_pq;
+
+  std::cout << "--- Priority Queue Operations ---" << std::endl;
+
+  std::cout << "\nAdding elements to the priority queue:" << std::endl;
+  my_pq.push(10);
+  std::cout << "Pushed: 10" << std::endl;
+  my_pq.push(30);
+  std::cout << "Pushed: 30" << std::endl;
+  my_pq.push(20);
+  std::cout << "Pushed: 20" << std::endl;
+  my_pq.push(5);
+  std::cout << "Pushed: 5" << std::endl;
+  my_pq.push(25);
+  std::cout << "Pushed: 25" << std::endl;
+
+  std::cout << "\nCurrent size of the priority queue: " << my_pq.size() << std::endl;
+
+  if (!my_pq.empty()) {
+      std::cout << "Top element (highest priority): " << my_pq.top() << std::endl;
+  }
+
+  std::cout << "\nElements in the priority queue (popping from top):" << std::endl;
+  while (!my_pq.empty()) {
+    std::cout << my_pq.top() << " ";
+    my_pq.pop();
+  }
+  std::cout << std::endl;
+
+  std::cout << "Size of priority queue after popping all elements: " << my_pq.size() << std::endl;
+
+  return 0;
+}
+
+
+Create a map, where insert keys and values as string type and integer type respectively
+and print it on the screen
+
+#include <iostream>
+#include <map>
+#include <string>
+
+int main() {
+  std::map<std::string, int> my_string_int_map;
+
+  my_string_int_map.insert(std::pair<std::string, int>("apple", 1));
+  my_string_int_map["banana"] = 2;
+  my_string_int_map.insert({"cherry", 3});
+  my_string_int_map["date"] = 4;
+  my_string_int_map.insert(std::pair<std::string, int>("elderberry", 5));
+
+  std::cout << "Elements in the map:" << std::endl;
+  for (auto const& [key, val] : my_string_int_map) {
+    std::cout << "Key: " << key << ", Value: " << val << std::endl;
+  }
+
+  return 0;
+}
+
+
+Write a c++ program to demonstrate the implementation of multimap
+#include <iostream>
+#include <map>
+#include <string>
+
+int main() {
+  std::multimap<int, std::string> my_multimap;
+
+  std::cout << "--- Multimap Demonstration ---" << std::endl;
+
+  my_multimap.insert({1, "apple"});
+  my_multimap.insert({3, "cherry"});
+  my_multimap.insert({2, "banana"});
+  my_multimap.insert({1, "apricot"});
+  my_multimap.insert({2, "blueberry"});
+  my_multimap.insert({3, "cranberry"});
+
+  std::cout << "\nElements in the multimap:" << std::endl;
+  for (auto const& [key, val] : my_multimap) {
+    std::cout << "Key: " << key << ", Value: " << val << std::endl;
+  }
+
+  int key_to_find = 2;
+  std::cout << "\nFinding elements with key " << key_to_find << ":" << std::endl;
+  auto range = my_multimap.equal_range(key_to_find);
+  for (auto it = range.first; it != range.second; ++it) {
+      std::cout << "Found Key: " << it->first << ", Value: " << it->second << std::endl;
+  }
+
+  int key_to_count = 1;
+  std::cout << "\nNumber of elements with key " << key_to_count << ": " << my_multimap.count(key_to_count) << std::endl;
+
+  int key_to_erase = 3;
+  std::cout << "\nErasing elements with key " << key_to_erase << std::endl;
+  size_t erased_count = my_multimap.erase(key_to_erase);
+  std::cout << "Number of elements erased: " << erased_count << std::endl;
+
+  std::cout << "\nElements in the multimap after erasing key " << key_to_erase << ":" << std::endl;
+  for (auto const& [key, val] : my_multimap) {
+    std::cout << "Key: " << key << ", Value: " << val << std::endl;
+  }
+
+  return 0;
+}
+
+
+Write a c++ program to demonstrate functionality of unordered_map.
+#include <iostream>
+#include <unordered_map>
+#include <string>
+
+int main() {
+  std::unordered_map<int, std::string> my_unordered_map;
+
+  std::cout << "--- Unordered Map Demonstration ---" << std::endl;
+
+  std::cout << "\nInserting elements into the unordered map:" << std::endl;
+  my_unordered_map[1] = "apple";
+  std::cout << "Inserted: Key 1, Value apple" << std::endl;
+  my_unordered_map[3] = "cherry";
+  std::cout << "Inserted: Key 3, Value cherry" << std::endl;
+  my_unordered_map.insert({2, "banana"});
+  std::cout << "Inserted: Key 2, Value banana" << std::endl;
+  my_unordered_map.insert(std::pair<int, std::string>(4, "date"));
+  std::cout << "Inserted: Key 4, Value date" << std::endl;
+  my_unordered_map[2] = "blueberry";
+  std::cout << "Updated Key 2 to Value blueberry" << std::endl;
+
+
+  std::cout << "\nAccessing elements:" << std::endl;
+  std::cout << "Value for key 1: " << my_unordered_map[1] << std::endl;
+  std::cout << "Value for key 4: " << my_unordered_map.at(4) << std::endl;
+
+
+  std::cout << "\nChecking for key presence:" << std::endl;
+  int key_to_check = 3;
+  if (my_unordered_map.count(key_to_check)) {
+    std::cout << "Key " << key_to_check << " exists in the map." << std::endl;
+  } else {
+    std::cout << "Key " << key_to_check << " does not exist in the map." << std::endl;
+  }
+
+  int another_key_to_check = 10;
+   if (my_unordered_map.find(another_key_to_check) != my_unordered_map.end()) {
+    std::cout << "Key " << another_key_to_check << " exists in the map." << std::endl;
+  } else {
+    std::cout << "Key " << another_key_to_check << " does not exist in the map." << std::endl;
+  }
+
+
+  std::cout << "\nElements in the unordered map:" << std::endl;
+  for (auto const& [key, val] : my_unordered_map) {
+    std::cout << "Key: " << key << ", Value: " << val << std::endl;
+  }
+
+  std::cout << "\nCurrent size of the unordered map: " << my_unordered_map.size() << std::endl;
+
+  std::cout << "\nRemoving element with key 1:" << std::endl;
+  my_unordered_map.erase(1);
+
+  std::cout << "Size of unordered map after erasing key 1: " << my_unordered_map.size() << std::endl;
+
+  std::cout << "\nElements in the unordered map after removal:" << std::endl;
+  for (auto const& [key, val] : my_unordered_map) {
+    std::cout << "Key: " << key << ", Value: " << val << std::endl;
+  }
+
+  my_unordered_map.clear();
+  std::cout << "\nSize of unordered map after clearing: " << my_unordered_map.size() << std::endl;
+
+
+  return 0;
+}
