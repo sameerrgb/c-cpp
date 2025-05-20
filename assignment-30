@@ -1,0 +1,542 @@
+// Exception Handling
+/*
+Write a C++ program to demonstrate the use of try, catch block with the argument as an
+integer and string using multiple catch blocks
+*/
+
+#include<iostream>
+using namespace std;
+
+void test_try(int num)
+{
+    const char *c  = "sameer";
+
+    try
+    {
+        if(num >= 0 && num <= 9)
+        
+             throw num;
+        
+        else
+        
+             cout<<"\nIt is not a single digit number: "<<num;
+        
+        throw c;
+             
+    }
+    catch(int a)
+    {
+        cout<<"\nIt is a single digit number: "<<a;
+    }
+    catch(const char s[])
+    {
+        cout<<"\nIt is a string: "<<s;
+    }
+}
+
+int main()
+{
+    int num;
+
+    cout<<"\nEnter a Number: ";
+    cin>>num;
+
+    test_try(num);
+
+    return 0;
+}
+
+
+// Exception Handling
+/*
+Write a C++ program to demonstrate try, throw and catch statements.
+*/
+
+#include<iostream>
+#include<cstring>
+using namespace std;
+
+void test_try(char *c)
+{
+    
+    try
+    {
+        if(strcmp(c , "yes") == 0)
+        
+            cout<<"\nPermission Granted: \n\n";
+                
+        else
+
+           throw c;      
+         
+    }
+    catch(char s[])
+    {
+        cout<<"\nPermission Denied: \n\n";
+    }
+    
+}
+
+int main()
+{
+    char c[20];
+
+    cout<<"\nEnter 'Yes' or 'No' : ";
+    fflush(stdin);
+    cin.get(c,20,'\n');
+    fflush(stdin);
+
+    test_try(c);
+
+  return 0;
+}
+
+// Exception Handling
+/*
+Write a C++ program to perform arithmetic operations on two numbers and throw an
+exception if the dividend is zero or does not contain an operator
+*/
+
+#include<iostream>
+using namespace std;
+
+int main()
+{
+    float num1 , num2 , ans;
+    char Operator;
+        
+        cout<<"\nPerform Arithmetic Operations on two numbers: ";
+    try
+    {
+        cout<<"\n\nEnter first nuumber: ";
+        cin>>num1;
+
+        cout<<"\nEnter an Operator: ";
+        cin>>Operator;
+        if(Operator != '+' && Operator != '-' && Operator != '*' && Operator != '/')
+        throw Operator;
+
+        cout<<"\nEnter second number: ";
+        cin>>num2;
+
+        switch(Operator)
+        {
+            case '+':
+                    ans = num1 + num2;
+                    break;
+
+            case '-':
+                    ans = num1 - num2;
+                    break;
+
+            case '*':
+                    ans = num1 * num2;
+                    break; 
+
+            case '/':
+                    if(num2 == 0)
+                    throw 0;
+                    ans = num1 / num2;
+                    break;                                   
+        }
+        cout<<"\nAnswer: "<<num1<<" "<<Operator<<" "<<num2<<" = "<<ans;
+    }
+    catch(const char c)
+    {
+        cout<<"\nException Caught... \nBad Operator : "<<c<<" is not a valid Operator.";
+    }
+    catch(const int n)
+    {
+        cout<<"\nError: Bad Operation...";
+    }
+    return 0;
+}
+
+
+
+// Exception Handling
+/*
+  Write a C++ program to accept an email address and throw an exception if it does not
+  contain @ symbol
+*/
+
+#include<iostream>
+#include<cstring>
+using namespace std;
+
+bool validEmailId(char *);
+
+int main()
+{
+    char email[100];
+    system("cls");
+    cout<<"\n Enter an Email-Id :   ";
+    cin.get(email , 20);
+
+    try
+    {
+        if(validEmailId(email))
+            cout<<"\n Valid Email-Id.\n\n";
+        else
+            throw validEmailId(email);    
+    }
+    catch(bool c)
+    {
+        cout<<"\n Exception caught... \n Invalid Email-Id.\n\n";
+    }
+   
+}
+
+bool validEmailId(char *email)
+{
+    int atOffSet = -1;
+    int dotOffSet = -1;
+    int length = 0;
+       
+    for(int i = 0; email[i] != '\0'; i++ )
+    {
+        if(email[i] == '@')
+           atOffSet = i;
+        else if(email[i] == '.')
+           dotOffSet = i;
+           
+        
+        length++;      
+    }
+
+    if(atOffSet == -1 || dotOffSet == -1)
+        return false;        
+    if(atOffSet > dotOffSet)
+        return false;
+    return (dotOffSet < (length - 2));     
+}
+
+
+// Exception Handling
+/*
+Write a C++ program to accept a mobile number and throw an exception if it does not
+contain 10 digits
+*/
+
+#include<iostream>
+using namespace std;
+
+int acceptNumber(int num)
+{
+    int count = 0;
+    
+    while(num)
+    {
+        num = num / 10;
+        count++;
+    }
+        return count;
+}
+
+int main()
+{
+    long long num;
+    system("cls");
+    cout<<"\n\t\t\t\t\tEnter Mobile Number:   ";
+    cin>>num;
+
+    try
+    {
+        if(acceptNumber(num) == 10)
+        {
+            cout<<"\n\t\t\t\t\tValid Mobile Number...\n\n";
+        } 
+        else
+            throw acceptNumber(num);
+    }
+    catch(int n)
+    {
+        cout<<"\n\t\t\t\t\tNot a Valid Mobile Number...\n\t\t\t\t\tNumber contain only "<<n<<" digits\n\n";
+    }
+    catch(...)
+    {
+        cout<<"\n\t\t\t\t\tNot a Valid Mobile Number...\n\n";
+    }
+    
+    
+    return 0;
+}
+
+
+// Exception Handling
+/*
+Write a C++ program to accept area pincode and throw an exception if it does not
+contain 6 digits.
+*/
+
+#include<iostream>
+using namespace std;
+
+int checkPinCode(int num)
+{
+    int count = 0;
+    
+    while(num)
+    {
+        num = num / 10;
+        count++;
+    }
+        return count;
+}
+
+int main()
+{
+    int pinCode;
+    system("cls");
+    cout<<"\n\t\t\t\t\tEnter Area Pincode:   ";
+    cin>>pinCode;
+
+    try
+    {
+        if(checkPinCode(pinCode) == 6)
+        {
+            cout<<"\n\t\t\t\t\tValid Pincode...\n\n";
+        } 
+        else
+            throw checkPinCode(pinCode);
+    }
+    catch(int n)
+    {
+        cout<<"\n\t\t\t\t\tNot a Valid Pincode...\n\t\t\t\t\tPincode contain only "<<n<<" digits\n\n";
+    }
+    
+    
+    return 0;
+}
+
+
+// Exception Handling
+/*
+Write a C++ program to accept a username if the username has less than 6 characters
+or does contain any digit or special symbol.
+*/
+
+#include<iostream>
+#include<cstring>
+using namespace std;
+
+int checkUser(char name[])
+{
+    int digit=0,specialChar=0;
+    int length = strlen(name);
+    
+    for(int i = 0; i <= length - 1 ; i++)
+    {
+        if( name[i] >= '0' && name[i] <= '9')
+            digit = 1;
+        else
+            specialChar = 1;       
+    }
+    if( length < 6 && digit == 1 && specialChar == 1)
+         return 1;
+    else
+         return 0;     
+}
+
+int main()
+{
+    char username[20];
+    system("cls");
+    cout<<"\n\t\t\t\t\tEnter username:   ";
+    fflush(stdin);
+    cin.get(username , 20);
+
+    try
+    {
+        if(checkUser(username) == 1)
+            cout<<"\n\t\t\t\t\tValid Username...\n\n";
+        else
+            throw 0;
+    }
+    catch(int n)
+    {
+        cout<<"\n\t\t\t\t\tNot a Valid Username...\n\t\t\t\t\t";
+    }
+    
+    
+    return 0;
+}
+
+
+// Exception Handling
+/*
+Write a C++ program to accept a password and throw an exception if the password has
+less than 6 characters or does not contain a digit or does not contain any special
+character or does not contain any capital letter.
+*/
+
+#include<iostream>
+#include<cstring>
+using namespace std;
+
+int pass(char pw[])
+{
+    int digit=0,alpha=0,specialChar=0;
+    int length = strlen(pw);
+
+    if( length < 6 )
+        return 0;
+    for(int i = 0 ; i <= length - 1 ; i++)
+    {
+        if(pw[i] >= '0' && pw[i] <= '9')
+            digit = 1;
+        else if(pw[i] >= 'A' && pw[i] <= 'Z')
+            alpha = 1;
+        else
+            specialChar = 1;
+    }
+    if( digit == 1 && alpha == 1 && specialChar == 1)
+        return 1;
+    else
+        return 0; 
+}
+
+int main()
+{
+   char pw[30];
+
+   system("cls");
+   cout<<"\n\n\t\t\tEnter Password:  ";
+   fflush(stdin);
+   gets(pw);
+   fflush(stdin);
+
+   try
+   {
+       if(pass(pw) == 1)
+           cout<<"\n\t\t\tValid Password...\n\n";
+       else 
+            throw 0;
+   }
+   catch(int n)
+   {
+       cout<<"\n\t\t\tNot a Valid Password...\n\n";
+   } 
+   
+    return 0;
+}
+
+
+
+// Exception Handling
+/*
+Write a C++ program to accept gmail id only and throw an exception if the id does not
+contain @ and gmail.com.
+*/
+
+#include<iostream>
+#include<cstring>
+using namespace std;
+
+
+bool mail(string email)
+{
+    int size = 0;
+    int at = -1; 
+    int com = -1;
+    int in = -1;
+    int org = -1;
+
+    size = email.length();
+    at = email.find('@');
+    com = email.find("gmail.com");
+    in = email.find("gmail.in");
+    org = email.find(".org");
+
+    
+    if(at != -1 && com != -1 || in != -1 || org != -1)
+       return true; 
+    else
+       return false;      
+    
+    
+}
+
+int main()
+{
+   string email;
+   
+   system("cls");
+   cout<<"\n\n\t\t\tEnter E-mail:  ";
+   getline(cin,email);
+
+   try
+   {
+       if(mail(email) == true)
+           cout<<"\n\t\t\tValid E-mail...\n\n";
+       else
+          throw 0;
+   }
+   catch(int n)
+   {
+       cout<<"\n\t\t\tNot a Valid E-mail...\n\n";
+   }
+   
+    return 0;
+}
+
+
+
+
+// // Exception Handling
+/*
+Write a C++ program to accept Nickname and throw an exception if it has greater than 8
+characters or does contain a digit or special symbol or space.
+*/
+
+#include<iostream>
+#include<cstring>
+#include<string.h>
+using namespace std;
+
+int nick(char name[])
+{
+    int digit=0,specialChar=0,space=0,alpha=0;
+    int length = strlen(name);
+    for(int i = 0 ; i <= length - 1 ; i++)
+    { 
+        if( name[i] >= '0' && name[i] <= '9')
+            digit=1;
+        else if( name[i] >= 'a' && name[i] <= 'z' || name[i] >= 'A' && name[i] <= 'z') 
+            alpha=1;
+        else if( name[i] == ' ')
+           space=1; 
+        else 
+            specialChar=1;     
+    }
+    
+    if( length < 8 && digit == 0 && specialChar == 0 && space == 0 && alpha == 1 )
+        return 1; 
+    else
+        return 0;      
+}
+
+int main()
+{
+   char name[30];
+
+   system("cls");
+   cout<<"\n\n\t\t\tEnter Nickname:  ";
+   fflush(stdin);
+   gets(name);
+   fflush(stdin);
+
+   try
+   {
+        if(nick(name) == 1)
+            cout<<"\n\t\t\tValid Nickname...\n\n";
+        else
+           throw 0;       
+   }
+   catch(int n)
+   {
+       cout<<"\n\t\t\tNot a Valid Nickname...\n\n";
+   }
+   
+    return 0;
+}
