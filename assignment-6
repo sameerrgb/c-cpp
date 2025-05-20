@@ -1,0 +1,544 @@
+Write a program to calculate sum of first N natural numbers
+
+#include <stdio.h> // Required for standard input/output functions (printf, scanf)
+
+int main() {
+    int n;       // Variable to store the user-provided number N
+    int sum = 0; // Variable to store the sum, initialized to 0
+
+    // Prompt the user to enter a positive integer
+    printf("Enter a positive integer (N) to calculate the sum of the first N natural numbers: ");
+
+    // Read the integer input from the user.
+    // Check the return value of scanf to ensure a valid integer was read.
+    if (scanf("%d", &n) != 1) {
+        printf("Invalid input. Please enter an integer.\n");
+        return 1; // Exit with a non-zero status to indicate an error
+    }
+
+    // Validate if the entered number is positive
+    if (n <= 0) {
+        printf("Please enter a positive integer.\n");
+        return 1; // Exit with a non-zero status to indicate an error
+    }
+
+    // --- Calculate the sum ---
+    // Loop from 1 up to N (inclusive)
+    for (int i = 1; i <= n; i++) {
+        sum += i; // Add the current number to the sum
+    }
+
+    // --- Output the result ---
+    printf("The sum of the first %d natural numbers is: %d\n", n, sum);
+
+    // Return 0 to indicate successful program execution.
+    return 0;
+}
+
+
+
+
+Write a program to calculate sum of first N even natural numbers
+
+#include <stdio.h> // Required for standard input/output functions (printf, scanf)
+
+int main() {
+    int n;             // Variable to store the user-provided number N (how many even numbers)
+    long long sum = 0; // Variable to store the sum. Use long long to avoid overflow for larger N.
+    int count = 0;     // Counter for the number of even natural numbers found so far
+    int current_num = 2; // Start checking from the first even natural number (2)
+
+    // Prompt the user to enter a positive integer for N
+    printf("Enter a positive integer (N) to calculate the sum of the first N even natural numbers: ");
+
+    // Read the integer input from the user.
+    // Check the return value of scanf to ensure a valid integer was read.
+    if (scanf("%d", &n) != 1) {
+        printf("Invalid input. Please enter an integer.\n");
+        return 1; // Exit with a non-zero status to indicate an error
+    }
+
+    // Validate if the entered number is positive
+    if (n <= 0) {
+        printf("Please enter a positive integer for N.\n");
+        return 1; // Exit with a non-zero status to indicate an error
+    }
+
+    // --- Calculate the sum of the first N even natural numbers ---
+    // We can iterate and add even numbers directly.
+    // The i-th even natural number is 2 * i.
+    for (int i = 1; i <= n; i++) {
+        sum += (long long)2 * i; // Add the i-th even number to the sum. Cast to long long to prevent overflow.
+    }
+
+    /*
+    // Alternative approach using a while loop to find and sum even numbers:
+    while (count < n) {
+        // Check if the current number is even
+        if (current_num % 2 == 0) {
+            sum += current_num; // Add the even number to the sum
+            count++;            // Increment the count of even numbers found
+        }
+        current_num++; // Move to the next natural number
+    }
+    */
+
+
+    // --- Output the result ---
+    printf("The sum of the first %d even natural numbers is: %lld\n", n, sum);
+
+    // Return 0 to indicate successful program execution.
+    return 0;
+}
+
+
+
+
+
+
+Write a program to calculate sum of first N odd natural numbers
+#include <stdio.h> // Required for standard input/output functions (printf, scanf)
+
+int main() {
+    int n;             // Variable to store the user-provided number N (how many odd numbers)
+    long long sum = 0; // Variable to store the sum. Use long long to avoid overflow for larger N.
+
+    // Prompt the user to enter a positive integer for N
+    printf("Enter a positive integer (N) to calculate the sum of the first N odd natural numbers: ");
+
+    // Read the integer input from the user.
+    // Check the return value of scanf to ensure a valid integer was read.
+    if (scanf("%d", &n) != 1) {
+        printf("Invalid input. Please enter an integer.\n");
+        return 1; // Exit with a non-zero status to indicate an error
+    }
+
+    // Validate if the entered number is positive
+    if (n <= 0) {
+        printf("Please enter a positive integer for N.\n");
+        return 1; // Exit with a non-zero status to indicate an error
+    }
+
+    // --- Calculate the sum of the first N odd natural numbers ---
+    // The i-th odd natural number is given by the formula 2 * i - 1, where i starts from 1.
+    // For example:
+    // i=1: 2*1 - 1 = 1 (1st odd number)
+    // i=2: 2*2 - 1 = 3 (2nd odd number)
+    // i=3: 2*3 - 1 = 5 (3rd odd number)
+    // ... and so on up to i=N.
+    for (int i = 1; i <= n; i++) {
+        sum += (long long)(2 * i - 1); // Add the i-th odd number to the sum. Cast to long long to prevent overflow.
+    }
+
+    /*
+    // Alternative approach using a while loop to find and sum odd numbers:
+    int count = 0;     // Counter for the number of odd natural numbers found so far
+    int current_num = 1; // Start checking from the first odd natural number (1)
+    while (count < n) {
+        // Check if the current number is odd
+        if (current_num % 2 != 0) {
+            sum += current_num; // Add the odd number to the sum
+            count++;            // Increment the count of odd numbers found
+        }
+        current_num++; // Move to the next natural number
+    }
+    */
+
+    // --- Output the result ---
+    printf("The sum of the first %d odd natural numbers is: %lld\n", n, sum);
+
+    // Return 0 to indicate successful program execution.
+    return 0;
+}
+
+
+
+
+
+Write a program to calculate sum of squares of first N natural numbers
+#include <stdio.h> // Required for standard input/output functions (printf, scanf)
+
+int main() {
+    int n;             // Variable to store the user-provided number N
+    long long sum_of_squares = 0; // Variable to store the sum of squares. Use long long for potentially large sums.
+
+    // Prompt the user to enter a positive integer for N
+    printf("Enter a positive integer (N) to calculate the sum of squares of the first N natural numbers: ");
+
+    // Read the integer input from the user.
+    // Check the return value of scanf to ensure a valid integer was read.
+    if (scanf("%d", &n) != 1) {
+        printf("Invalid input. Please enter an integer.\n");
+        return 1; // Exit with a non-zero status to indicate an error
+    }
+
+    // Validate if the entered number is positive
+    if (n <= 0) {
+        printf("Please enter a positive integer for N.\n");
+        return 1; // Exit with a non-zero status to indicate an error
+    }
+
+    // --- Calculate the sum of squares of the first N natural numbers ---
+    // Loop from 1 up to N (inclusive)
+    for (int i = 1; i <= n; i++) {
+        // Calculate the square of the current number (i * i) and add it to the sum.
+        // Cast to long long to ensure the calculation is done using the larger type
+        // before adding to sum_of_squares, preventing potential overflow if i*i is large.
+        sum_of_squares += (long long)i * i;
+    }
+
+    /*
+    // Alternative approach using the mathematical formula for the sum of squares:
+    // Sum of squares of first N natural numbers = N * (N + 1) * (2*N + 1) / 6
+    // This is more efficient for large N, but requires careful handling of integer division
+    // and potential intermediate overflows if not using large enough types.
+    // long long formula_sum = (long long)n * (n + 1) * (2 * n + 1) / 6;
+    // printf("The sum of squares using formula is: %lld\n", formula_sum);
+    */
+
+
+    // --- Output the result ---
+    printf("The sum of the squares of the first %d natural numbers is: %lld\n", n, sum_of_squares);
+
+    // Return 0 to indicate successful program execution.
+    return 0;
+}
+
+
+
+
+
+Write a program to calculate sum of cubes of first N natural numbers
+
+#include <stdio.h> // Required for standard input/output functions (printf, scanf)
+
+int main() {
+    int n;                   // Variable to store the user-provided number N
+    long long sum_of_cubes = 0; // Variable to store the sum of cubes. Use long long for potentially very large sums.
+
+    // Prompt the user to enter a positive integer for N
+    printf("Enter a positive integer (N) to calculate the sum of cubes of the first N natural numbers: ");
+
+    // Read the integer input from the user.
+    // Check the return value of scanf to ensure a valid integer was read.
+    if (scanf("%d", &n) != 1) {
+        printf("Invalid input. Please enter an integer.\n");
+        return 1; // Exit with a non-zero status to indicate an error
+    }
+
+    // Validate if the entered number is positive
+    if (n <= 0) {
+        printf("Please enter a positive integer for N.\n");
+        return 1; // Exit with a non-zero status to indicate an error
+    }
+
+    // --- Calculate the sum of cubes of the first N natural numbers ---
+    // Loop from 1 up to N (inclusive)
+    for (int i = 1; i <= n; i++) {
+        // Calculate the cube of the current number (i * i * i) and add it to the sum.
+        // Cast 'i' to long long before multiplication to ensure the intermediate
+        // calculation (i * i * i) is performed using long long, preventing potential
+        // overflow if i is large, before adding to sum_of_cubes.
+        sum_of_cubes += (long long)i * i * i;
+    }
+
+    /*
+    // Alternative approach using the mathematical formula for the sum of cubes:
+    // Sum of cubes of first N natural numbers = (N * (N + 1) / 2)^2
+    // This is more efficient for large N.
+    // long long sum_of_first_n = (long long)n * (n + 1) / 2;
+    // long long formula_sum = sum_of_first_n * sum_of_first_n;
+    // printf("The sum of cubes using formula is: %lld\n", formula_sum);
+    */
+
+
+    // --- Output the result ---
+    printf("The sum of the cubes of the first %d natural numbers is: %lld\n", n, sum_of_cubes);
+
+    // Return 0 to indicate successful program execution.
+    return 0;
+}
+
+
+
+
+
+
+Write a program to calculate factorial of a number
+#include <stdio.h> // Required for standard input/output functions (printf, scanf)
+
+int main() {
+    int num;         // Variable to store the user-provided number
+    long long factorial = 1; // Variable to store the calculated factorial.
+                             // Use long long as factorials grow very rapidly.
+
+    // Prompt the user to enter a non-negative integer
+    printf("Enter a non-negative integer to calculate its factorial: ");
+
+    // Read the integer input from the user.
+    // Check the return value of scanf to ensure a valid integer was read.
+    if (scanf("%d", &num) != 1) {
+        printf("Invalid input. Please enter an integer.\n");
+        return 1; // Exit with a non-zero status to indicate an error
+    }
+
+    // --- Calculate the factorial ---
+    // Factorial is defined for non-negative integers (0, 1, 2, ...).
+    if (num < 0) {
+        printf("Factorial is not defined for negative numbers.\n");
+        return 1; // Exit with an error code for invalid input
+    } else if (num == 0) {
+        // Factorial of 0 is 1
+        factorial = 1;
+    } else {
+        // Calculate factorial for positive numbers
+        // The factorial of n is the product of integers from 1 to n.
+        for (int i = 1; i <= num; i++) {
+            // Multiply the current factorial value by the loop counter.
+            // Check for potential overflow before multiplication, especially for larger 'num'.
+            // A simple check: if factorial becomes too large, it might overflow.
+            // For long long, the maximum value is very large, but still finite.
+            // A more robust check would involve comparing against LLONG_MAX / i.
+            // For this example, we assume long long is sufficient for reasonable inputs.
+            factorial *= i;
+        }
+    }
+
+    // --- Output the result ---
+    printf("The factorial of %d is: %lld\n", num, factorial);
+
+    // Return 0 to indicate successful program execution.
+    return 0;
+}
+
+
+
+
+
+Write a program to count digits in a given number
+#include <stdio.h> // Required for standard input/output functions (printf, scanf)
+#include <stdlib.h> // Required for abs() function to handle negative numbers
+
+int main() {
+    int number;      // Variable to store the user-provided number
+    int count = 0;   // Variable to store the count of digits, initialized to 0
+    int temp_number; // Temporary variable to manipulate the number without changing the original
+
+    // Prompt the user to enter an integer
+    printf("Enter an integer to count its digits: ");
+
+    // Read the integer input from the user.
+    // Check the return value of scanf to ensure a valid integer was read.
+    if (scanf("%d", &number) != 1) {
+        printf("Invalid input. Please enter an integer.\n");
+        return 1; // Exit with a non-zero status to indicate an error
+    }
+
+    // Handle the special case of 0
+    if (number == 0) {
+        count = 1; // The number 0 has one digit
+    } else {
+        // For non-zero numbers, work with the absolute value
+        // This ensures the loop works correctly for negative numbers
+        temp_number = abs(number); // Get the absolute value using abs() from stdlib.h
+
+        // Loop to count the digits
+        // Repeatedly divide the number by 10 until it becomes 0
+        while (temp_number > 0) {
+            temp_number /= 10; // Integer division by 10 removes the last digit
+            count++;           // Increment the digit count for each digit removed
+        }
+    }
+
+    // --- Output the result ---
+    printf("The number of digits in %d is: %d\n", number, count);
+
+    // Return 0 to indicate successful program execution.
+    return 0;
+}
+
+
+
+
+
+
+Write a program to check whether a given number is a Prime number or not
+#include <stdio.h> // Required for standard input/output functions (printf, scanf)
+#include <stdbool.h> // Required for using boolean type (true/false)
+#include <math.h>    // Required for the sqrt() function
+
+int main() {
+    int num;         // Variable to store the user-provided number
+    bool is_prime = true; // Boolean flag, initially assuming the number is prime
+
+    // Prompt the user to enter a positive integer
+    printf("Enter a positive integer to check if it's a prime number: ");
+
+    // Read the integer input from the user.
+    // Check the return value of scanf to ensure a valid integer was read.
+    if (scanf("%d", &num) != 1) {
+        printf("Invalid input. Please enter an integer.\n");
+        return 1; // Exit with a non-zero status to indicate an error
+    }
+
+    // --- Check if the number is prime ---
+
+    // Numbers less than or equal to 1 are not prime
+    if (num <= 1) {
+        is_prime = false;
+    } else {
+        // We only need to check for divisors from 2 up to the square root of the number.
+        // If a number 'num' has a divisor greater than its square root, it must also
+        // have a divisor less than its square root.
+        int limit = (int)sqrt(num); // Calculate the integer part of the square root
+
+        // Loop from 2 up to the calculated limit
+        for (int i = 2; i <= limit; i++) {
+            // If 'num' is divisible by 'i' with no remainder, then 'i' is a divisor
+            // other than 1 or the number itself, so it's not prime.
+            if (num % i == 0) {
+                is_prime = false; // Set the flag to false
+                break;            // No need to check further, we found a divisor
+            }
+        }
+    }
+
+    // --- Output the result ---
+
+    if (is_prime) {
+        printf("%d is a prime number.\n", num);
+    } else {
+        printf("%d is not a prime number.\n", num);
+    }
+
+    // Return 0 to indicate successful program execution.
+    return 0;
+}
+
+
+
+
+
+
+Write a program to calculate LCM of two numbers
+#include <stdio.h> // Required for standard input/output functions (printf, scanf)
+
+// Function to calculate the Greatest Common Divisor (GCD) using the Euclidean algorithm
+int gcd(int a, int b) {
+    // Ensure both numbers are positive for the algorithm
+    // The Euclidean algorithm works with non-negative integers, but for LCM of natural numbers,
+    // we usually deal with positive inputs. This function assumes positive inputs based on main's validation.
+    while (b != 0) {
+        int temp = b;
+        b = a % b;
+        a = temp;
+    }
+    return a; // When b becomes 0, a is the GCD
+}
+
+int main() {
+    int num1, num2; // Variables to store the two user-provided numbers
+    int common_divisor; // Variable to store the calculated GCD
+    long long least_common_multiple; // Variable to store the calculated LCM. Use long long for potentially large LCM values.
+
+    // Prompt the user to enter two positive integers
+    printf("Enter two positive integers to calculate their LCM: ");
+
+    // Read the two integer inputs from the user.
+    // Check the return value of scanf to ensure valid integers were read.
+    if (scanf("%d %d", &num1, &num2) != 2) {
+        printf("Invalid input. Please enter two integers.\n");
+        return 1; // Exit with a non-zero status to indicate an error
+    }
+
+    // Validate if both entered numbers are positive
+    if (num1 <= 0 || num2 <= 0) {
+        printf("Please enter two positive integers.\n");
+        return 1; // Exit with a non-zero status to indicate an error
+    }
+
+    // --- Calculate GCD and LCM ---
+
+    // Calculate the GCD of the two numbers
+    common_divisor = gcd(num1, num2);
+
+    // Calculate the LCM using the formula: LCM(a, b) = (a * b) / GCD(a, b)
+    // To prevent potential overflow when multiplying num1 and num2,
+    // we can divide one number by the GCD first, then multiply by the other number.
+    // Or, cast to long long before multiplication.
+    // Using the formula (num1 * num2) / common_divisor with long long cast:
+    least_common_multiple = ((long long)num1 * num2) / common_divisor;
+
+
+    // --- Output the result ---
+    printf("The GCD of %d and %d is: %d\n", num1, num2, common_divisor); // Optional: show GCD
+    printf("The LCM of %d and %d is: %lld\n", num1, num2, least_common_multiple);
+
+    // Return 0 to indicate successful program execution.
+    return 0;
+}
+
+
+
+
+
+
+
+Write a program to reverse a given number
+#include <stdio.h>  // Required for standard input/output functions (printf, scanf)
+#include <stdlib.h> // Required for abs() function to handle negative numbers
+
+int main() {
+    int number;         // Variable to store the user-provided number
+    int original_number; // Variable to store the original number for printing
+    long long reversed_number = 0; // Variable to store the reversed number. Use long long to prevent potential overflow.
+    int remainder;      // Variable to store the last digit
+
+    // Prompt the user to enter an integer
+    printf("Enter an integer to reverse: ");
+
+    // Read the integer input from the user.
+    // Check the return value of scanf to ensure a valid integer was read.
+    if (scanf("%d", &number) != 1) {
+        printf("Invalid input. Please enter an integer.\n");
+        return 1; // Exit with a non-zero status to indicate an error
+    }
+
+    // Store the original number before modifying it
+    original_number = number;
+
+    // --- Reverse the number ---
+
+    // Handle the special case of 0
+    if (number == 0) {
+        reversed_number = 0; // The reverse of 0 is 0
+    } else {
+        // Work with the absolute value of the number for reversal
+        int temp_number = abs(number);
+
+        // Loop until the temporary number becomes 0
+        while (temp_number != 0) {
+            // Get the last digit (remainder when divided by 10)
+            remainder = temp_number % 10;
+
+            // Build the reversed number:
+            // Shift the current reversed_number one decimal place to the left (multiply by 10)
+            // and add the new last digit (remainder).
+            reversed_number = reversed_number * 10 + remainder;
+
+            // Remove the last digit from the temporary number (integer division by 10)
+            temp_number /= 10;
+        }
+
+        // If the original number was negative, make the reversed number negative
+        if (original_number < 0) {
+            reversed_number = -reversed_number;
+        }
+    }
+
+    // --- Output the result ---
+    printf("The reverse of %d is: %lld\n", original_number, reversed_number);
+
+    // Return 0 to indicate successful program execution.
+    return 0;
+}
