@@ -1,0 +1,648 @@
+// Type Casting and Conversion
+/*
+1.Write a C++ program to convert Primitive type to Complex type.
+ Example -
+ int main()
+{
+ Complex c1;
+ Int x=5;
+ c1=x;
+ return 0;
+}
+*/
+
+#include<iostream>
+using namespace std;
+
+class Complex
+{
+    private:
+
+    int real, img;
+
+    public:
+
+    Complex(int a ,int b)
+    {
+        real = a;
+        img = b;
+    }
+
+    void display()
+    {
+        cout<<"\nReal: "<<real<<endl<<"Imaginary: "<<img;
+    }
+};
+
+int main()
+{
+    Complex c(2,-4);
+
+    c.display();
+
+    return 0;
+}
+
+
+// Type Casting and Conversion
+/*
+Write a C++ program to convert Complex type to Primitive type.
+ Example -
+ int main()
+{
+ Complex c1;
+ c1.setData(3,4);
+ int x;
+ x=c1;
+ return 0;
+}
+*/
+
+#include<iostream>
+using namespace std;
+
+class Complex
+{
+    private:
+
+    int real, img;
+
+    public:
+     
+    Complex(int a , int b)
+    {
+        real = a;
+        img = b;
+    } 
+
+    operator int()
+    {    
+        return real + img;
+    }
+};
+
+int main()
+{
+    Complex c(2 , -4);
+
+    int x = c;
+
+    cout<<"\n"<<x<<endl<<endl;
+
+    return 0;
+}
+
+
+// Type Casting and Conversion
+/*
+. Create a Product class and convert Product type to Item type using constructor
+int main()
+{
+ Item i1;
+ Product p1;
+ p1.setData(3,4);
+ i1=p1;
+ return 0;
+}
+*/
+
+#include<iostream>
+using namespace std;
+
+class Product 
+{
+    private:
+
+    int x , y;
+
+    public:
+
+    Product(int a , int b)
+    {
+        x = a;
+        y = b;
+    }
+
+    void display()
+    {
+        cout<<"\nX: "<<x<<" , Y: "<<y;
+    }
+    
+    int getX(){ return x; }
+    int getY(){ return y; }
+};
+
+class Item
+{
+    private:
+
+    int i;
+
+    public:
+
+    Item(){}
+
+    Item(Product p)
+    {
+        i = p.getX() + p.getY();
+    }
+
+    void display()
+    {
+        cout<<"\nItem: "<<i;
+    }
+};
+
+int main()
+{
+    Product p(2 , 6);
+    Item i = p;
+
+    p.display();
+    i.display();
+
+    cout<<endl<<endl;
+  
+    return 0;
+}
+
+
+
+// Type Casting and Conversion
+/*
+Create Product class and convert Product type to Item type using casting operator
+int main()
+{
+ Item i1;
+ Product p1;
+ p1.setData(3,4);
+ i1=p1;
+ return 0;
+}
+*/
+#include<iostream>
+using namespace std;
+
+class Item
+{
+    private:
+
+    int i;
+
+    public:
+
+    Item(){}
+
+    Item(int x)
+    {
+       i = x;
+    }
+
+    void display()
+    {
+        cout<<"\nItem: "<<i;
+    }
+};
+
+class Product
+{
+    private:
+
+    int x , y;
+
+    public:
+
+    Product(int a, int b)
+    {
+        x = a;
+        y = b;
+    }
+
+    operator Item()
+    {
+        Item i(x + y);
+
+        return i;
+    }
+
+    void display()
+    {
+        cout<<"\nX: "<<x<<" , Y: "<<y;
+    }
+};
+
+int main()
+{
+    Product p(2 , 6);
+    Item i = p;
+
+    p.display();
+    i.display();
+
+    cout<<endl<<endl;
+
+    return 0;
+}
+
+// Type Casting and Conversion
+/*
+Create two classes Invent1 and Invent2 and also add necessary constructors in it. Now add
+functions to support Invent1 to float and Invent1 to Invent2 type.
+Example -
+int main()
+{
+ Invent1 x(4,5);
+ Invent2 y;
+ float z;
+ z = x; // Invent1 to float
+ y = x; // Invent1 to Invent2
+ return 0;
+}
+*/
+
+#include<iostream>
+using namespace std;
+
+class Invent1
+{
+    private:
+
+    float x , y;
+
+    public:
+
+    Invent1(float a, float b)
+    {
+        x = a;
+        y = b;
+    }
+
+    operator float()
+    {
+        return x+y;
+    }
+
+    float getX(){ return x; }
+    float getY(){ return y; }
+};
+
+class Invent2
+{
+    private:
+
+    float s;
+
+    public:
+
+    Invent2(){}
+
+    Invent2(Invent1 i)
+    {
+        s = i.getX() + i.getY();
+    }
+
+    float getS(){ return s;}
+};
+
+int main()
+{
+    Invent1 x(4 ,5);
+    Invent2 y;
+
+    float z;
+
+    z = x; 
+    cout<<endl<<z;
+
+    y = x;
+    cout<<endl<<y.getS()<<endl<<endl; 
+    
+   return 0;
+}
+
+
+// Type Casting and Conversion
+/*
+Create a Time class and take Duration in seconds. Now you need to convert seconds(i.e int )
+to Time class.
+Exampleint main()
+{
+ int duration;
+ cout<<”Enter time duration in minutes”;
+ cin>>duration;
+ Time t1 = duration;
+ t1.display();
+ return 0;
+}
+*/
+
+#include<iostream>
+using namespace std;
+
+class Time
+{
+    private:
+
+    int hour,min;
+
+    public:
+
+    Time(){}
+
+    Time(int duration)
+    {
+        hour = duration / 3600;
+        min = (duration % 3600) / 60;
+    }
+
+    void display()
+    {
+        cout<<"\nHour "<<hour<<" : Minute "<<min;
+    }
+};
+
+int main()
+{
+    int duration = 4000;
+    Time t; 
+
+    t = duration;
+    t.display();
+
+    cout<<endl<<endl;
+
+   return 0;
+}
+
+
+// Type Casting and Conversion
+/*
+Create two class Time and Minute and add required getter and setter including constructors.
+Now you need to type cast Time object into Minute to fetch the minute from Time and display it.
+Example -
+int main()
+{
+ Time t1(2,30);
+ t1.display();
+ Minute m1;
+ m1.display();
+ m1=t1 // Fetch minute from time
+ t1.display();
+ m1.display();
+ return 0;
+}
+*/
+
+#include<iostream>
+using namespace std;
+
+class Time
+{
+    private:
+
+    int hour,min;
+
+    public:
+
+    Time(int h, int m)
+    {
+       hour = h;
+       min = m;
+       normalize(); 
+    }
+
+    void normalize()
+    {
+        hour = hour + min / 60;
+        min = min % 60;
+    }
+
+    void display()
+    {
+        cout<<"\nHour "<<hour<<" : Minute "<<min;
+    }
+
+    int getH(){ return hour; }
+    int getM(){ return min; }
+};
+
+class Minute
+{
+    private:
+
+    int m=0;
+
+    public:
+
+    Minute(){}
+
+    Minute(Time t)
+    {
+        m = (t.getH() / 60) + t.getH() * 60 + t.getM() ;
+    }
+
+    void display()
+    {
+        cout<<"\nMinute "<<m;
+    }
+};
+
+int main()
+{
+    Time t1(2,70);
+    t1.display();
+
+    Minute m1;
+    m1.display();
+
+    m1 = t1; 
+
+    t1.display();
+    m1.display();
+
+    return 0;
+}
+
+
+// Type Casting and Conversion
+/*
+Create a Rupee class and convert it into int. And Display it.
+Exampleint main()
+{
+ Rupee r = 10;
+ int x = r;
+ cout<<x;
+ return 0;
+}
+*/
+#include<iostream>
+using namespace std;
+
+class Rupee
+{
+    private:
+
+    int rs;
+
+    public:
+
+    Rupee(int r)
+    {
+        rs = r;
+    }
+
+    operator int()
+    {
+        return rs;
+    }
+
+};
+
+int main()
+{
+    Rupee r = 500;
+
+    int x = r;
+
+    cout<<endl<<x<<endl;
+
+    return 0;
+}
+
+
+// Type Casting and Conversion
+/*
+Create a Dollar class and add necessary functions to support int to Dollar type conversion.
+Exampleint main()
+{
+ int x = 50;
+ Dollar d;
+ d = x;
+ d.display();
+ return 0;
+}
+*/
+
+#include<iostream>
+using namespace std;
+
+class Dollar
+{
+    private:
+
+    int d;
+
+    public:
+
+    Dollar(int x=0)
+    {
+        d = x;
+    }
+
+    void display()
+    {
+        cout<<"\nDollar: "<<d;
+    }
+};
+
+int main()
+{
+    int x = 50;
+    Dollar d;
+    d = x;
+    d.display();
+
+    return 0;
+}
+
+
+// Type Casting and Conversion
+/*
+Create two classes Rupee and Dollar and add necessary functions to support Rupee to
+Dollar and Dollar to Rupee conversion.
+Exampleint main()
+{
+ Rupee r = 23;
+Dollar d = r; // Rupee to Dollar conversion
+d.display();
+r.display();
+r = d; // Dollar to Rupee Conversion
+d.display();
+r.display();
+ return 0;
+}
+*/
+
+#include<iostream>
+using namespace std;
+
+class Rupee
+{
+   private:
+
+   int rs;
+
+   public:
+
+   Rupee(){}
+
+   Rupee(int x)
+   {
+      rs = x;
+   }
+
+   void display()
+   {
+      cout<<"\nRupee: "<<rs;
+   }
+
+   int getR(){ return rs; }
+};
+
+class Dollar
+{
+   private:
+
+   int d;
+
+   public:
+
+   Dollar(int x)
+   {
+      d = x;
+   }
+
+   Dollar(Rupee r)
+   {
+      d = r.getR();  
+   }
+
+   operator Rupee()
+   {
+      return d;
+   }
+
+   void display()
+   {
+      cout<<"\nDollar: "<<d;
+   }
+};
+
+int main()
+{
+    Rupee r = 23;
+    Dollar d = r; 
+
+    d.display();
+    r.display();
+    
+    //Dollar d1 = 25;
+    //r = d1; 
+
+    r = d;
+
+    d.display();
+    r.display();
+
+ return 0;
+}
