@@ -1,0 +1,340 @@
+
+// Template
+/*
+ *  Write a C++ program to demonstrate the addition of multiple types of data using generic
+ *  functions or templates
+*/
+
+#include<iostream>
+#include<vector>
+using namespace std;
+
+template<class T>
+T add(vector<T>v)
+{
+    T s=0;
+    for(T i=0;i<v.size();i++)
+       s=s+v[i];
+    return s;   
+}
+
+int main()
+{
+
+    vector<double> v;
+    v.push_back(2.5);
+    v.push_back(7.5);
+
+    cout<<"\n Sum = "<<add<double>(v)<<endl<<endl;
+
+    return 0;
+}
+
+
+
+
+
+// TEMPLATE
+/*
+*  Write a C++ Program to find Largest among two numbers using function template.
+*/
+
+#include<iostream>
+using namespace std;
+
+template<class T>
+T largest(T n1, T n2)
+{
+    return ( n1 < n2 ? n2 : n1);
+}
+
+int main()
+{
+    cout<<"largest = "<<largest<double>(5.2,6.1)<<endl;
+    return 0;
+}
+
+
+
+
+
+// Template
+/*
+ *   Write a C++ program to find the largest of three elements using a template
+*/
+
+#include<iostream>
+using namespace std;
+
+template<class T>
+T largest(T x,T y,T z)
+{
+
+    if(x >= y)
+    {
+        if(x >= z)
+            return x;
+        else
+            return z;    
+    }
+    else
+    {
+        if(y >= z)
+           return y;
+        else
+           return z;   
+    }
+    
+}
+
+int main()
+{
+    cout<<"Largest = "<<largest<double>(9.4,86.8,6)<<endl;
+
+    return 0;
+}
+
+
+
+
+
+//  Template
+/*
+ *  Write a C++ Program to Swap data using function template.
+*/
+
+#include<iostream>
+using namespace std;
+
+template<class T>
+void swapping(T &x, T &y)
+{
+    T temp;
+    temp = x;
+    x = y;
+    y = temp;
+}
+
+int main()
+{
+    int x=6,y=4;
+    swapping<int>(x,y);
+    cout<<"Swaping = "<<x<<" , "<<y<<endl;
+ 
+    return 0;
+}
+
+
+
+
+
+
+//  Template
+/*
+  Write a C++ Program to find Sum of Array using function template.
+*/
+
+#include<iostream>
+using namespace std;
+
+template<class T>
+T sum(T arr[], int size)
+{
+    T ans = arr[0];
+    for(int i = 1; i < size; i++)
+       ans = ans + arr[i];
+
+    return ans;   
+}
+
+int main()
+{
+    double arr[]={2.5,2.5,2,2,2};
+    int size = sizeof(arr) / sizeof(arr[0]);
+
+    cout<<"Sum = "<<sum<double>(arr,size)<<endl;
+   
+    return 0;
+}
+
+
+
+
+
+// Template
+/*
+   Write a C++ Program of Templated class derived from Non-templated class
+*/
+
+#include<iostream>
+#include<string>
+using namespace std;
+
+class shape
+{
+   string shaped;
+
+   public:
+
+   shape(string s)
+   {
+      shaped = s;
+   }
+
+   shape(){}
+
+   void setShape(string s)
+   {
+      shaped = s;
+   }
+
+   string getShape()
+   {
+      return shaped;
+   }
+
+
+};
+
+template<class T>
+
+class circle : public shape
+{
+    T x;
+    T y;
+    T radius;
+
+    public:
+
+    circle(T centerX, T centreY, T r, string s) : shape(s)
+    {
+        x = centerX;
+        y = centreY;
+        radius = r;
+    }
+    
+    circle(T centerX, T centreY, T r) : shape()
+    {
+        x = centerX;
+        y = centreY;
+        radius = r;
+    }
+
+    circle(T r) : shape()
+    {
+        radius = r;
+    }
+
+    circle(){}
+
+    T area()
+    {
+        return 3.14*radius*radius;
+    }
+
+};
+
+int main()
+{
+    circle<double>c(0.0 , 0.0 , 5.0 , "circle");
+    cout<<"Area of circle = "<<c.area()<<endl;
+    cout<<"Color of circle = "<<c.getShape()<<endl;
+
+    return 0;
+}
+
+
+
+
+
+// Template
+/*
+   Write a C++ Program to implement push and pop methods from stack using template.
+*/
+
+#include<iostream>
+#include<string>
+using namespace std;
+
+template<class T>
+class stack
+{    
+    int top;
+    T st[100];
+
+    public:
+      
+      stack()
+      {
+          top = -1;
+      }
+
+      void push(T i)
+      {
+          st[++top] = i;
+      }
+
+      T pop()
+      {
+         return st[top--];
+      }
+
+};
+
+int main()
+{
+    stack<int>i;
+    stack<string>s;
+    i.push(23);
+    cout<<i.pop();
+    s.push("sameer");
+    cout<<s.pop();
+
+    return 0;
+}
+
+
+
+
+
+// Template
+/*
+   Write a C++ program to implement Hash Table using Template Class
+*/
+
+#include<iostream>
+#include<map>
+using namespace std;
+
+template<class T>
+void h(T arr[] , int size)
+{
+    map<char,int> m;
+
+    for(int i = 0; i < size; i++)
+    {
+        if(m.find(arr[i]) != m.end())
+        {
+            m[arr[i]]++;
+        }
+        else
+           m[arr[i]] = 1;
+    }
+   
+    map<char,int>::iterator i;
+
+    for(i = m.begin(); i != m.end(); i++)
+    {
+        cout<<i -> first<<" -> "<<i -> second<<endl;
+    }
+}
+
+int main()
+{
+  int arr[] = {'a','a','b','c','b','d'};
+  int size = sizeof(arr) /  sizeof(arr[0]);
+
+    h(arr,size);
+
+  return 0;
+}
