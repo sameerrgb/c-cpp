@@ -1,0 +1,1008 @@
+
+/// new and delete operator, Inheritance
+/*
+Define a class Person with instance members name and age. Also define member
+functions setName(), setAge(), getName(), getAge(). Now define class Employee by
+inheriting Person class. In the Employee class define empid and salary as instance
+members. Also define setEmpid, setSalary, getEmpid, getSalary.
+*/
+
+#include<iostream>
+#include<cstring>
+using namespace std;
+
+class Person
+{
+    protected :
+
+    char name[20];
+    int age;
+
+    public :
+
+    void setName(const char *n)
+    {
+        strcpy(name,n);
+    }
+
+    void setAge(int a)
+    {
+        age = a;
+    } 
+
+    char * getNmae()
+    {
+        return name;
+    }
+
+    int getAge()
+    {
+        return age;
+    }
+};
+
+class Employee : public Person
+{
+    private :
+
+    int empid;
+    long double  salary; 
+
+    public :
+
+    void setEmpid(int n)
+    {
+        empid = n;
+    }
+
+    void setSalary(long double  s)
+    {
+        salary = s;
+    } 
+
+    int  getNmae()
+    {
+        return empid;
+    }
+
+    long double  getAge()
+    {
+        return salary;
+    }
+
+    void display()
+    {
+        cout<<"\n\nNAME:  "<<name;
+        cout<<"\nAGE:  "<<age;
+        cout<<"\nEMPLOYEE ID:  "<<empid;
+        cout<<"\nSALARY:  "<<salary;
+    }
+};
+
+int main()
+{
+   system("cls");
+
+    Employee e;
+
+    e.setName("SAMEER");
+    e.setAge(18);
+    e.setEmpid(1);
+    e.setSalary(5000000.0);
+    e.display();
+
+    cout<<endl<<endl;
+
+    return 0;
+}
+
+
+
+/// new and delete operator, Inheritance
+/*
+Write a C++ program to add two numbers using single inheritance. Accept these two
+numbers from the user in base class and display the sum of these two numbers in
+derived class
+*/
+
+#include<iostream>
+using namespace std;
+
+class base
+{
+    protected:
+
+    int x , y;
+
+    public:
+
+    void input()
+    {
+        cout<<"\n\nEnter two number:  ";
+        cin>>x>>y;
+    }
+};
+
+class derived : public base
+{
+    private:
+
+    int sum;
+
+    public:
+
+    void add()
+    {
+        sum = x + y;
+    }
+
+    void display()
+    {
+        cout<<"\n\nSUM OF TWO NUMBER IS:  "<<sum;
+    }
+};
+
+int main()
+{
+    system("cls");
+
+    derived d;
+
+    d.input();
+    d.add();
+    d.display();
+
+    cout<<endl<<endl; 
+
+    return 0;
+}
+
+
+
+/// new and delete operator, Inheritance
+/*
+Write a C++ program to calculate the percentage of a student using multi-level
+inheritance. Accept the marks of three subjects in base class. A class will be derived
+from the above mentioned class which includes a function to find the total marks
+obtained and another class derived from this class which calculates and displays the
+percentage of students.
+*/
+
+#include<iostream>
+using namespace std;
+
+class base
+{
+    protected:
+
+    float m1,m2,m3;
+
+    public:
+
+    void accept(float x,float y,float z)
+    {
+        m1 = x;
+        m2 = y;
+        m3 = z;
+    }
+};
+
+class total : public base
+{
+    protected:
+
+    float sum;
+
+    public:
+
+    void add()
+    {
+        sum = m1 + m2 + m3;
+    }
+};
+
+class calc : public total
+{
+    private:
+
+    float per;
+
+    public:
+
+    void calculate()
+    {
+        per = (sum/300)*100;
+    }
+
+    void display()
+    {
+        cout<<"\n\nPercentage:  "<<per;
+    }
+};
+
+int main()
+{
+    system("cls");
+
+    calc c;
+
+    c.accept(78,85,95);
+    c.add();
+    c.calculate();
+    c.display();
+
+    cout<<"\n\n";
+
+    return 0;
+}
+
+
+
+
+/// new and delete operator, Inheritance
+/*
+Write a C++ program to design a base class Person (name, address, phone_no). Derive
+a class Employee (eno, ename) from Person. Derive a class Manager (designation,
+department name, basic-salary) from Employee. Write a menu driven program to:
+a. Accept all details of 'n' managers.
+b. Display manager having highest salary
+*/
+
+#include<iostream>
+using namespace std;
+
+class person
+{
+    protected:
+    char pname[20];
+    char address[50];
+    long long m_no;
+};
+
+class employee : public person
+{
+    public :
+    int eno;
+    char ename[20];
+};
+
+class manager : public employee
+{
+    public:
+    char designation[20];
+    char department_name[20];
+    float basic_salary;
+
+    public:
+
+    void input()
+    {
+        cout<<"\n\nEnter Employee Details:-";
+        cout<<"\n-------------------------------";
+        cout<<"\nID:  ";
+        cin>>eno;
+        cout<<"\nName:  ";
+        cin>>ename;
+        cout<<"\nAddress:  ";
+        cin>>address;
+        cout<<"\nMobile:  ";
+        cin>>m_no;
+        cout<<"\nDesignation:  ";
+        cin>>designation;
+        cout<<"\nDepartment:  ";
+        cin>>department_name;
+        cout<<"\nSalary:  ";
+        cin>>basic_salary;
+    }
+
+    void display()
+    {
+        cout<<"\n\nEntered Employee Details:-";
+        cout<<"\n-------------------------------";
+        cout<<"\nID:  "<<eno;
+        cout<<"\nName:  "<<ename;
+        cout<<"\nAddress:  "<<address;
+        cout<<"\nMobile:  "<<m_no;
+        cout<<"\nDesignation:  "<<designation;
+        cout<<"\nDepartment:  "<<department_name;
+        cout<<"\nSalary:  "<<basic_salary;
+    }
+};
+
+int main()
+{
+    system("cls");
+
+    int i,cnt,temp;
+    manager man[100];
+
+    cout<<"\n\nHow many details you want to enter:  ";
+    cin>>cnt;
+
+    for(i=1 ; i<=cnt ; i++)
+    {
+        man[i].input();
+    }
+    temp=0;
+    for(i=1 ; i<=cnt; i++)
+    {
+        if(man[temp].basic_salary < man[i].basic_salary)
+          temp=i;
+    } 
+    cout<<"\n\nHighest salary is:  "<<man[temp].basic_salary;
+    cout<<"\nAnd, Employee name is:  "<<man[temp].ename;
+
+    cout<<endl<<endl;
+
+    return 0;
+}
+
+
+
+
+/// new and delete operator, Inheritance
+/*
+Write a C++ program to define a base class Item (item-no, name, price). Derive a class
+Discounted-Item (discount-percent). A customer purchases 'n' items. Display the item-wise bill
+and total amount using appropriate format.
+*/
+
+#include<iostream>
+using namespace std;
+
+class Item
+{
+    public:
+    char item_name[30];
+    int item_no;
+    float item_price;
+};
+
+class Discounted : public Item
+{
+    public:
+    int discount_percent;
+    int discount_price;
+    int discounted_price;
+ 
+    void inputDetail()
+    {
+        cout<<"\n\nEnter Item Name:  ";
+        cin>>item_name;
+        cout<<"\nEnter Item Number:  ";
+        cin>>item_no;
+        cout<<"\nEnter Item Price:  ";
+        cin>>item_price;
+        cout<<"\nEnter Discount Percent:  ";
+        cin>>discount_percent;
+        cout<<"\n------------------------------\n";
+
+        discounted_price = item_price - item_price * discount_percent / 100;
+        discount_price = item_price - discounted_price;
+    }
+
+    void display()
+    {
+        cout<<"Item Name:  "<<item_name;
+        cout<<"\nItem No:  "<<item_no;
+        cout<<"\nItem Price:  "<<item_price;
+        cout<<"\nDiscount Percent:  "<<discount_percent;
+        cout<<"\nDiscount Price:  "<<discount_price;
+        cout<<"\nDiscounted Price:  "<<discounted_price;
+        cout<<"\n------------------------------\n";
+    }
+
+};
+
+int main()
+{
+    system("cls");
+    int i,count,total_discount=0,total_price=0;
+    Discounted d[100];
+    cout<<"\n\nHow Many Items You Want:  ";
+    cin>>count;
+    for(i=1 ; i<=count ; i++)
+    {
+        d[i].inputDetail();
+    }
+    for(i=1;i<=count;i++)
+    {
+        d[i].display();
+    }
+    for(i=1; i<=count;i++)
+    {
+        total_price =  total_price + d[i].item_price;
+    }
+    for(i=1; i<=count;i++)
+    {
+        total_discount =  total_discount + d[i].item_price - d[i].discounted_price;
+    }
+    cout<<"Total Price:  "<<total_price;
+    cout<<"\nTotal Discount:  "<<total_discount;
+    cout<<"\nFinal Payable Amount:  "<<total_price-total_discount;
+
+    cout<<"\n\n";
+    return 0;
+}
+
+
+
+
+/// new and delete operator, Inheritance
+/*
+  Write a C++ program to demonstrate how a common friend function can be used to
+  exchange the private values of two classes. (Use call by reference method)
+*/
+
+#include<iostream>
+using namespace std;
+
+class B;
+class A
+{
+    private:
+    int x;
+    public:
+    A()
+    {
+        x = 30;
+    }
+    void show()
+    {
+        cout<<"\n\n IN CLASS A:  X = "<<x;
+    }
+    friend void swap(A &x ,B &y);
+};
+
+class B
+{
+    private:
+    int y;
+    public:
+    B()
+    {
+        y = 80;
+    }
+    void show()
+    {
+        cout<<"\n\n IN CLASS B:  Y = "<<y;
+    }
+    friend void swap(A &x ,B &y);
+};
+
+void swap(A &x ,B &y)
+{
+    int temp = x.x;
+    x.x = y.y;
+    y.y = temp;
+
+    cout<<"\n\n IN SWAP FRIEND FUNCTION:  X = "<<x.x<<" , Y = "<<y.y;
+}
+
+int main()
+{
+    A a;
+    B b;
+
+    swap(a,b);
+
+    a.show();
+    b.show();
+
+    cout<<"\n\n";
+
+    return 0;
+}
+
+
+
+
+/// new and delete operator, Inheritance
+/*
+Write class declarations and member function definitions for a C++ base class to
+represent an Employee (emp-code, name).
+Derive two classes as Fulltime (daily rate, number of days, salary) and Parttime (number
+of working hours, hourly rate, salary).
+Write a menu driven program to:
+1. Accept the details of ‘n’ employees.
+2. Display the details of ‘n’ employees.
+3. Search a given Employee by emp-code.
+*/
+// HIERARCHICAL INHERITANCE
+#include<iostream>
+using namespace std;
+
+//const int m = 50;
+class Employee
+{
+    public:
+    int emp_code;
+    char emp_name[20];
+     
+    void setEmp()
+    {
+        cout<<"\n Enter Employee NO.    :  ";
+        cin>>emp_code;
+        cout<<"\n Enter Employee Name     :  ";
+        cin>>emp_name;
+    } 
+};
+
+class Fulltime : public Employee
+{
+    public:
+    int days;
+    float daily_rate;
+    float salary;
+
+    void setFull()
+    {
+        cout<<"\n Enter Daily Rate           :  ";
+        cin>>daily_rate;
+        cout<<"\n Enter NO. of Working Days    :  ";
+        cin>>days;
+    }
+
+    void calFull()
+    {
+        salary = daily_rate * days;
+    }
+
+    void showFull()
+    {
+        cout<<"\n------------------------------------------\n";
+        cout<<"\n Employee Number      :  "<<emp_code;
+        cout<<"\n Employee Name        :  "<<emp_name;
+        cout<<"\n Employee Salary      :  "<<salary;
+        cout<<"\n Employee Status      :  Full-Time";
+        cout<<"\n------------------------------------------\n\n";
+    }
+};
+
+class Parttime : public Employee
+{
+   public:
+   int hourly_rate;
+   int working_hours;
+   float salary1;
+
+   
+    void setPart()
+    {
+        cout<<"\n Enter Hourly Rate       :  ";
+        cin>>hourly_rate;
+        cout<<"\n Enter Working Hour      :  ";
+        cin>>working_hours;
+    }
+
+    void calPart()
+    {
+        salary1 = hourly_rate * working_hours;
+    }
+
+    void showPart()
+    {
+        cout<<"\n------------------------------------------\n";
+        cout<<"\n Employee Number      :  "<<emp_code;
+        cout<<"\n Employee Name        :  "<<emp_name;
+        cout<<"\n Employee Salary      :  "<<salary1;
+        cout<<"\n Employee Status      :  Part-Time";
+        cout<<"\n------------------------------------------\n\n";
+    }
+};
+
+int main()
+{
+    int var1 = 0;
+    int var2 = 0;
+    int i;
+    Fulltime full[5];
+    Parttime part[5];
+
+    char x;
+
+    do
+    {
+       cout<<"\n\n1. Enter Record :   ";
+       cout<<"\n2. Display Record :   ";
+       cout<<"\n3. Search Record  :   ";
+       cout<<"\n4. Quit           :   ";
+       cout<<"\n\n Enter Your Choice:   ";
+       cin>>x;
+
+       switch(x)
+       {
+           case '1':
+                char y;
+
+                cout<<"\n 1.Enter Full-Time :   ";
+                cout<<"\n 2.Enter Part-Time :   ";
+                cout<<"\n\n Enter :   ";
+                cin>>y;
+
+                switch(y)
+                {
+                    case '1':
+                        full[var1].setEmp();
+                        full[var1].setFull();
+                        full[var1].calFull();
+                        var1++;
+                        break;
+                    case '2':
+                        part[var2].setEmp();
+                        part[var2].setPart();
+                        part[var2].calPart();
+                        var2++;
+                        break;    
+                }
+            break;
+            case '2':
+
+                for(i = 0 ; i < var1 ; i++)
+                {
+                    full[i].showFull();
+                }
+                for(i = 0 ; i < var2 ; i++)
+                {
+                    part[i].showPart();
+                } 
+            system("pause");    
+            break;
+            case '3':
+                int n;
+                cout<<"\n Enter Employee No. :  ";
+                cin>>n;
+
+                for(i = 0 ; i < var1 ; i++)
+                {
+                    if(full[i].emp_code == n)
+                    {
+                        full[i].showFull();
+                    }
+                } 
+                for(i = 0 ; i < var2 ; i++)
+                {
+                    if(part[i].emp_code == n)
+                    {
+                        part[i].showPart();
+                    }
+                }
+            break;
+           
+        } 
+    } while ( x != '4');
+    
+    cout<<"\n\n";
+    return 0;
+}
+
+
+
+/// new and delete operator, Inheritance
+/*
+  In a bank, different customers have savings account. Some customers may have taken a
+  loan from the bank. So bank always maintain information about bank depositors and borrowers.
+  Design a Base class Customer (name, phone-number). Derive a class
+  Depositor(accno, balance) from Customer.
+  Again, derive a class Borrower (loan-no, loan-amt) from Depositor.
+  Write necessary member functions to read and display the details of ‘n’ customers
+*/
+// MULTILEVEL INHERITANCE
+#include<iostream>
+using namespace std;
+
+class customer
+{
+   private: 
+   char nm[20];
+   long long phno;
+
+   public: 
+
+   void acceptc()
+   {
+       cout<<"\n Enter Customar Name   :    ";
+       cin>>nm;
+       cout<<"\n Enter Customer Phone No. :    ";
+       cin>>phno;
+   }
+
+   void dispc()
+   {
+       cout<<"\n Details of Customer \n";
+       cout<<"\n --------------------------------------\n";
+       cout<<"\n Customer Name       :      "<<nm;
+       cout<<"\n Customer Phone No.  :      "<<phno;
+   }
+};
+
+class deposit : public customer
+{
+    private:
+    int accno, balance;
+
+    public:
+
+    void acceptd()
+   {
+       cout<<"\n Enter Customar A/c No.   :    ";
+       cin>>accno;
+       cout<<"\n Enter Balance            :    ";
+       cin>>balance;
+   }
+
+   void dispd()
+   {
+       cout<<"\n Customer A/c No.     :      "<<accno;
+       cout<<"\n Balace               :      "<<balance;
+       cout<<"\n --------------------------------------\n";
+   }
+};
+
+class borrow : public deposit
+{
+    private:
+    int loan_no , loan_amt;
+
+    public:
+
+    void acceptb()
+   {
+       cout<<"\n Enter Loan No.     :    ";
+       cin>>loan_no;
+       cout<<"\n Enter Loan Amount  :    ";
+       cin>>loan_amt;
+       cout<<"\n --------------------------------------\n";
+   }
+
+   void dispb()
+   {
+       cout<<"\n Loan No.       :        "<<loan_no;
+       cout<<"\n Loan Amount    :        "<<loan_amt;
+       cout<<"\n --------------------------------------\n";
+   }
+};
+
+int main()
+{
+    borrow *b;
+    int n,i;
+    cout<<"\n Enter No. of Customer Details You Want   :   ";
+    cin>>n;
+    b = new borrow[n];
+    for(i = 0; i < n; i++)
+    {
+        b[i].acceptc();
+        b[i].acceptd();
+        b[i].acceptb();
+    }
+    for(i = 0; i < n; i++)
+    {
+        b[i].dispc();
+        b[i].dispd();
+        b[i].dispb();
+    }
+    delete b;
+    return 0;
+}
+
+
+
+
+/// new and delete operator, Inheritance
+/*
+  Write a C++ program to implement the following class hierarchy:
+  Student: id, name
+  StudentExam (derived from Student): Marks of 6 subjects
+  StudentResult (derived from StudentExam) : percentage
+  Define appropriate functions to accept and display details.
+  Create 'n' objects of the StudentResult class and display the marklist
+*/
+// MULTILEVEL INHERITANCE
+#include<iostream>
+using namespace std;
+
+class Student
+{
+    protected:
+    int roll;
+    char name[20];
+
+    public:
+
+    void setData()
+    {
+        cout<<"\n -------------------------------------------";
+        cout<<"\n Enter Roll No.          :           ";
+        cin>>roll;
+        cout<<"\n Enter Student Name      :           ";
+        cin>>name;
+    }
+
+    void getData()
+    {
+        cout<<"\n -------------------------------------------";
+        cout<<"\n ************Student Marklist*************";
+        cout<<"\n -------------------------------------------";
+        cout<<"\n Roll No.              :   "<<roll;
+        cout<<"\n Student Name          :   "<<name;
+    }
+};
+
+class StudentExam : public Student
+{
+    protected:
+    int sub1,sub2,sub3,sub4,sub5,sub6;
+    float per;
+
+    public:
+
+    void acceptData()
+    {
+        setData();
+        cout<<"\n Enter Marks For Subject 1 :  ";
+        cin>>sub1;
+        cout<<"\n Enter Marks For Subject 2 :  ";
+        cin>>sub2;
+        cout<<"\n Enter Marks For Subject 3 :  ";
+        cin>>sub3;
+        cout<<"\n Enter Marks For Subject 4 :  ";
+        cin>>sub4;
+        cout<<"\n Enter Marks For Subject 5 :  ";
+        cin>>sub5;
+        cout<<"\n Enter Marks For Subject 6 :  ";
+        cin>>sub6;
+    }
+
+    void displayData()
+    {
+        getData();
+        cout<<"\n Marks of Subject 1    :   "<<sub1;
+        cout<<"\n Marks of Subject 2    :   "<<sub2;
+        cout<<"\n Marks of Subject 3    :   "<<sub3;
+        cout<<"\n Marks of Subject 4    :   "<<sub4;
+        cout<<"\n Marks of Subject 5    :   "<<sub5;
+        cout<<"\n Marks of Subject 6    :   "<<sub6;
+    }
+};
+
+class StudentResult : public StudentExam
+{
+    public:
+
+    void calculateData()
+    {
+        per = (sub1+sub2+sub3+sub4+sub5+sub6)/6.0;
+        cout<<"\n\n Total Percentage      :   "<<per;
+        cout<<"\n ---------------------------------------\n";
+    }
+};
+
+int main()
+{
+    StudentResult s;
+    int count , i;
+    cout<<"\n Enter No. of Students You Want?  :  ";
+    cin>>count;
+    for(i = 0; i < count ; i++)
+    {
+        s.acceptData();
+        s.displayData();
+        s.calculateData();
+    }
+
+    return 0;
+}
+
+
+
+
+/// new and delete operator, Inheritance
+/*
+  Consider two base classes
+  worker(int code, char name, float salary),
+  officer(float DA, HRA)
+  class manger(float TA(is 10% of salary), gross salary) is derived from both base classes.
+  Write necessary member functions.
+*/
+
+#include<iostream>
+#include<cstring>
+using namespace std;
+
+class Worker
+{ 
+    protected:
+    int code;
+    char name[20];
+    float salary;
+
+    public:
+
+    Worker(){}
+    Worker(int c,char *n,float s){code = c; strcpy(name,n); salary = s;}
+    void putW()
+    {
+         cout<<"\n Code          :     "<<code;
+         cout<<"\n Name          :     "<<name;
+         cout<<"\n Salary        :     "<<salary;
+    }
+};
+
+class Officer
+{
+    protected:
+    float da , hra; 
+
+    public:
+
+    Officer(){} 
+    Officer(float d, float h){da = d; hra = h;}
+    void putO()
+    {
+         cout<<"\n DA            :     "<<da;
+         cout<<"\n HRA           :     "<<hra;
+    }
+};
+
+class Manager :  public Worker, public Officer
+{
+    private:
+    float ta , gr;
+
+    public:
+
+    Manager(){}
+    Manager(int c,char *n,float s, float d, float h) : Worker(c,n,s) , Officer(d,h)
+    {}
+
+    void putM()
+    {
+         putW();
+         putO();
+         ta = 0.10 * salary;
+         cout<<"\n TA            :     "<<ta;
+         gr = ta + da + hra + salary;
+         cout<<"\n GROSS SALARY  :     "<<gr;
+    }
+
+};
+
+int main()
+{
+     int i, cnt;
+     Manager *m;
+
+     cout<<"\n Enter Manger , you want:  ";
+     cin>>cnt;
+     m = new Manager[cnt];
+     for(i=1;i<=cnt;i++)
+     {
+         int c;
+         cout<<"\n Enter code   :   ";
+         cin>>c;
+         char n[20];
+         cout<<"\n Enter name   :   ";
+         cin>>n;
+         float s;
+         cout<<"\n Enter salary  :   ";
+         cin>>s;
+         float d;
+         cout<<"\n Enter DA     :   ";
+         cin>>d;
+         float h;
+         cout<<"\n Enter HRA    :   ";
+         cin>>h;
+         m[i]=Manager(c,n,s,d,h);
+     }
+     for(i=1;i<=cnt;i++)
+     {
+         cout<<"\n ------------------------------";
+         cout<<"\n  ******Manager Details*******";
+         cout<<"\n ------------------------------";
+         m[i].putM();
+     }
+     delete m;
+
+     return 0;
+}
