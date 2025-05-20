@@ -1,0 +1,1287 @@
+Write a program to search element in a BST
+
+#include <iostream> // Required for input/output operations like std::cout
+
+// Define a structure for a node in the Binary Search Tree
+struct Node {
+    int data;   // Value stored in the node
+    Node* left; // Pointer to the left child (smaller values)
+    Node* right; // Pointer to the right child (larger values)
+
+    // Constructor to create a new node
+    Node(int val) : data(val), left(nullptr), right(nullptr) {}
+};
+
+// Function to insert a new node into the BST
+// This is a helper function to build the example BST.
+Node* insert(Node* root, int value) {
+    // If the tree is empty, create a new node and make it the root
+    if (root == nullptr) {
+        return new Node(value);
+    }
+
+    // If the value is less than the current node's data, insert into the left subtree
+    if (value < root->data) {
+        root->left = insert(root->left, value);
+    }
+    // If the value is greater than or equal to the current node's data, insert into the right subtree
+    // (Handling duplicates by placing them in the right subtree is one common approach)
+    else {
+        root->right = insert(root->right, value);
+    }
+
+    // Return the (unchanged) root pointer
+    return root;
+}
+
+// Function to search for a value in the BST
+// root: Pointer to the root of the current subtree being searched
+// value: The value to search for
+// Returns true if the value is found, false otherwise.
+bool search(Node* root, int value) {
+    // Base Case 1: If the tree (or subtree) is empty, the value is not found
+    if (root == nullptr) {
+        return false;
+    }
+
+    // Base Case 2: If the current node's data matches the value, the value is found
+    if (root->data == value) {
+        return true;
+    }
+
+    // Recursive Step:
+    // If the value is less than the current node's data, search in the left subtree
+    if (value < root->data) {
+        return search(root->left, value);
+    }
+    // If the value is greater than the current node's data, search in the right subtree
+    else {
+        return search(root->right, value);
+    }
+}
+
+// Helper function for in-order traversal (to print the sorted elements of the BST)
+void inorderTraversal(Node* root) {
+    if (root != nullptr) {
+        inorderTraversal(root->left);
+        std::cout << root->data << " ";
+        inorderTraversal(root->right);
+    }
+}
+
+// Helper function to delete the BST (to prevent memory leaks)
+void deleteBST(Node* root) {
+    if (root == nullptr) {
+        return;
+    }
+    deleteBST(root->left);
+    deleteBST(root->right);
+    delete root;
+}
+
+
+// Main function to demonstrate the BST search
+int main() {
+    // Create an empty BST
+    Node* root = nullptr;
+
+    // Insert nodes to build the BST
+    root = insert(root, 50);
+    insert(root, 30);
+    insert(root, 20);
+    insert(root, 40);
+    insert(root, 70);
+    insert(root, 60);
+    insert(root, 80);
+    insert(root, 30); // Inserting a duplicate
+
+    std::cout << "Binary Search Tree (In-order traversal): ";
+    inorderTraversal(root);
+    std::cout << std::endl;
+
+    std::cout << "\n--- Searching in the BST ---" << std::endl;
+
+    // Search for an element that exists
+    int valueToFind1 = 40;
+    if (search(root, valueToFind1)) {
+        std::cout << "Value " << valueToFind1 << " found in the BST." << std::endl;
+    } else {
+        std::cout << "Value " << valueToFind1 << " not found in the BST." << std::endl;
+    }
+
+    // Search for an element that does not exist
+    int valueToFind2 = 90;
+    if (search(root, valueToFind2)) {
+        std::cout << "Value " << valueToFind2 << " found in the BST." << std::endl;
+    } else {
+        std::cout << "Value " << valueToFind2 << " not found in the BST." << std::endl;
+    }
+
+    // Search for the root element
+    int valueToFind3 = 50;
+     if (search(root, valueToFind3)) {
+        std::cout << "Value " << valueToFind3 << " found in the BST." << std::endl;
+    } else {
+        std::cout << "Value " << valueToFind3 << " not found in the BST." << std::endl;
+    }
+
+    // Search for a duplicate element
+     int valueToFind4 = 30;
+     if (search(root, valueToFind4)) {
+        std::cout << "Value " << valueToFind4 << " found in the BST." << std::endl;
+    } else {
+        std::cout << "Value " << valueToFind4 << " not found in the BST." << std::endl;
+    }
+
+
+    // Clean up allocated memory
+    deleteBST(root);
+
+    return 0; // Indicate successful program execution
+}
+
+
+
+
+
+Write a program to print elements of a tree at a given level using recursion.
+
+#include <iostream> // Required for input/output operations like std::cout
+
+// Define a structure for a node in the Binary Tree
+struct Node {
+    int data;   // Value stored in the node
+    Node* left; // Pointer to the left child
+    Node* right; // Pointer to the right child
+
+    // Constructor to create a new node
+    Node(int val) : data(val), left(nullptr), right(nullptr) {}
+};
+
+// Helper function to insert a new node into the BST (for building the example tree)
+// This function is used to create a sample tree structure.
+Node* insert(Node* root, int value) {
+    // If the tree is empty, create a new node and make it the root
+    if (root == nullptr) {
+        return new Node(value);
+    }
+
+    // Simple insertion logic (not strictly BST insertion to allow arbitrary tree structure)
+    // For a general binary tree, insertion depends on the specific tree building logic.
+    // For this example, we'll just use a simple structure.
+    // A more robust example would build a specific tree structure.
+    // Let's modify this to build a predefined tree for clarity.
+    // This insert function will not be used for building the example tree below.
+    return root;
+}
+
+
+// Recursive function to print nodes at a given level
+// root: Pointer to the root of the current subtree
+// target_level: The level we want to print (0-based index, root is level 0)
+// current_level: The current level of the node being visited
+void printGivenLevel(Node* root, int target_level, int current_level) {
+    // Base Case 1: If the current node is null, stop recursion
+    if (root == nullptr) {
+        return;
+    }
+
+    // Base Case 2: If the current level is the target level, print the node's data
+    if (current_level == target_level) {
+        std::cout << root->data << " ";
+        return; // Stop recursion for this branch after printing
+    }
+
+    // Recursive Step: If the current level is less than the target level,
+    // move to the next level by calling the function for children.
+    if (current_level < target_level) {
+        // Recursively call for the left child, incrementing the current level
+        printGivenLevel(root->left, target_level, current_level + 1);
+        // Recursively call for the right child, incrementing the current level
+        printGivenLevel(root->right, target_level, current_level + 1);
+    }
+
+    // If current_level > target_level, we are past the target level, so just return.
+}
+
+// Main function to initiate the printing of nodes at a given level
+// root: Pointer to the root of the tree
+// level: The level to print (0-based index)
+void printLevel(Node* root, int level) {
+    // Start the recursive process from the root (level 0)
+    printGivenLevel(root, level, 0);
+    std::cout << std::endl; // Print a newline after printing elements of the level
+}
+
+// Helper function to build a sample binary tree
+// Example Tree:
+//        1
+//       / \
+//      2   3
+//     / \ / \
+//    4  5 6  7
+Node* buildExampleTree() {
+    Node* root = new Node(1);
+    root->left = new Node(2);
+    root->right = new Node(3);
+    root->left->left = new Node(4);
+    root->left->right = new Node(5);
+    root->right->left = new Node(6);
+    root->right->right = new Node(7);
+    return root;
+}
+
+// Helper function to delete the tree (to prevent memory leaks)
+void deleteTree(Node* root) {
+    if (root == nullptr) {
+        return;
+    }
+    deleteTree(root->left);
+    deleteTree(root->right);
+    delete root;
+}
+
+
+// Main function to demonstrate printing elements at different levels
+int main() {
+    // Build the example tree
+    Node* root = buildExampleTree();
+
+    std::cout << "Tree Structure (Conceptual):" << std::endl;
+    std::cout << "        1" << std::endl;
+    std::cout << "       / \\" << std::endl;
+    std::cout << "      2   3" << std::endl;
+    std::cout << "     / \\ / \\" << std::endl;
+    std::cout << "    4  5 6  7" << std::endl;
+
+    std::cout << "\nPrinting elements at Level 0:" << std::endl;
+    printLevel(root, 0); // Expected output: 1
+
+    std::cout << "\nPrinting elements at Level 1:" << std::endl;
+    printLevel(root, 1); // Expected output: 2 3
+
+    std::cout << "\nPrinting elements at Level 2:" << std::endl;
+    printLevel(root, 2); // Expected output: 4 5 6 7
+
+    std::cout << "\nPrinting elements at Level 3:" << std::endl;
+    printLevel(root, 3); // Expected output: (empty line as level 3 does not exist)
+
+    std::cout << "\nPrinting elements at Level -1 (invalid):" << std::endl;
+    printLevel(root, -1); // Expected output: (empty line)
+
+    // Clean up allocated memory
+    deleteTree(root);
+
+    return 0; // Indicate successful program execution
+}
+
+
+
+
+
+Write a program to find the minimum element in a BST
+
+#include <iostream> // Required for input/output operations like std::cout
+
+// Define a structure for a node in the Binary Search Tree
+struct Node {
+    int data;   // Value stored in the node
+    Node* left; // Pointer to the left child (smaller values)
+    Node* right; // Pointer to the right child (larger values)
+
+    // Constructor to create a new node
+    Node(int val) : data(val), left(nullptr), right(nullptr) {}
+};
+
+// Function to insert a new node into the BST
+// This is a helper function to build the example BST.
+Node* insert(Node* root, int value) {
+    // If the tree is empty, create a new node and make it the root
+    if (root == nullptr) {
+        return new Node(value);
+    }
+
+    // If the value is less than the current node's data, insert into the left subtree
+    if (value < root->data) {
+        root->left = insert(root->left, value);
+    }
+    // If the value is greater than or equal to the current node's data, insert into the right subtree
+    // (Handling duplicates by placing them in the right subtree is one common approach)
+    else {
+        root->right = insert(root->right, value);
+    }
+
+    // Return the (unchanged) root pointer
+    return root;
+}
+
+// Function to find the minimum element in a BST
+// The minimum element in a BST is the leftmost node.
+// root: Pointer to the root of the BST
+// Returns the minimum value, or -1 if the tree is empty (or handle appropriately)
+int findMin(Node* root) {
+    // If the tree is empty, there is no minimum element
+    if (root == nullptr) {
+        std::cerr << "Error: Cannot find minimum in an empty tree." << std::endl;
+        return -1; // Return an error value
+    }
+
+    // Traverse to the leftmost node
+    Node* current = root;
+    while (current->left != nullptr) {
+        current = current->left;
+    }
+
+    // The current node is the leftmost node, which contains the minimum value
+    return current->data;
+}
+
+// Helper function for in-order traversal (to print the sorted elements of the BST)
+void inorderTraversal(Node* root) {
+    if (root != nullptr) {
+        inorderTraversal(root->left);
+        std::cout << root->data << " ";
+        inorderTraversal(root->right);
+    }
+}
+
+// Helper function to delete the BST (to prevent memory leaks)
+void deleteBST(Node* root) {
+    if (root == nullptr) {
+        return;
+    }
+    deleteBST(root->left);
+    deleteBST(root->right);
+    delete root;
+}
+
+
+// Main function to demonstrate finding the minimum element in a BST
+int main() {
+    // Create an empty BST
+    Node* root = nullptr;
+
+    // Insert nodes to build the BST
+    root = insert(root, 50);
+    insert(root, 30);
+    insert(root, 20);
+    insert(root, 40);
+    insert(root, 70);
+    insert(root, 60);
+    insert(root, 80);
+    insert(root, 10); // Inserting a smaller value to make 10 the minimum
+
+    std::cout << "Binary Search Tree (In-order traversal): ";
+    inorderTraversal(root);
+    std::cout << std::endl;
+
+    std::cout << "\n--- Finding the Minimum Element ---" << std::endl;
+
+    // Find and print the minimum element
+    int min_value = findMin(root);
+    if (min_value != -1) { // Check if findMin returned a valid value
+        std::cout << "The minimum element in the BST is: " << min_value << std::endl;
+    }
+
+    // Demonstrate finding minimum in an empty tree
+    Node* empty_root = nullptr;
+    std::cout << "\nAttempting to find minimum in an empty tree:" << std::endl;
+    findMin(empty_root);
+
+
+    // Clean up allocated memory
+    deleteBST(root);
+    // deleteBST(empty_root); // No memory allocated for empty_root
+
+    return 0; // Indicate successful program execution
+}
+
+
+
+
+
+Write a program to find the maximum element in BST
+
+#include <iostream> // Required for input/output operations like std::cout
+
+// Define a structure for a node in the Binary Search Tree
+struct Node {
+    int data;   // Value stored in the node
+    Node* left; // Pointer to the left child (smaller values)
+    Node* right; // Pointer to the right child (larger values)
+
+    // Constructor to create a new node
+    Node(int val) : data(val), left(nullptr), right(nullptr) {}
+};
+
+// Function to insert a new node into the BST
+// This is a helper function to build the example BST.
+Node* insert(Node* root, int value) {
+    // If the tree is empty, create a new node and make it the root
+    if (root == nullptr) {
+        return new Node(value);
+    }
+
+    // If the value is less than the current node's data, insert into the left subtree
+    if (value < root->data) {
+        root->left = insert(root->left, value);
+    }
+    // If the value is greater than or equal to the current node's data, insert into the right subtree
+    // (Handling duplicates by placing them in the right subtree is one common approach)
+    else {
+        root->right = insert(root->right, value);
+    }
+
+    // Return the (unchanged) root pointer
+    return root;
+}
+
+// Function to find the maximum element in a BST
+// The maximum element in a BST is the rightmost node.
+// root: Pointer to the root of the BST
+// Returns the maximum value, or -1 if the tree is empty (or handle appropriately)
+int findMax(Node* root) {
+    // If the tree is empty, there is no maximum element
+    if (root == nullptr) {
+        std::cerr << "Error: Cannot find maximum in an empty tree." << std::endl;
+        return -1; // Return an error value
+    }
+
+    // Traverse to the rightmost node
+    Node* current = root;
+    while (current->right != nullptr) {
+        current = current->right;
+    }
+
+    // The current node is the rightmost node, which contains the maximum value
+    return current->data;
+}
+
+// Helper function for in-order traversal (to print the sorted elements of the BST)
+void inorderTraversal(Node* root) {
+    if (root != nullptr) {
+        inorderTraversal(root->left);
+        std::cout << root->data << " ";
+        inorderTraversal(root->right);
+    }
+}
+
+// Helper function to delete the BST (to prevent memory leaks)
+void deleteBST(Node* root) {
+    if (root == nullptr) {
+        return;
+    }
+    deleteBST(root->left);
+    deleteBST(root->right);
+    delete root;
+}
+
+
+// Main function to demonstrate finding the maximum element in a BST
+int main() {
+    // Create an empty BST
+    Node* root = nullptr;
+
+    // Insert nodes to build the BST
+    root = insert(root, 50);
+    insert(root, 30);
+    insert(root, 20);
+    insert(root, 40);
+    insert(root, 70);
+    insert(root, 60);
+    insert(root, 80);
+    insert(root, 90); // Inserting a larger value to make 90 the maximum
+
+    std::cout << "Binary Search Tree (In-order traversal): ";
+    inorderTraversal(root);
+    std::cout << std::endl;
+
+    std::cout << "\n--- Finding the Maximum Element ---" << std::endl;
+
+    // Find and print the maximum element
+    int max_value = findMax(root);
+    if (max_value != -1) { // Check if findMax returned a valid value
+        std::cout << "The maximum element in the BST is: " << max_value << std::endl;
+    }
+
+    // Demonstrate finding maximum in an empty tree
+    Node* empty_root = nullptr;
+    std::cout << "\nAttempting to find maximum in an empty tree:" << std::endl;
+    findMax(empty_root);
+
+
+    // Clean up allocated memory
+    deleteBST(root);
+    // deleteBST(empty_root); // No memory allocated for empty_root
+
+    return 0; // Indicate successful program execution
+}
+
+
+
+
+
+
+Create an AVL Tree for the input 10,20,15,87,35,40,68,90
+
+#include <iostream> // Required for input/output operations like std::cout
+#include <algorithm> // Required for std::max
+
+// Define a structure for a node in the AVL Tree
+struct Node {
+    int data;   // Value stored in the node
+    Node* left; // Pointer to the left child
+    Node* right; // Pointer to the right child
+    int height; // Height of the node (for balancing)
+
+    // Constructor to create a new node
+    Node(int val) : data(val), left(nullptr), right(nullptr), height(1) {}
+};
+
+// Helper function to get the height of a node
+// Returns 0 if the node is nullptr
+int height(Node* node) {
+    if (node == nullptr) {
+        return 0;
+    }
+    return node->height;
+}
+
+// Helper function to get the maximum of two integers
+int max(int a, int b) {
+    return (a > b) ? a : b;
+}
+
+// Helper function to get the balance factor of a node
+// Balance factor = height(left_subtree) - height(right_subtree)
+int getBalanceFactor(Node* node) {
+    if (node == nullptr) {
+        return 0;
+    }
+    return height(node->left) - height(node->right);
+}
+
+// Right rotate subtree rooted with y
+// Returns the new root of the rotated subtree
+Node* rightRotate(Node* y) {
+    Node* x = y->left;
+    Node* T2 = x->right;
+
+    // Perform rotation
+    x->right = y;
+    y->left = T2;
+
+    // Update heights
+    y->height = max(height(y->left), height(y->right)) + 1;
+    x->height = max(height(x->left), height(x->right)) + 1;
+
+    // Return new root
+    return x;
+}
+
+// Left rotate subtree rooted with x
+// Returns the new root of the rotated subtree
+Node* leftRotate(Node* x) {
+    Node* y = x->right;
+    Node* T2 = y->left;
+
+    // Perform rotation
+    y->left = x;
+    x->right = T2;
+
+    // Update heights
+    x->height = max(height(x->left), height(x->right)) + 1;
+    y->height = max(height(y->left), height(y->right)) + 1;
+
+    // Return new root
+    return y;
+}
+
+// Function to insert a new node into the AVL Tree
+// root: Pointer to the root of the current subtree
+// value: The value to insert
+// Returns the root of the modified subtree after insertion and balancing
+Node* insert(Node* root, int value) {
+    // 1. Perform standard BST insertion
+    if (root == nullptr) {
+        return new Node(value);
+    }
+
+    if (value < root->data) {
+        root->left = insert(root->left, value);
+    } else if (value > root->data) {
+        root->right = insert(root->right, value);
+    } else {
+        // Duplicate values are not typically inserted in a standard BST/AVL
+        // For this example, we'll just return the existing node for duplicates.
+        std::cout << "Warning: Duplicate value " << value << " not inserted." << std::endl;
+        return root;
+    }
+
+    // 2. Update height of the current node
+    root->height = 1 + max(height(root->left), height(root->right));
+
+    // 3. Get the balance factor to check if this node became unbalanced
+    int balance = getBalanceFactor(root);
+
+    // 4. If the node is unbalanced, perform rotations:
+
+    // Left Left Case
+    if (balance > 1 && value < root->left->data) {
+        std::cout << "Performing LL Rotation at node " << root->data << std::endl;
+        return rightRotate(root);
+    }
+
+    // Right Right Case
+    if (balance < -1 && value > root->right->data) {
+        std::cout << "Performing RR Rotation at node " << root->data << std::endl;
+        return leftRotate(root);
+    }
+
+    // Left Right Case
+    if (balance > 1 && value > root->left->data) {
+        std::cout << "Performing LR Rotation at node " << root->data << std::endl;
+        root->left = leftRotate(root->left); // First left rotate the left child
+        return rightRotate(root);            // Then right rotate the current node
+    }
+
+    // Right Left Case
+    if (balance < -1 && value < root->right->data) {
+        std::cout << "Performing RL Rotation at node " << root->data << std::endl;
+        root->right = rightRotate(root->right); // First right rotate the right child
+        return leftRotate(root);             // Then left rotate the current node
+    }
+
+    // If the node is balanced, return the (unchanged) root pointer
+    return root;
+}
+
+// Helper function for in-order traversal (to print the sorted elements of the AVL Tree)
+void inorderTraversal(Node* root) {
+    if (root != nullptr) {
+        inorderTraversal(root->left);
+        std::cout << root->data << " ";
+        inorderTraversal(root->right);
+    }
+}
+
+// Helper function to print the tree structure visually (simple representation)
+// This is a basic representation and might not show perfect tree structure for complex trees.
+void printTree(Node* root, int space = 0, int height_spacing = 5) {
+    if (root == nullptr) {
+        return;
+    }
+
+    // Increase distance between levels
+    space += height_spacing;
+
+    // Process right child first
+    printTree(root->right, space, height_spacing);
+
+    // Print current node after space
+    std::cout << std::endl;
+    for (int i = height_spacing; i < space; i++) {
+        std::cout << " ";
+    }
+    std::cout << root->data << "(" << getBalanceFactor(root) << ")\n"; // Print data and balance factor
+
+    // Process left child
+    printTree(root->left, space, height_spacing);
+}
+
+
+// Helper function to delete the AVL Tree (to prevent memory leaks)
+void deleteAVLTree(Node* root) {
+    if (root == nullptr) {
+        return;
+    }
+    deleteAVLTree(root->left);
+    deleteAVLTree(root->right);
+    delete root;
+}
+
+
+// Main function to demonstrate AVL Tree creation and insertion
+int main() {
+    Node* root = nullptr; // Initialize an empty AVL Tree
+
+    // Input sequence: 10, 20, 15, 87, 35, 40, 68, 90
+    int values[] = {10, 20, 15, 87, 35, 40, 68, 90};
+    int num_values = sizeof(values) / sizeof(values[0]);
+
+    std::cout << "Inserting elements into the AVL Tree:" << std::endl;
+    for (int i = 0; i < num_values; ++i) {
+        std::cout << "Inserting " << values[i] << "..." << std::endl;
+        root = insert(root, values[i]);
+        std::cout << "Tree after inserting " << values[i] << ":" << std::endl;
+        printTree(root);
+        std::cout << "\n--------------------\n";
+    }
+
+    std::cout << "\nFinal AVL Tree (In-order traversal): ";
+    inorderTraversal(root);
+    std::cout << std::endl;
+
+    std::cout << "\nFinal AVL Tree Structure (rotated):" << std::endl;
+    printTree(root);
+    std::cout << std::endl;
+
+
+    // Clean up allocated memory
+    deleteAVLTree(root);
+    std::cout << "\nAVL Tree deleted. Memory freed." << std::endl;
+
+    return 0; // Indicate successful program execution
+}
+
+
+
+
+
+Write the structure of the 2-Way Tree of Order 2.
+The structure of a 2-Way Tree of Order 2 (which corresponds to a B-tree of order 2) is characterized by the following properties:Maximum Children: Every node in the tree has at most2 children.Number of Keys: A non-leaf node with k children stores k−1 keys.Since the maximum number of children is 2, a non-leaf node will store at most 2−1=1 key.Minimum Children (Non-Root, Non-Leaf): Every non-leaf node, except for the root, must have at least ⌈2/2⌉=1 child. However, in a standard tree structure, a non-leaf node must have at least 2 children to differentiate between left and right subtrees based on the key. So, typically, a non-leaf, non-root node has exactly 2 children.Minimum Children (Root): If the root is not a leaf node, it must have at least 2 children.Leaf Nodes: All leaf nodes are at the same level.Ordering of Keys: For any non-leaf node with a key K:All keys in the left subtree are less than K.All keys in the right subtree are greater than K.In essence, a 2-Way Tree of Order 2 is a form of a full binary tree where each non-leaf node contains a single key and has exactly two children. The structure maintains balance by ensuring all leaves are at the same depth.
+
+
+Write the structure of B-Tree of order 4
+The structure of a B-Tree of order 4 is defined by the following properties:Maximum Children: Every node in the tree has at most 4 children.Number of Keys: A non-leaf node with k children stores k−1 keys.Since the maximum number of children is 4, a non-leaf node will store at most 4−1=3 keys.Minimum Children (Non-Root, Non-Leaf): Every non-leaf node, except for the root, must have at least ⌈4/2⌉=2 children. Consequently, such nodes must store at least 2−1=1 key.Minimum Children (Root): If the root is not a leaf node, it must have at least 2 children.Leaf Nodes: All leaf nodes are at the same level.Ordering of Keys and Children: For any non-leaf node with m keys (K1​,K2​,…,Km​) and m+1 children (C0​,C1​,…,Cm​):All keys in the subtree C0​ are less than K1​.All keys in the subtree Ci​ are between Ki​ and Ki+1​ for 1≤i≤m−1.All keys in the subtree Cm​ are greater than Km​.In summary, a B-Tree of order 4 is a balanced tree structure designed for efficient disk access, where each node can hold between 1 and 3 keys and have between 2 and 4 children (with slight variations for the root). All leaf nodes reside at the same depth, ensuring balanced search paths.
+
+
+Write the structure of B+ Tree of Order 5
+The structure of a B+ Tree of order 5 is defined by the following properties:Order (m): The order of the B+ Tree is 5. This often refers to the maximum number of children a node can have.Maximum Children: Every internal node in the tree has at most 5 children.Maximum Keys (Internal Nodes): An internal node with k children stores k−1 keys.Since the maximum number of children is 5, an internal node will store at most 5−1=4 keys.Minimum Children (Internal, Non-Root): Every internal node, except for the root, must have at least ⌈5/2⌉=3 children. Consequently, such nodes must store at least 3−1=2 keys.Minimum Children (Root): If the root is an internal node, it must have at least 2 children.Leaf Nodes:All leaf nodes are at the same level.Leaf nodes contain the actual data records (or pointers to data records).Leaf nodes also store keys.Maximum Keys (Leaf Nodes): A leaf node can store at most m−1=5−1=4 keys/data entries.Minimum Keys (Leaf Nodes): Every leaf node must store at least ⌈m/2⌉−1=⌈5/2⌉−1=3−1=2 keys/data entries. (Some definitions use ⌈m/2⌉ as the minimum number of keys/data entries in leaf nodes, which would be 3 for order 5).Ordering of Keys and Pointers (Internal Nodes): For any internal node with m′ keys (K1​,K2​,…,Km′​) and m′+1 children (P0​,P1​,…,Pm′​):All keys in the subtree pointed to by P0​ are less than or equal to K1​.All keys in the subtree pointed to by Pi​ are greater than Ki​ and less than or equal to Ki+1​ for 1≤i≤m′−1.All keys in the subtree pointed to by Pm′​ are greater than Km′​.The keys in internal nodes serve as separators or routing information to guide searches to the correct leaf node.Ordering and Linking (Leaf Nodes):The keys within a leaf node are sorted.Leaf nodes are typically linked together sequentially (often using a pointer to the next leaf node) to allow for efficient range queries.In summary, a B+ Tree of order 5 is a balanced tree structure where internal nodes act as an index, containing keys to direct searches, and all actual data is stored in the leaf nodes. Internal nodes have between 2 (or 1 for root) and 5 children and store between 1 and 4 keys. Leaf nodes store between 2 (or 3 depending on definition) and 4 keys/data entries and are linked together. All leaf nodes are at the same depth.
+
+
+
+Create a B - Tree for the input 10,20,15,87,35,40,68,90
+
+#include <iostream> // Required for input/output operations
+#include <vector>   // Required for std::vector to store keys and children pointers
+#include <algorithm> // Required for std::sort and std::upper_bound
+
+// Define the maximum number of keys a node can hold (for order 3, max children = 3, max keys = 2)
+const int MAX_KEYS = 2;
+// Define the minimum number of keys a non-root node must hold (ceil(order/2) - 1 = ceil(3/2) - 1 = 2 - 1 = 1)
+const int MIN_KEYS = 1;
+// Define the maximum number of children a node can have (order)
+const int MAX_CHILDREN = 3;
+
+// Define a structure for a B-Tree node
+struct BTreeNode {
+    std::vector<int> keys; // Vector to store keys in the node
+    std::vector<BTreeNode*> children; // Vector to store pointers to child nodes
+    bool is_leaf; // True if the node is a leaf, false otherwise
+
+    // Constructor
+    BTreeNode(bool leaf) : is_leaf(leaf) {}
+
+    // Destructor to free memory of children
+    ~BTreeNode() {
+        for (BTreeNode* child : children) {
+            delete child;
+        }
+    }
+};
+
+// Function to find the index of the first key greater than or equal to the given value
+// This is used to find the correct position for insertion or traversal.
+int findKeyIndex(BTreeNode* node, int value) {
+    // std::upper_bound returns an iterator to the first element greater than value
+    // std::distance calculates the index from the beginning
+    return std::distance(node->keys.begin(), std::upper_bound(node->keys.begin(), node->keys.end(), value));
+}
+
+// Function to split a child node that is full
+// parent: The parent node where the median key will be moved
+// child_index: The index of the child node in the parent's children vector
+// child_node: The child node that needs to be split
+void splitChild(BTreeNode* parent, int child_index, BTreeNode* child_node) {
+    // Create a new node that will store the keys and children of the right half of the child_node
+    BTreeNode* new_node = new BTreeNode(child_node->is_leaf);
+
+    // The median key from the child_node will be moved up to the parent.
+    // For MAX_KEYS = 2, the median is at index 1 (the second key).
+    int median_key = child_node->keys[MAX_KEYS / 2];
+
+    // Copy the keys from the right half of the child_node to the new_node
+    // The right half starts from the median key's position + 1.
+    new_node->keys.assign(child_node->keys.begin() + MAX_KEYS / 2 + 1, child_node->keys.end());
+
+    // Remove the median key and the right half keys from the child_node
+    child_node->keys.erase(child_node->keys.begin() + MAX_KEYS / 2, child_node->keys.end());
+
+    // If the child_node is not a leaf, copy the corresponding children pointers to the new_node
+    // The children pointers to the right of the median key are moved.
+    if (!child_node->is_leaf) {
+        new_node->children.assign(child_node->children.begin() + MAX_CHILDREN / 2, child_node->children.end());
+        // Remove the moved children pointers from the child_node
+        child_node->children.erase(child_node->children.begin() + MAX_CHILDREN / 2, child_node->children.end());
+    }
+
+    // Insert the new_node into the parent's children vector at child_index + 1
+    parent->children.insert(parent->children.begin() + child_index + 1, new_node);
+
+    // Insert the median_key into the parent's keys vector at child_index
+    parent->keys.insert(parent->keys.begin() + child_index, median_key);
+
+    std::cout << "Split node. Median key " << median_key << " moved to parent." << std::endl;
+}
+
+// Function to insert a new key into a non-full B-Tree node
+// node: The current node (guaranteed to be non-full)
+// value: The value to insert
+void insertNonFull(BTreeNode* node, int value) {
+    // Find the index where the new key should be inserted
+    int index = findKeyIndex(node, value);
+
+    // If the node is a leaf, insert the key directly
+    if (node->is_leaf) {
+        node->keys.insert(node->keys.begin() + index, value);
+        std::cout << "Inserted " << value << " into a leaf node." << std::endl;
+    }
+    // If the node is not a leaf, insert into the appropriate child subtree
+    else {
+        BTreeNode* child_node = node->children[index];
+
+        // If the child node is full, split it
+        if (child_node->keys.size() == MAX_KEYS) {
+            splitChild(node, index, child_node);
+
+            // After splitting, the value might need to be inserted into the new node
+            // Determine which of the two children (original child or new_node)
+            // the value should be inserted into.
+            if (value > node->keys[index]) {
+                index++; // If value is greater than the median key moved up, go to the right child
+            }
+        }
+        // Recursively call insertNonFull on the appropriate child
+        insertNonFull(node->children[index], value);
+    }
+}
+
+// Function to insert a new key into the B-Tree
+// root_ref: Pointer to the pointer of the root of the B-Tree
+// value: The value to insert
+void insert(BTreeNode** root_ref, int value) {
+    BTreeNode* root = *root_ref;
+
+    // If the root is full, create a new root and split the old root
+    if (root != nullptr && root->keys.size() == MAX_KEYS) {
+        // Create a new root node (which is initially not a leaf)
+        BTreeNode* new_root = new BTreeNode(false);
+        // The old root becomes a child of the new root
+        new_root->children.push_back(root);
+        // Split the old root
+        splitChild(new_root, 0, root);
+
+        // After splitting, the value will be inserted into the appropriate child of the new root
+        // Determine which child to go to based on the value and the median key moved to the new root
+        int index = findKeyIndex(new_root, value);
+        insertNonFull(new_root->children[index], value);
+
+        // Update the root of the tree
+        *root_ref = new_root;
+        std::cout << "Root was full, created a new root." << std::endl;
+    }
+    // If the root is not full, or if the tree is empty, insert directly into the root
+    else {
+        if (root == nullptr) {
+             *root_ref = new BTreeNode(true); // If tree is empty, create a new leaf root
+             root = *root_ref;
+        }
+        insertNonFull(root, value);
+    }
+}
+
+// Helper function for in-order traversal of the B-Tree
+// This will print the keys in sorted order.
+void inorderTraversal(BTreeNode* node) {
+    if (node == nullptr) {
+        return;
+    }
+
+    int i;
+    // Traverse the left subtree and print keys
+    for (i = 0; i < node->keys.size(); ++i) {
+        // If it's not a leaf, traverse the i-th child
+        if (!node->is_leaf) {
+            inorderTraversal(node->children[i]);
+        }
+        // Print the i-th key
+        std::cout << node->keys[i] << " ";
+    }
+
+    // If it's not a leaf, traverse the last child (after the last key)
+    if (!node->is_leaf) {
+        inorderTraversal(node->children[i]);
+    }
+}
+
+// Helper function to print the tree structure visually (simple representation)
+// This is a basic representation and might not show perfect tree structure for complex trees.
+void printTree(BTreeNode* root, int level = 0) {
+    if (root == nullptr) {
+        return;
+    }
+
+    // Print current node's keys
+    for (int i = 0; i < level; ++i) std::cout << "  "; // Indentation for level
+    std::cout << "Level " << level << " [";
+    for (int i = 0; i < root->keys.size(); ++i) {
+        std::cout << root->keys[i] << (i == root->keys.size() - 1 ? "" : ",");
+    }
+    std::cout << "]" << (root->is_leaf ? " (Leaf)" : "") << std::endl;
+
+    // Recursively print children
+    if (!root->is_leaf) {
+        for (int i = 0; i < root->children.size(); ++i) {
+            printTree(root->children[i], level + 1);
+        }
+    }
+}
+
+
+// Main function to demonstrate B-Tree creation and insertion
+int main() {
+    BTreeNode* root = nullptr; // Initialize an empty B-Tree
+
+    // Input sequence: 10, 20, 15, 87, 35, 40, 68, 90
+    int values[] = {10, 20, 15, 87, 35, 40, 68, 90};
+    int num_values = sizeof(values) / sizeof(values[0]);
+
+    std::cout << "Inserting elements into the B-Tree (Order 3):" << std::endl;
+    for (int i = 0; i < num_values; ++i) {
+        std::cout << "\nInserting " << values[i] << "..." << std::endl;
+        insert(&root, values[i]);
+        std::cout << "Tree structure after inserting " << values[i] << ":" << std::endl;
+        printTree(root);
+        std::cout << "\n--------------------\n";
+    }
+
+    std::cout << "\nFinal B-Tree (In-order traversal): ";
+    inorderTraversal(root);
+    std::cout << std::endl;
+
+    std::cout << "\nFinal B-Tree Structure:" << std::endl;
+    printTree(root);
+    std::cout << std::endl;
+
+
+    // Clean up allocated memory
+    delete root; // The destructor will recursively delete children
+    std::cout << "\nB-Tree deleted. Memory freed." << std::endl;
+
+    return 0; // Indicate successful program execution
+}
+
+
+
+
+Create a B+ Tree for the input 10,20,15,87,35,40,68,90
+
+#include <iostream> // Required for input/output operations
+#include <vector>   // Required for std::vector to store keys and children/data
+#include <algorithm> // Required for std::sort and std::upper_bound
+#include <queue>    // Required for level-order printing
+
+// Define the order of the B+ Tree (maximum number of children for internal nodes)
+const int ORDER = 3;
+// Maximum number of keys in an internal node (ORDER - 1)
+const int MAX_INTERNAL_KEYS = ORDER - 1;
+// Minimum number of keys in an internal node (ceil(ORDER/2) - 1)
+const int MIN_INTERNAL_KEYS = (ORDER + 1) / 2 - 1; // For order 3, ceil(1.5)-1 = 2-1 = 1
+// Maximum number of keys/data entries in a leaf node (ORDER - 1)
+const int MAX_LEAF_KEYS = ORDER - 1; // For order 3, 3-1 = 2
+// Minimum number of keys/data entries in a leaf node (ceil(ORDER/2) - 1 or ceil(ORDER/2))
+const int MIN_LEAF_KEYS = (ORDER + 1) / 2 -1; // For order 3, ceil(1.5)-1 = 2-1 = 1 (Using this definition)
+
+
+// Define a structure for a B+ Tree node
+struct BPlusTreeNode {
+    std::vector<int> keys; // Keys stored in the node
+    std::vector<BPlusTreeNode*> children; // Pointers to child nodes (only for internal nodes)
+    BPlusTreeNode* next_leaf; // Pointer to the next leaf node (only for leaf nodes)
+    bool is_leaf; // True if the node is a leaf, false otherwise
+
+    // Constructor
+    BPlusTreeNode(bool leaf) : is_leaf(leaf), next_leaf(nullptr) {}
+
+    // Destructor to free memory of children (only for internal nodes)
+    ~BPlusTreeNode() {
+        if (!is_leaf) {
+            for (BPlusTreeNode* child : children) {
+                delete child;
+            }
+        }
+        // Leaf nodes are linked, but their children vector is empty, so no need to delete children.
+        // The next_leaf pointer is not owned by this node, so don't delete it here.
+    }
+};
+
+// Function to find the index of the first key greater than or equal to the given value
+// This is used to find the correct position for insertion or traversal.
+int findKeyIndex(BPlusTreeNode* node, int value) {
+    // std::upper_bound returns an iterator to the first element greater than value
+    // std::distance calculates the index from the beginning
+    return std::distance(node->keys.begin(), std::upper_bound(node->keys.begin(), node->keys.end(), value));
+}
+
+// Function to split a leaf node that is full
+// parent: The parent node where the median key will be moved
+// child_index: The index of the child leaf node in the parent's children vector
+// leaf_node: The leaf node that needs to be split
+void splitLeaf(BPlusTreeNode* parent, int child_index, BPlusTreeNode* leaf_node) {
+    // Create a new leaf node for the right half
+    BPlusTreeNode* new_leaf = new BPlusTreeNode(true);
+
+    // The median key from the leaf_node will be copied up to the parent.
+    // For MAX_LEAF_KEYS = 2, the median is at index 1 (the second key).
+    int median_key_to_parent = leaf_node->keys[MAX_LEAF_KEYS / 2];
+
+    // Copy the keys from the right half of the leaf_node to the new_leaf
+    // The right half starts from the median key's position.
+    new_leaf->keys.assign(leaf_node->keys.begin() + MAX_LEAF_KEYS / 2, leaf_node->keys.end());
+
+    // Remove the keys from the right half from the original leaf_node
+    leaf_node->keys.erase(leaf_node->keys.begin() + MAX_LEAF_KEYS / 2, leaf_node->keys.end());
+
+    // Link the new_leaf into the leaf node chain
+    new_leaf->next_leaf = leaf_node->next_leaf;
+    leaf_node->next_leaf = new_leaf;
+
+    // Insert the new_leaf into the parent's children vector at child_index + 1
+    parent->children.insert(parent->children.begin() + child_index + 1, new_leaf);
+
+    // Insert the median_key_to_parent into the parent's keys vector at child_index
+    parent->keys.insert(parent->keys.begin() + child_index, median_key_to_parent);
+
+    std::cout << "Split leaf node. Key " << median_key_to_parent << " copied to parent." << std::endl;
+}
+
+// Function to split an internal node that is full
+// parent: The parent node where the median key will be moved
+// child_index: The index of the child internal node in the parent's children vector
+// internal_node: The internal node that needs to be split
+void splitInternal(BPlusTreeNode* parent, int child_index, BPlusTreeNode* internal_node) {
+    // Create a new internal node for the right half
+    BPlusTreeNode* new_internal_node = new BPlusTreeNode(false);
+
+    // The median key from the internal_node will be moved up to the parent.
+    // For MAX_INTERNAL_KEYS = 2, the median is at index 1 (the second key).
+    int median_key_to_parent = internal_node->keys[MAX_INTERNAL_KEYS / 2];
+
+    // Copy the keys from the right half of the internal_node to the new_internal_node
+    // The right half starts from the median key's position + 1.
+    new_internal_node->keys.assign(internal_node->keys.begin() + MAX_INTERNAL_KEYS / 2 + 1, internal_node->keys.end());
+
+    // Remove the median key and the right half keys from the internal_node
+    internal_node->keys.erase(internal_node->keys.begin() + MAX_INTERNAL_KEYS / 2, internal_node->keys.end());
+
+    // Copy the corresponding children pointers to the new_internal_node
+    // The children pointers to the right of the median key are moved.
+    new_internal_node->children.assign(internal_node->children.begin() + (MAX_INTERNAL_KEYS / 2) + 1, internal_node->children.end());
+    // Remove the moved children pointers from the internal_node
+    internal_node->children.erase(internal_node->children.begin() + (MAX_INTERNAL_KEYS / 2) + 1, internal_node->children.end());
+
+    // Insert the new_internal_node into the parent's children vector at child_index + 1
+    parent->children.insert(parent->children.begin() + child_index + 1, new_internal_node);
+
+    // Insert the median_key_to_parent into the parent's keys vector at child_index
+    parent->keys.insert(parent->keys.begin() + child_index, median_key_to_parent);
+
+    std::cout << "Split internal node. Median key " << median_key_to_parent << " moved to parent." << std::endl;
+}
+
+
+// Function to insert a new key into a non-full B+ Tree node
+// node: The current node (guaranteed to be non-full)
+// value: The value to insert
+void insertNonFull(BPlusTreeNode* node, int value) {
+    // Find the index where the new key should be inserted
+    int index = findKeyIndex(node, value);
+
+    // If the node is a leaf, insert the key directly
+    if (node->is_leaf) {
+        node->keys.insert(node->keys.begin() + index, value);
+        std::cout << "Inserted " << value << " into a leaf node." << std::endl;
+    }
+    // If the node is not a leaf, insert into the appropriate child subtree
+    else {
+        BPlusTreeNode* child_node = node->children[index];
+
+        // If the child node is full, split it
+        if (child_node->keys.size() == MAX_LEAF_KEYS || child_node->keys.size() == MAX_INTERNAL_KEYS) {
+             if (child_node->is_leaf) {
+                 splitLeaf(node, index, child_node);
+             } else {
+                 splitInternal(node, index, child_node);
+             }
+
+            // After splitting, the value might need to be inserted into the new node
+            // Determine which of the two children (original child or new_node)
+            // the value should be inserted into.
+            if (value > node->keys[index]) {
+                index++; // If value is greater than the median key moved up, go to the right child
+            }
+        }
+        // Recursively call insertNonFull on the appropriate child
+        insertNonFull(node->children[index], value);
+    }
+}
+
+// Function to insert a new key into the B+ Tree
+// root_ref: Pointer to the pointer of the root of the B+ Tree
+// value: The value to insert
+void insert(BPlusTreeNode** root_ref, int value) {
+    BPlusTreeNode* root = *root_ref;
+
+    // If the tree is empty, create a new leaf root
+    if (root == nullptr) {
+        *root_ref = new BPlusTreeNode(true);
+        (*root_ref)->keys.push_back(value);
+        std::cout << "Inserted " << value << " into an empty tree (new leaf root)." << std::endl;
+        return;
+    }
+
+    // If the root is full, create a new root and split the old root
+    if (root->keys.size() == MAX_INTERNAL_KEYS) { // Root must be internal to be full with MAX_INTERNAL_KEYS
+        // Create a new root node (which is initially internal)
+        BPlusTreeNode* new_root = new BPlusTreeNode(false);
+        // The old root becomes a child of the new root
+        new_root->children.push_back(root);
+        // Split the old root (which must be an internal node if it's full and not a leaf root)
+        splitInternal(new_root, 0, root);
+
+        // After splitting, the value will be inserted into the appropriate child of the new root
+        // Determine which child to go to based on the value and the median key moved to the new root
+        int index = findKeyIndex(new_root, value);
+        insertNonFull(new_root->children[index], value);
+
+        // Update the root of the tree
+        *root_ref = new_root;
+        std::cout << "Root was full, created a new root." << std::endl;
+    }
+    // If the root is not full, insert directly into the root or its children
+    else {
+        insertNonFull(root, value);
+    }
+}
+
+// Helper function for in-order traversal of the B+ Tree (by traversing leaf nodes)
+// This will print the keys in sorted order.
+void inorderTraversal(BPlusTreeNode* root) {
+    if (root == nullptr) {
+        return;
+    }
+
+    // Find the leftmost leaf node
+    BPlusTreeNode* current = root;
+    while (!current->is_leaf) {
+        current = current->children[0];
+    }
+
+    // Traverse the linked list of leaf nodes and print the keys
+    std::cout << "Keys in sorted order (from leaf nodes): ";
+    while (current != nullptr) {
+        for (int key : current->keys) {
+            std::cout << key << " ";
+        }
+        current = current->next_leaf;
+    }
+    std::cout << std::endl;
+}
+
+// Helper function to print the tree structure visually (level by level)
+void printTree(BPlusTreeNode* root) {
+    if (root == nullptr) {
+        std::cout << "Tree is empty." << std::endl;
+        return;
+    }
+
+    std::queue<BPlusTreeNode*> q;
+    q.push(root);
+
+    int level = 0;
+    while (!q.empty()) {
+        int level_size = q.size();
+        std::cout << "Level " << level << ": ";
+
+        for (int i = 0; i < level_size; ++i) {
+            BPlusTreeNode* current = q.front();
+            q.pop();
+
+            std::cout << "[";
+            for (int j = 0; j < current->keys.size(); ++j) {
+                std::cout << current->keys[j] << (j == current->keys.size() - 1 ? "" : ",");
+            }
+            std::cout << "]" << (current->is_leaf ? "(L)" : "(I)") << " ";
+
+            if (!current->is_leaf) {
+                for (BPlusTreeNode* child : current->children) {
+                    q.push(child);
+                }
+            }
+        }
+        std::cout << std::endl;
+        level++;
+    }
+}
+
+
+// Helper function to delete the B+ Tree (to prevent memory leaks)
+void deleteBPlusTree(BPlusTreeNode* root) {
+    if (root == nullptr) {
+        return;
+    }
+
+    // Use a queue for level-order traversal to delete nodes
+    std::queue<BPlusTreeNode*> q;
+    q.push(root);
+
+    while (!q.empty()) {
+        BPlusTreeNode* current = q.front();
+        q.pop();
+
+        // If it's an internal node, enqueue its children
+        if (!current->is_leaf) {
+            for (BPlusTreeNode* child : current->children) {
+                q.push(child);
+            }
+        }
+        // Delete the current node
+        delete current;
+    }
+}
+
+
+// Main function to demonstrate B+ Tree creation and insertion
+int main() {
+    BPlusTreeNode* root = nullptr; // Initialize an empty B+ Tree
+
+    // Input sequence: 10, 20, 15, 87, 35, 40, 68, 90
+    int values[] = {10, 20, 15, 87, 35, 40, 68, 90};
+    int num_values = sizeof(values) / sizeof(values[0]);
+
+    std::cout << "Inserting elements into the B+ Tree (Order " << ORDER << "):" << std::endl;
+    for (int i = 0; i < num_values; ++i) {
+        std::cout << "\nInserting " << values[i] << "..." << std::endl;
+        insert(&root, values[i]);
+        std::cout << "Tree structure after inserting " << values[i] << ":" << std::endl;
+        printTree(root);
+        std::cout << "\n--------------------\n";
+    }
+
+    std::cout << "\nFinal B+ Tree (In-order traversal via leaf nodes):" << std::endl;
+    inorderTraversal(root);
+    std::cout << std::endl;
+
+    std::cout << "\nFinal B+ Tree Structure (Level by Level):" << std::endl;
+    printTree(root);
+    std::cout << std::endl;
+
+
+    // Clean up allocated memory
+    deleteBPlusTree(root);
+    std::cout << "\nB+ Tree deleted. Memory freed." << std::endl;
+
+    return 0; // Indicate successful program execution
+}
+
