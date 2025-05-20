@@ -1,0 +1,162 @@
+// Basics of C++
+/*Write a C++ program to print Hello iNeuron on the screen.*/
+#include<iostream>
+using namespace std;
+
+int main(){
+cout<<"Hello iNeuron"<<endl;
+return 0;
+}
+
+
+// Basics of C++
+/*Write a C++ program to print Hello on the first line and iNeuron on the second line using endl.*/
+
+#include<iostream>
+using namespace std;
+
+int main()
+{
+    cout<<"Hello"<<endl<<"iNeuron"<<endl;
+    return 0;
+}
+
+
+// Basics of C++
+/*Write a C++ program to calculate the sum of two numbers.*/
+
+#include<iostream>
+
+using namespace std;
+
+int main()
+{
+    int x,y;
+    cout<<"Enter two number"<<endl;
+    cin>>x>>y;
+    cout<<"sum of "<<x<<" and "<<y<<" is "<<x+y<<endl;
+    return 0; 
+}
+
+//Basics of C++
+/*Write a C++ program to calculate the area of a circle*/
+
+#include<iostream>
+#define PI 3.14
+using namespace std;
+int main()
+{
+    float area,radius;
+
+    cout<<"Enter radius of circle:"<<endl;
+    cin>>radius;
+    area=PI*radius*radius;
+    cout<<" Area of circle is "<<area;
+    return 0;
+}
+
+// Basics of C++
+/*Write a C++ program to calculate the volume of a cuboid.*/
+#include<iostream>
+using namespace std;
+
+int main(){
+    float l,h,b,volume;
+    cout<<"Enter lenght,height and breadth:"<<endl;
+    cin>>l>>h>>b;
+    volume=l*h*b;
+    cout<<"Volume of cuboid is "<<volume;
+    return 0;
+}
+
+// Basics of C++
+/*Write a C++ program to calculate an average of 3 numbers*/
+
+#include<iostream>
+using namespace std;
+
+int main()
+{
+    float avg,sum=0;
+    int i,num[10];
+    cout<<"Enter three number:"<<endl;
+    for(i=0;i<3;i++)
+        cin>>num[i];
+    for(i=0;i<3;i++)
+        sum=sum+num[i];
+   
+    avg=sum/i;
+    cout<<"Average of three numbers is "<<avg;
+    return 0;
+
+}
+
+// Basics of C++
+/*Write a C++ program to calculate the square of a number*/
+#include<iostream>
+using namespace std;
+
+int main()
+{
+    int i,n;
+
+    cout<<"Enter a number:"<<endl;
+    cin>>i;
+    n=i*i;
+    cout<<"square of "<<i<<" is "<<n<<endl;
+    return 0;
+}
+
+// Basics of C++
+/*Write a C++ program to swap values of two int variables without using third variable*/
+#include<iostream>
+using namespace std;
+
+int main()
+{
+    int x,y;
+
+    cout<<"Enter X value:"<<endl;
+    cin>>x;
+    cout<<"Enter Y value:"<<endl;
+    cin>>y;
+    x=x+y;
+    y=x-y;
+    x=x-y;
+    cout<<"X is "<<x<<" and "<<" Y is "<<y<<endl;
+    return 0;
+}
+
+// Basics of C++
+/*Write a C++ program to find the maximum of two numbers.*/
+#include<iostream>
+using namespace std;
+
+int main()
+{
+    int x,y,max=0;
+
+    cout<<"Enter two number:"<<endl;
+    cin>>x>>y;
+    max=x>y?x:y;
+    cout<<"Maxiumum is "<<max<<endl;
+    return 0;
+}
+
+// Basics of C++
+/*Write a C++ program to add all the numbers of an array of size 10.*/
+#include<iostream>
+using namespace std;
+
+int main()
+{
+    int arr[10]={0},i,sum=0;
+
+    cout<<"Enter 10 numbers:"<<endl;
+    for(i=0;i<10;i++)
+       cin>>arr[i];
+    for(i=0;i<10;i++)
+       sum=sum+arr[i];
+    cout<<"Sum is "<<sum<<endl;
+    return 0;
+}
