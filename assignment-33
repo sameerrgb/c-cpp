@@ -1,0 +1,425 @@
+         
+///      Virtual Function, Abstract Class
+//   Q1 , Q2 and Q10
+/* 
+Q1.
+   Create a base class called shape. Use this class to store two double type values that
+   could be used to compute the area of figures. Derive two specific classes called triangle
+   and rectangle from the base shape. Add to the base class, a member function set_data()
+   to initialise base class data members and another member function display_area() to
+   compute and display the area of figures. Make display_area() as a virtual function and
+   redefine this function in the derived classes to suit their requirements.
+   Using these three classes, design a program that will accept dimensions of a triangle or
+   a rectangle interactively, and display the area.
+   Remember the two values given as input will be treated as lengths of two sides in the
+   case of rectangles, and as base and height in the case of the triangles, and used as
+   follows:
+   Area of rectangle = x * y Area of triangle = 1/2 * x * y
+
+Q2.
+   Extend the above program to display the area of circles. This requires the addition of a
+   new derived class 'circle' that computes the area of a circle. Remember, for a circle we need
+   only one value, its radius, but the set_data() function in the base class requires two values to be
+   passed. (Hint: Make the second argument of set_data() function as a default one with zero value.)
+
+Q10.
+   Create a base class called shape. Use this class to store two double type values that
+   could be used to compute the area of figures. Derive two specific classes called square and
+   parallelogram from the base shape. Add to the base class, a member function set_data() to
+   initialise base class data members and another member function display_area() to compute and
+   display the area of figures. Make display_area() as a virtual function and redefine this function in
+   the derived classes to suit their requirements.
+   Using these three classes, design a program that will accept dimensions of a square or
+   a parallelogram interactively, and display the area.
+*/
+
+#include<iostream>
+#include<cmath>
+using namespace std;
+
+class Shape  // base class
+{
+    protected:
+        
+        double l1,l2;
+
+    public:
+
+        void setData(double x,double y = 0)
+        {
+            l1 = x;
+            l2 = y;
+        }   
+
+        virtual void display_area() = 0;            
+};
+
+class Triangle : public Shape
+{
+    public:
+
+        void display_area()
+        {
+            double area = 0.5 * l1 * l2;
+            cout<<"\n    Area of Triangle = "<<area<<endl;
+        }
+};
+
+class Rectangle : public Shape
+{
+    public:
+
+        void display_area()
+        {
+            double area = l1 * l2;
+            cout<<"    Area of Rectangle = "<<area<<endl;
+        }
+};
+
+class  Circle : public Shape
+{
+    public:
+      
+        void display_area()
+        {
+            double area = M_PI * l1 * l1;
+            cout<<"    Area of Circle = "<<area<<endl;
+        }
+};
+
+class Square : public Shape
+{
+    public:
+       void display_area()
+       {
+           double area = l1 * l1;
+           cout<<"    Area of Square = "<<area<<endl;
+       }
+};
+
+class Parallelogram : public Shape
+{
+    public:
+       void display_area()
+       {
+           double area = l1 * l2;
+           cout<<"    Area of Parallelogram = "<<area<<endl<<endl;
+       }
+};
+
+int main()
+{
+    Triangle t;
+    t.setData(10,4);
+    t.display_area();
+
+    Rectangle r;
+    r.setData(4,5);
+    r.display_area();
+    
+    Circle c;
+    c.setData(5);
+    c.display_area();
+
+    Square s;
+    s.setData(12);
+    s.display_area();
+
+    Parallelogram p;
+    p.setData(6,9);
+    p.display_area();
+
+    return 0;
+}
+
+
+
+
+
+
+///               Virtual Function, Abstract Class
+/*
+Using the concept of pointers, write a function that swaps the private data values of two
+objects of the same class type.
+*/
+
+#include<iostream>
+using namespace std;
+
+class A
+{
+    private:
+
+       int num1;
+
+    public:
+
+        A(int num) 
+        {
+            num1 = num;
+        }
+
+        void show()
+        {
+            cout<<"\n    Value = "<<num1<<endl;
+        }
+
+        void swap(A *num2)
+        {
+            int temp;
+
+            temp = num1;
+            num1 = num2 -> num1;
+            num2 -> num1 = temp; 
+        }
+};
+
+int main()
+{
+    A p(30);
+    A c(70);
+    cout<<"\nBefore Swaping\n";
+    p.show();
+    c.show();
+    p.swap(&c);
+    cout<<"\nAfter Swaping\n";
+    p.show();
+    c.show();
+
+  return 0;
+
+}
+
+
+
+
+
+
+///            Virtual Function, Abstract Class
+/*
+Create a base class called Photon. Use this class to store a double type value of
+wavelength that could be used to calculate photon energy. Create class
+calculate_photonEnergy which will inherit photon energy.
+Using these classes, calculate photon energy
+*/
+
+#include<iostream>
+#include<cmath>
+using namespace std;
+
+/*
+    Photon of energy  E = hc/λ
+    where, h = 6.626*10^-34 Joule seconds (js) and c = 3*10^8 ms^-1
+*/
+
+class photon
+{
+    protected:
+       double wavelength;
+    public:    
+       photon(double wavelength)
+       {
+           this -> wavelength = wavelength/pow(10,-10);
+       }  
+};
+
+class calculate_photon_energy : public photon
+{
+    private:
+       double e;
+    public:
+       calculate_photon_energy(double value_angstrom) : photon(value_angstrom)
+       {
+           
+       }   
+
+       void calPhotonEnergy()
+       {
+            e = (6.626 * (pow(10,-34)) * 3 * (pow(10,8))) / wavelength;
+            cout<<"\n    Value of Photon Energy is :  "<<e<<endl<<endl;
+       }
+};
+
+int main()
+{
+    calculate_photon_energy pt1(0.5);
+    pt1.calPhotonEnergy();
+
+    return 0;
+}
+
+
+
+
+
+
+///            Virtual Function, Abstract Class
+/*
+Create a base class called Matrix. Use this class to store 4 int type values that could be
+used to calculate determinants and create matrices. Create class calculate_determinant which
+will calculate the determinant of a matrix.
+Using these classes, calculate the determinant of the matrix
+*/
+
+#include<iostream>
+using namespace std;
+
+class matrix
+{
+    private:
+       int arr[2][2];
+    public:
+       void setData()
+       {
+           int i,j;
+           for(i = 0 ; i < 2 ; i++)
+           {
+                for(j = 0 ; j < 2 ; j++)
+                {
+                    cout<<"    Enter Element:  ";
+                    cin>>arr[i][j];
+                }
+           }           
+       }   
+
+       void display()
+       {
+           int i,j;
+           for(i = 0 ; i < 2 ; i++)
+           {
+                for(j = 0 ; j < 2 ; j++)
+                {
+                    cout<<"    "<<arr[i][j];
+                }
+                cout<<endl;
+           }           
+       }   
+
+       void calculate()
+       {
+           cout<<"\n    Result = "<<arr[0][0] * arr[1][1] - arr[1][0] * arr[0][1];
+       }
+};
+
+int main()
+{
+    matrix m;
+    m.setData();
+    m.display();
+    m.calculate();
+
+    return 0;
+}
+
+
+
+
+
+///              Virtual Function, Abstract Class
+/*
+Create a base class called proof. Use this class to store two int type values that could be
+used to prove that triangle is a right angled triangle. Create a class compute which will
+determine whether a triangle is a right angled triangle.
+Using these classes, design a program that will accept dimensions of a triangle, and
+display the result.
+(Summary: Prove that triangle is a right angled triangle using pythagoras theorem)
+*/
+
+#include<iostream>
+using namespace std;
+
+class proof
+{
+    private :
+        int h , b , p;
+    public:
+        proof(int x,int y,int z)
+        {
+            h = x;
+            b = y;
+            p = z;
+        }
+        void compute()
+        {
+            if( h*h == b*b + p*p)
+                cout<<"\n    Yes,Right angled Triangle"<<endl;
+            else
+                cout<<"\n    No,Not Right angled Triangle"<<endl;    
+        }            
+};
+
+int main()
+{
+    proof p(5,3,4);
+    p.compute();
+
+    return 0;
+}
+
+
+
+
+
+
+///             Virtual Function, Abstract Class
+/*
+Create a base class called volume. Use this class to store two double type values that
+could be used to compute the volume of figures. Derive two specific classes called cube and
+sphere from the base shape. Add to the base class, a member function set_data() to initialise
+base class data members and another member function display_volume() to compute and
+display the volume of figures. Make display_volume() as a virtual function and redefine this
+function in the derived classes to suit their requirements.
+Using these three classes, design a program that will accept dimensions of a cube or a
+sphere interactively, and display the volume
+*/
+
+#include<iostream>
+#include<cmath>
+using namespace std;
+
+class volume
+{
+    protected:
+        double v;
+    public:
+        void setData(double x)
+        {
+            v = x;
+        }
+
+        virtual void display_volume() = 0;    
+};
+
+class cube : public volume
+{
+    public:
+       void display_volume()
+       {
+           double volume = v*v*v;
+           cout<<"\n    Volume of Cube = "<<volume<<endl;
+       } 
+};
+
+class sphere : public volume
+{
+    public:
+       void display_volume()
+       {
+           double volume = M_PI*v*v*v*4/3;
+           cout<<"\n    Volume of Cube = "<<volume<<endl;
+       } 
+};
+
+int main()
+{
+    cube c;
+    c.setData(5);
+    c.display_volume();
+
+    sphere s;
+    s.setData(12);
+    s.display_volume();
+
+    return 0;
+}
+
